@@ -1,0 +1,6 @@
+# ignore all the test tooling
+autom4te.cache/
+configure
+test-lib/
+test-obj/
+longfi_tests
