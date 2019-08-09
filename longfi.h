@@ -35,9 +35,6 @@ typedef enum ClientEvent {
 	ClientEvent_Rx,
 } ClientEvent;
 
-// this is an interrupt safe call that pushes the event into a queue inside the protocol library
-bool longfi_rf_queue_event(ClientEvent);
-
 // this will give ownership of a buffer to longfi library
 // should it trigger automatic fetch of mail if it remembers it from previous ACK?
 // if no, then we need to provide an API for client to do that action specifically
