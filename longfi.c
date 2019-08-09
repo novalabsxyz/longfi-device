@@ -126,7 +126,7 @@ void _send_random(uint8_t * data, size_t len){
   SX1276Send(data, len);
 }
 
-void longfi_send(const uint8_t * data, size_t len){
+void longfi_send(QualityOfService qos, const uint8_t * data, size_t len){
   uint32_t num_fragments;
   size_t payload_consumed = 0;
   uint8_t packet_id = 0;

@@ -5,7 +5,6 @@
 
 struct RfConfig rf_config = {
     .always_on = false,
-    .qos = QOS_0,
     .network_poll = 1000,
     .oui = 0xFEED3EAB,
     .device_id = 0xABCD,
@@ -51,7 +50,7 @@ uint8_t * send_buffer = 0;
 TEST(LongFiGroup, SingleFragmentPacket)
 {
     uint8_t test_data[] = {0xDE, 0xAD, 0xBE, 0xEF};
-    longfi_send(test_data, sizeof(test_data));
+    longfi_send(LONGFI_QOS_0, test_data, sizeof(test_data));
     
     // assert that the packet sent is equal to test_data plus packet_header
     LONGS_EQUAL(
@@ -84,7 +83,7 @@ TEST(LongFiGroup, MultipleFragmentPacket)
         0x07, 0x08, 0x09, 0x0a, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 
         0x19, 0x20};
 
-    longfi_send(test_data, sizeof(test_data));
+    longfi_send(LONGFI_QOS_0, test_data, sizeof(test_data));
     
     // first packet is 32 bytes
     LONGS_EQUAL(
