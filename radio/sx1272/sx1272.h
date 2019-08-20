@@ -25,9 +25,8 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include "gpio.h"
-#include "spi.h"
-#include "radio.h"
+#include "../radio.h"
+#include "sx1272-board.h"
 #include "sx1272Regs-Fsk.h"
 #include "sx1272Regs-LoRa.h"
 
@@ -64,7 +63,7 @@ typedef struct
     bool     RxContinuous;
     uint32_t TxTimeout;
     uint32_t RxSingleTimeout;
-}RadioFskSettings_t;
+}SX1272_RadioFskSettings_t;
 
 /*!
  * Radio FSK packet handler state
@@ -80,7 +79,7 @@ typedef struct
     uint16_t NbBytes;
     uint8_t  FifoThresh;
     uint8_t  ChunkSize;
-}RadioFskPacketHandler_t;
+}SX1272_RadioFskPacketHandler_t;
 
 /*!
  * Radio LoRa modem parameters
@@ -102,7 +101,7 @@ typedef struct
     bool     RxContinuous;
     uint32_t TxTimeout;
     bool     PublicNetwork;
-}RadioLoRaSettings_t;
+}SX1272_RadioLoRaSettings_t;
 
 /*!
  * Radio LoRa packet handler state
@@ -112,7 +111,7 @@ typedef struct
     int8_t SnrValue;
     int16_t RssiValue;
     uint8_t Size;
-}RadioLoRaPacketHandler_t;
+}SX1272_RadioLoRaPacketHandler_t;
 
 /*!
  * Radio Settings
@@ -126,7 +125,7 @@ typedef struct
     RadioFskPacketHandler_t  FskPacketHandler;
     RadioLoRaSettings_t      LoRa;
     RadioLoRaPacketHandler_t LoRaPacketHandler;
-}RadioSettings_t;
+}SX1272_RadioSettings_t;
 
 /*!
  * Radio hardware and global parameters
@@ -418,5 +417,7 @@ void SX1272SetPublicNetwork( bool enable );
  * \retval time Radio plus board wakeup time in ms.
  */
 uint32_t SX1272GetWakeupTime( void );
+
+const Radio_t SX1272RadioNew();
 
 #endif // __SX1272_H__

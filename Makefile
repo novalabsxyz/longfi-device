@@ -16,7 +16,7 @@ endif
 # These files are compiled and put into the
 # a library and links with the test runner.
 # This is so that test code can override production code at link time.
-SRC_FILES += longfi.c board.c radio/sx1276/sx1276.c radio/sx1276/sx1276-board.c
+SRC_FILES += longfi.c board.c radio/sx1276/sx1276.c radio/sx1276/sx1276-board.c radio/sx126x/sx126x.c radio/sx126x/sx126x-board.c  radio/sx126x/radio.c
 
 # --- SRC_DIRS ---
 # Use SRC_DIRS to specifiy production directories

@@ -36,7 +36,10 @@ typedef enum
 {
 	RADIO_ANT_SWITCH_LF,
 	RADIO_ANT_SWITCH_HF,
+    RADIO_ANT_SWITCH_POWER,
     RADIO_NSS,
+    RADIO_BUSY,
+    RADIO_DEVICE_SEL,
     RADIO_DIO_0,
     RADIO_DIO_1,
     RADIO_DIO_2,
@@ -72,6 +75,8 @@ typedef enum
 
 void GpioInit( Gpio_t *obj, PinNames pin, PinModes mode, PinConfigs config, PinTypes type, uint32_t value );
 void GpioWrite( Gpio_t *obj, uint32_t value );
+uint32_t GpioRead( Gpio_t *obj );
+
 
 typedef void( IrqHandler )( void* );
 typedef void( GpioIrqHandler )( void* );

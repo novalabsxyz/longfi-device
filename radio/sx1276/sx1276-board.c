@@ -12,9 +12,7 @@ License: Revised BSD License, see LICENSE.TXT file include in the project
 
 Maintainer: Miguel Luis and Gregory Cristian
 */
-#include "board.h"
-#include "radio.h"
-#include "sx1276/sx1276.h"
+#include "sx1276.h"
 #include "sx1276-board.h"
 
 /*!
