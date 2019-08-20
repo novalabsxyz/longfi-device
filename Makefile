@@ -16,14 +16,14 @@ endif
 # These files are compiled and put into the
 # a library and links with the test runner.
 # This is so that test code can override production code at link time.
-SRC_FILES += longfi.c
+SRC_FILES += longfi.c board.c radio/sx1276/sx1276.c radio/sx1276/sx1276-board.c
 
 # --- SRC_DIRS ---
 # Use SRC_DIRS to specifiy production directories
 # code files.
 # These files are compiled and put into a the
 # ProductionCode library and links with the test runner
-SRC_DIRS += 
+SRC_DIRS += ./tests radio/sx1276
 
 # --- TEST_SRC_FILES ---
 # TEST_SRC_FILES specifies individual test files to build.  Test
@@ -51,10 +51,10 @@ CPPUTEST_USE_EXTENSIONS = Y
 
 INCLUDE_DIRS += $(CPPUTEST_HOME)/include
 INCLUDE_DIRS += $(CPPUTEST_HOME)/include/Platforms/Gcc
-INCLUDE_DIRS += example-include
-INCLUDE_DIRS += example-fff
+INCLUDE_DIRS += ./
+INCLUDE_DIRS += ./radio
 INCLUDE_DIRS += tests/
-INCLUDE_DIRS += tests/
+INCLUDE_DIRS += ./radio/sx1276
 
 
 # --- CPPUTEST_OBJS_DIR ---

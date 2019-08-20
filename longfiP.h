@@ -1,6 +1,4 @@
-#include "board.h"
 #include "radio/radio.h"
-#include "radio/sx1276/sx1276.h"
 #include "longfi.h"
 
 #ifdef __cplusplus
@@ -12,7 +10,7 @@ extern "C" {
 #define FREQ_SPACING                                   200000
 #define LONGFI_NUM_UPLINK_CHANNELS                          8
 
-const uint32_t frequency_table[LONGFI_NUM_UPLINK_CHANNELS] = {
+const uint32_t uplink_channel_map[LONGFI_NUM_UPLINK_CHANNELS] = {
   RADIO_1 - FREQ_SPACING*2,
   RADIO_1 - FREQ_SPACING,
   RADIO_1,
@@ -55,31 +53,6 @@ const uint32_t fragments_per_channel[NUM_SF] = {
 #define LORA_FIX_LENGTH_PAYLOAD_ON                  (false)
 #define LORA_IQ_INVERSION_ON                        (false)
 
-
-typedef enum {
-  InternalEvent_None,
-  InternalEvent_TxDone,
-  InternalEvent_RxDone,
-  InternalEvent_TxTimeout,
-  InternalEvent_RxTimeout,
-  InternalEvent_RxError,
-} InternalEvent_t;
-
-#define NUM_IRQ_HANDLES   6
-
-typedef struct {
-  struct RfConfig config;
-  uint8_t spreading_factor;
-  void (*dio_irq_handles[NUM_IRQ_HANDLES])(void);
-  RadioEvents_t radio_events;
-  InternalEvent_t cur_event;
-  uint8_t * buffer;
-  size_t buffer_len;
-  uint32_t rx_len;
-  uint32_t tx_cnt;
-  uint32_t tx_len;
-} LongFi_t;
-
 #pragma pack(push, 1)
 // if first byte is 0, is single fragment packet_header
 typedef struct {
@@ -108,7 +81,7 @@ typedef struct {
 #pragma pack(pop)
 
 #define RX_TIMEOUT_VALUE                            1000
-#define BUFFER_SIZE                                 64 // Define the payload size here
+#define BUFFER_SIZE                                 128 // Define the payload size here
 
 /*
  *  Functions implemented here that SX1276 will call
@@ -127,7 +100,7 @@ void OnRxError( void );
 /*
  * Private helper for handling internal events
  */
-ClientEvent _handle_internal_event(InternalEvent_t event);
+ClientEvent _handle_internal_event(LongFi_t * handle);
 
 /*
  * Private helper for counting bytes

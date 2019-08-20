@@ -2,20 +2,25 @@
 
 #include "../longfi.h"
 #include "../longfiP.h"
+#include "radio-board.h"
 
-struct RfConfig rf_config = {
-    .always_on = false,
-    .network_poll = 1000,
+RfConfig_t longfi_rf_config = {
     .oui = 0xFEED3EAB,
     .device_id = 0xABCD,
 };
+
+
+static Radio_t radio = MockRadioNew();
+static LongFi_t longfi_handle;
 
 
 TEST_GROUP(LongFiGroup)
 {
     void setup()
    {
-      longfi_init(rf_config);
+    longfi_handle.radio = &radio;
+    longfi_handle.config = longfi_rf_config;
+    longfi_init(&longfi_handle);
    }
 
    void teardown()
@@ -50,7 +55,7 @@ uint8_t * send_buffer = 0;
 TEST(LongFiGroup, SingleFragmentPacket)
 {
     uint8_t test_data[] = {0xDE, 0xAD, 0xBE, 0xEF};
-    longfi_send(LONGFI_QOS_0, test_data, sizeof(test_data));
+    longfi_send(&longfi_handle, LONGFI_QOS_0, test_data, sizeof(test_data));
     
     // assert that the packet sent is equal to test_data plus packet_header
     LONGS_EQUAL(
@@ -83,9 +88,9 @@ TEST(LongFiGroup, MultipleFragmentPacket)
         0x07, 0x08, 0x09, 0x0a, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 
         0x19, 0x20};
 
-    longfi_send(LONGFI_QOS_0, test_data, sizeof(test_data));
+    longfi_send(&longfi_handle, LONGFI_QOS_0, test_data, sizeof(test_data));
     
-    // first packet is 32 bytes
+    // first packet is 24 bytes
     LONGS_EQUAL(
         24,
         send_length
@@ -110,12 +115,10 @@ TEST(LongFiGroup, MultipleFragmentPacket)
     };
 
     for(uint i=0; i<send_length; i++){
-        //if (i!= 6) {
-            BYTES_EQUAL(control_data1[i], send_buffer[i]);
-        //}
+        BYTES_EQUAL(control_data1[i], send_buffer[i]);
     }
     // push an event into the driver
-    longfi_handle_event(DIO0);
+    longfi_handle_event(&longfi_handle, DIO0);
 
     uint8_t control_data2[] = {
         // packet ID 
@@ -139,96 +142,123 @@ TEST(LongFiGroup, MultipleFragmentPacket)
     }
 }
 
-#include "../board.h"
-#include "../radio/radio.h"
-#include "../radio/sx1276/sx1276.h"
-#include <cstdio>
+#include "radio.h"
+#include "mock-radio.h"
+
+Mock_t Mock;
 
 extern "C" {
 
-    static RadioEvents_t *RadioEvents;
+static RadioEvents_t *radio_events;
 
-    void TestOnDio0Irq(void){
-        RadioEvents->TxDone();
+void TestOnDio0Irq(void* context){
+    radio_events->TxDone();
+}
+void TestOnDio1Irq(void* context){
+    FAIL("dio1 should not fire!");
+
+}
+void TestOnDio2Irq(void* context){
+    FAIL("dio2 should not fire!");
+
+}
+void TestOnDio3Irq(void* context){
+    FAIL("dio3 should not fire!");
+
+}
+void TestOnDio4Irq(void* context){
+    FAIL("dio4 should not fire!");
+}
+
+void TestOnDio5Irq(void* context){
+    FAIL("dio5 should not fire!");
+}
+
+DioIrqHandler *DioIrqMock[] = { TestOnDio0Irq, TestOnDio1Irq,
+                            TestOnDio2Irq, TestOnDio3Irq,
+                            TestOnDio4Irq, TestOnDio5Irq };
+
+
+
+void RadioInit( RadioEvents_t *events ){
+    radio_events = events;
+    IoIrqInit(DioIrqMock);
+}
+
+RadioState_t RadioGetStatus( void ){
+    return RF_IDLE;
+}
+
+void RadioSetModem( RadioModems_t modem ){}
+
+void RadioSetChannel( uint32_t freq ){}
+
+bool RadioIsChannelFree( RadioModems_t modem, uint32_t freq, int16_t rssiThresh, uint32_t maxCarrierSenseTime ){
+    return true;
+}
+
+uint32_t RadioRandom( void ){
+    return 0xE0;
+}
+
+void RadioSetRxConfig( RadioModems_t modem, uint32_t bandwidth,
+                          uint32_t datarate, uint8_t coderate,
+                          uint32_t bandwidthAfc, uint16_t preambleLen,
+                          uint16_t symbTimeout, bool fixLen,
+                          uint8_t payloadLen,
+                          bool crcOn, bool FreqHopOn, uint8_t HopPeriod,
+                          bool iqInverted, bool rxContinuous ){}
+
+void RadioSetTxConfig( RadioModems_t modem, int8_t power, uint32_t fdev,
+                          uint32_t bandwidth, uint32_t datarate,
+                          uint8_t coderate, uint16_t preambleLen,
+                          bool fixLen, bool crcOn, bool FreqHopOn,
+                          uint8_t HopPeriod, bool iqInverted, uint32_t timeout ){}
+
+bool RadioCheckRfFrequency( uint32_t frequency ){ return true; }
+
+uint32_t RadioTimeOnAir( RadioModems_t modem, uint8_t pktLen ) { return 10; } 
+void RadioSend( uint8_t *buffer, uint8_t size ){
+    send_length = size;
+    send_buffer = buffer;
+
+    // debug prints
+    printf("\r\n");
+    for (int i = 0; i < size; i++){
+        printf("%x ", buffer[i]);
     }
-    void TestOnDio1Irq(void){
+    printf("\r\n");
+}
 
-    }
-    void TestOnDio2Irq(void){
+void RadioSleep( void ){}
 
-    }
-    void TestOnDio3Irq(void){
+void RadioStandby( void ){}
 
-    }
-    void TestOnDio4Irq(void){
+void RadioRx( uint32_t timeout ){}
 
-    }
+void RadioStartCad( void ){}
 
-    void TestOnDio5Irq( void ){
-        FAIL("dio5 should not fire!");
-    }
+void RadioSetTxContinuousWave( uint32_t freq, int8_t power, uint16_t time ){}
 
+int16_t RadioRssi( RadioModems_t modem ) { return -120; }
 
-    DioIrqHandler *DioIrq[] = { TestOnDio0Irq, TestOnDio1Irq,
-                                TestOnDio2Irq, TestOnDio3Irq,
-                                TestOnDio4Irq, TestOnDio5Irq };
+void RadioWrite( uint16_t addr, uint8_t data ){}
 
-    void SX1276Write( uint8_t addr, uint8_t data ){
-    }
+uint8_t RadioRead( uint16_t addr ){ return 0x5e; }
 
-    uint8_t SX1276Read( uint8_t addr ){
-        return 0;
-    }
+void RadioWriteBuffer( uint16_t addr, uint8_t *buffer, uint8_t size ){}
 
-    uint32_t SX1276Random( void ){
-        return 0xE0;
-    }
+void RadioReadBuffer( uint16_t addr, uint8_t *buffer, uint8_t size ){}
 
-    void SX1276SetChannel( uint32_t freq ){
+void RadioSetMaxPayloadLength( RadioModems_t modem, uint8_t max ){}
 
-    }
+void RadioSetPublicNetwork( bool enable ){}
 
-    void SX1276Init( RadioEvents_t *events ){
-        RadioEvents = events;
-        SX1276IoIrqInit(DioIrq);
+uint32_t RadioGetWakeupTime( void ) { return 5; }
 
-    }
+void RadioIrqProcess( void ) {}
 
-    void SX1276SetTxConfig( RadioModems_t modem, int8_t power, uint32_t fdev, 
-                        uint32_t bandwidth, uint32_t datarate,
-                        uint8_t coderate, uint16_t preambleLen,
-                        bool fixLen, bool crcOn, bool FreqHopOn,
-                        uint8_t HopPeriod, bool iqInverted, uint32_t timeout ){
+void RadioRxBoosted( uint32_t timeout ) {}
 
-    }
-
-    void SX1276SetRxConfig( RadioModems_t modem, uint32_t bandwidth,
-                         uint32_t datarate, uint8_t coderate,
-                         uint32_t bandwidthAfc, uint16_t preambleLen,
-                         uint16_t symbTimeout, bool fixLen,
-                         uint8_t payloadLen,
-                         bool crcOn, bool FreqHopOn, uint8_t HopPeriod,
-                         bool iqInverted, bool rxContinuous ){
-
-    }
-
-    void SX1276SetRx( uint32_t timeout ){
-
-    }
-
-    void SX1276Send( uint8_t *buffer, uint8_t size ){
-        send_length = size;
-        send_buffer = buffer;
-
-        // debug prints
-        printf("\r\n");
-        for (int i = 0; i < size; i++){
-            printf("%x ", buffer[i]);
-        }
-        printf("\r\n");
-    }
-
-    bool SX1276IsChannelFree( RadioModems_t modem, uint32_t freq, int16_t rssiThresh ){
-        return true;
-    }
+void RadioSetRxDutyCycle( uint32_t rxTime, uint32_t sleepTime ){}
 }

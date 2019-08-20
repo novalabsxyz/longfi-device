@@ -1,17 +1,25 @@
-/*
- / _____)             _              | |
-( (____  _____ ____ _| |_ _____  ____| |__
- \____ \| ___ |    (_   _) ___ |/ ___)  _ \
- _____) ) ____| | | || |_| ____( (___| | | |
-(______/|_____)_|_|_| \__)_____)\____)_| |_|
-    (C)2013 Semtech
-
-Description: SX1272 FSK modem registers and bits definitions
-
-License: Revised BSD License, see LICENSE.TXT file include in the project
-
-Maintainer: Miguel Luis and Gregory Cristian
-*/
+/*!
+ * \file      sx1272Regs-Fsk.h
+ *
+ * \brief     SX1272 FSK modem registers and bits definitions
+ *
+ * \copyright Revised BSD License, see section \ref LICENSE.
+ *
+ * \code
+ *                ______                              _
+ *               / _____)             _              | |
+ *              ( (____  _____ ____ _| |_ _____  ____| |__
+ *               \____ \| ___ |    (_   _) ___ |/ ___)  _ \
+ *               _____) ) ____| | | || |_| ____( (___| | | |
+ *              (______/|_____)_|_|_| \__)_____)\____)_| |_|
+ *              (C)2013-2017 Semtech
+ *
+ * \endcode
+ *
+ * \author    Miguel Luis ( Semtech )
+ *
+ * \author    Gregory Cristian ( Semtech )
+ */
 #ifndef __SX1272_REGS_FSK_H__
 #define __SX1272_REGS_FSK_H__
 
@@ -375,7 +383,7 @@ Maintainer: Miguel Luis and Gregory Cristian
 /*!
  * RegPaRamp
  */
-#define RF_PARAMP_LOWPNTXPLL_MASK                   0xE0
+#define RF_PARAMP_LOWPNTXPLL_MASK                   0xEF
 #define RF_PARAMP_LOWPNTXPLL_OFF                    0x10  // Default
 #define RF_PARAMP_LOWPNTXPLL_ON                     0x00
 
