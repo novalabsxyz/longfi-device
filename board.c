@@ -18,7 +18,7 @@ void memcpy1( uint8_t *dst, const uint8_t *src, uint16_t size ){
 	memcpy(dst, src, size);
 }
 
-void assert_param(bool expr){}
+void assert_param(__attribute__((unused)) bool expr){}
 
 uint16_t SpiInOut( Spi_t *obj, uint16_t outData )
 {
