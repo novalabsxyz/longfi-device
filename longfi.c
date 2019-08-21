@@ -153,7 +153,7 @@ void longfi_send(LongFi_t * handle, __attribute__((unused))  QualityOfService qo
       .packet_id = 0, //packet_id means no fragments
       .mac = 0xEFFE,
     };
-    memcpy(Buffer, &pheader, sizeof(packet_header_t));
+    memmove(Buffer, &pheader, sizeof(packet_header_t));
     num_bytes_copy = MIN(len, payload_bytes_in_single_fragment_packet());
     internal.tx_len = sizeof(packet_header_t);
   } else {
@@ -169,13 +169,13 @@ void longfi_send(LongFi_t * handle, __attribute__((unused))  QualityOfService qo
       .num_fragments = num_fragments,
       .mac = 0xEFFE,
     };
-    memcpy(Buffer, &pheader, sizeof(packet_header_multiple_fragments_t));
+    memmove(Buffer, &pheader, sizeof(packet_header_multiple_fragments_t));
     num_bytes_copy = MIN(len, payload_bytes_in_first_fragment_of_many());
     internal.tx_len = sizeof(packet_header_multiple_fragments_t);
   }
 
   // copy the necessary amount of payload  
-  memcpy(&Buffer[internal.tx_len], data, num_bytes_copy);
+  memmove(&Buffer[internal.tx_len], data, num_bytes_copy);
   payload_consumed += num_bytes_copy;
   internal.tx_len += num_bytes_copy;
   // initialize tx_cnt with current len, as first transmit will be this
@@ -186,10 +186,10 @@ void longfi_send(LongFi_t * handle, __attribute__((unused))  QualityOfService qo
       .fragment_num = cnt_fragments,
       .mac = 0xEFFE,
     };
-    memcpy(&Buffer[internal.tx_len], &fheader, sizeof(fragment_header_t));
+    memmove(&Buffer[internal.tx_len], &fheader, sizeof(fragment_header_t));
     internal.tx_len += sizeof(fragment_header_t);
     num_bytes_copy = MIN(len - payload_consumed, payload_bytes_in_subsequent_fragments());
-    memcpy(&Buffer[internal.tx_len], &data[payload_consumed], num_bytes_copy);
+    memmove(&Buffer[internal.tx_len], &data[payload_consumed], num_bytes_copy);
     internal.tx_len += num_bytes_copy;
     payload_consumed+= num_bytes_copy;
   };
@@ -304,7 +304,7 @@ void OnRxDone( uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr )
   internal.cur_event = InternalEvent_RxDone;
   uint8_t rx_len = (uint8_t) MIN( (size_t) size, internal.buffer_len);
   internal.rx_len = rx_len;
-  memcpy(internal.buffer, payload, rx_len);
+  memmove(internal.buffer, payload, rx_len);
   RssiValue = rssi;
   SnrValue = snr;
 }
