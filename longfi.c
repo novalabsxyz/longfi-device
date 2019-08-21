@@ -69,7 +69,7 @@ void longfi_set_buf(LongFi_t * handle, uint8_t * buffer, size_t buffer_len){
   internal.buffer_len = (buffer!=NULL) ? buffer_len : 0;
 }
 
-void longfi_rx(__attribute__((unused))  LongFi_t * handle){
+void longfi_rx(LongFi_t * handle){
   handle->radio->Rx(0);
 }
 
@@ -95,7 +95,7 @@ size_t payload_bytes_in_subsequent_fragments(){
   return payload_per_fragment[internal.spreading_factor] - sizeof(fragment_header_t);
 }
 
-void longfi_rf_test(__attribute__((unused)) LongFi_t * handle){
+void longfi_rf_test(LongFi_t * handle){
   uint8_t dummy_data = 0xAB;
   handle->radio->SetTxConfig( MODEM_LORA, TX_OUTPUT_POWER, 0, LORA_BANDWIDTH,
                                  LORA_SPREADING_FACTOR, LORA_CODINGRATE,
