@@ -23,9 +23,14 @@
 #ifndef __SX126x_H__
 #define __SX126x_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdint.h>
 #include <stdbool.h>
-#include "../board.h"
+#include "sx126x-board.h"
+#include "../../board.h"
 #include "../radio.h"
 
 #define SX1261                                      1
@@ -494,7 +499,7 @@ typedef enum RadioCommands_e
     SX126x_RADIO_SET_RFSWITCHMODE                  = 0x9D,
     SX126x_RADIO_SET_STOPRXTIMERONPREAMBLE         = 0x9F,
     SX126x_RADIO_SET_LORASYMBTIMEOUT               = 0xA0,
-}RadioCommands_t;
+} RadioCommands_t;
 
 /*!
  * \brief The type describing the modulation parameters for every packet types
@@ -1111,5 +1116,30 @@ void SX126xClearDeviceErrors( void );
  */
 void SX126xClearIrqStatus( uint16_t irq );
 
+/*!
+ * \brief Send a command that write data to the radio
+ *
+ * \param [in]  opcode        Opcode of the command
+ * \param [in]  buffer        Buffer to be send to the radio
+ * \param [in]  size          Size of the buffer to send
+ */
+void SX126xWriteCommand( RadioCommands_t opcode, uint8_t *buffer, uint16_t size );
+
+/*!
+ * \brief Send a command that read data from the radio
+ *
+ * \param [in]  opcode        Opcode of the command
+ * \param [out] buffer        Buffer holding data from the radio
+ * \param [in]  size          Size of the buffer
+ *
+ * \retval status Return command radio status
+ */
+uint8_t SX126xReadCommand( RadioCommands_t opcode, uint8_t *buffer, uint16_t size );
+
 const Radio_t SX126xRadioNew();
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif // __SX126x_H__

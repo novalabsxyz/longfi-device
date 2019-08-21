@@ -361,12 +361,12 @@ typedef struct
 {
     uint32_t bandwidth;
     uint8_t  RegValue;
-}FskBandwidth_t;
+}Sx126x_FskBandwidth_t;
 
 /*!
  * Precomputed FSK bandwidth registers values
  */
-const FskBandwidth_t FskBandwidths[] =
+const Sx126x_FskBandwidth_t Sx126x_FskBandwidths[] =
 {
     { 4800  , 0x1F },
     { 5800  , 0x17 },
@@ -392,7 +392,7 @@ const FskBandwidth_t FskBandwidths[] =
     { 500000, 0x00 }, // Invalid Bandwidth
 };
 
-const RadioLoRaBandwidths_t Bandwidths[] = { LORA_BW_125, LORA_BW_250, LORA_BW_500 };
+const RadioLoRaBandwidths_t Sx126x_Bandwidths[] = { LORA_BW_125, LORA_BW_250, LORA_BW_500 };
 
 //                                          SF12    SF11    SF10    SF9    SF8    SF7
 static double SX126xRadioLoRaSymbTime[3][6] = {{ 32.768, 16.384, 8.192, 4.096, 2.048, 1.024 },  // 125 KHz
@@ -482,11 +482,11 @@ static uint8_t SX126xRadioGetFskBandwidthRegValue( uint32_t bandwidth )
         return( 0x1F );
     }
 
-    for( i = 0; i < ( sizeof( FskBandwidths ) / sizeof( FskBandwidth_t ) ) - 1; i++ )
+    for( i = 0; i < ( sizeof( Sx126x_FskBandwidths ) / sizeof( Sx126x_FskBandwidth_t ) ) - 1; i++ )
     {
-        if( ( bandwidth >= FskBandwidths[i].bandwidth ) && ( bandwidth < FskBandwidths[i + 1].bandwidth ) )
+        if( ( bandwidth >= Sx126x_FskBandwidths[i].bandwidth ) && ( bandwidth < Sx126x_FskBandwidths[i + 1].bandwidth ) )
         {
-            return FskBandwidths[i+1].RegValue;
+            return Sx126x_FskBandwidths[i+1].RegValue;
         }
     }
     // ERROR: Value not found
@@ -682,7 +682,7 @@ void SX126xRadioSetRxConfig( RadioModems_t modem, uint32_t bandwidth,
             SX126xSetLoRaSymbNumTimeout( symbTimeout );
             SX126x.ModulationParams.PacketType = PACKET_TYPE_LORA;
             SX126x.ModulationParams.Params.LoRa.SpreadingFactor = ( RadioLoRaSpreadingFactors_t )datarate;
-            SX126x.ModulationParams.Params.LoRa.Bandwidth = Bandwidths[bandwidth];
+            SX126x.ModulationParams.Params.LoRa.Bandwidth = Sx126x_Bandwidths[bandwidth];
             SX126x.ModulationParams.Params.LoRa.CodingRate = ( RadioLoRaCodingRates_t )coderate;
 
             if( ( ( bandwidth == 0 ) && ( ( datarate == 11 ) || ( datarate == 12 ) ) ) ||
@@ -791,7 +791,7 @@ void SX126xRadioSetTxConfig( RadioModems_t modem, int8_t power, uint32_t fdev,
         case MODEM_LORA:
             SX126x.ModulationParams.PacketType = PACKET_TYPE_LORA;
             SX126x.ModulationParams.Params.LoRa.SpreadingFactor = ( RadioLoRaSpreadingFactors_t ) datarate;
-            SX126x.ModulationParams.Params.LoRa.Bandwidth =  Bandwidths[bandwidth];
+            SX126x.ModulationParams.Params.LoRa.Bandwidth =  Sx126x_Bandwidths[bandwidth];
             SX126x.ModulationParams.Params.LoRa.CodingRate= ( RadioLoRaCodingRates_t )coderate;
 
             if( ( ( bandwidth == 0 ) && ( ( datarate == 11 ) || ( datarate == 12 ) ) ) ||
@@ -924,7 +924,7 @@ void SX126xRadioSend( uint8_t *buffer, uint8_t size )
     TimerStart( &TxTimeoutTimer );
 }
 
-void RadioSleep( void )
+void SX126xRadioSleep( void )
 {
     SleepParams_t params = { 0 };
 
@@ -939,7 +939,7 @@ void SX126xRadioStandby( void )
     SX126xSetStandby( STDBY_RC );
 }
 
-void RadioRx( uint32_t timeout )
+void SX126xRadioRx( uint32_t timeout )
 {
     SX126xSetDioIrqParams( IRQ_RADIO_ALL, //IRQ_RX_DONE | IRQ_RX_TX_TIMEOUT,
                            IRQ_RADIO_ALL, //IRQ_RX_DONE | IRQ_RX_TX_TIMEOUT,

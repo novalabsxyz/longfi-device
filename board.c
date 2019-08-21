@@ -33,6 +33,11 @@ void GpioWrite( Gpio_t *obj, uint32_t value ){
 	(*bindings->gpio_write)(obj, value);
 }
 
+uint32_t GpioRead( Gpio_t *obj ){
+	return (*bindings->gpio_read)(obj);
+}
+
+
 void GpioSetInterrupt( Gpio_t *obj, IrqModes irqMode, IrqPriorities irqPriority, GpioIrqHandler *irqHandler){
 	(*bindings->gpio_set_interrupt)(obj, irqMode, irqPriority, irqHandler);
 }
@@ -59,19 +64,4 @@ TimerTime_t TimerGetFutureTime( TimerTime_t eventInFuture ){
 	return 0;
 }
 void TimerLowPowerHandler( void ){
-}
-
-void board_set_bindings(
-    BoardBindings_t * bindings,
-    uint16_t (*spi_in_out)(Spi_t *obj, uint16_t outData),
-    void (*gpio_init)(Gpio_t *obj, PinNames pin, PinModes mode, PinConfigs config, PinTypes type, uint32_t value),
-    void (*gpio_write)(Gpio_t *obj, uint32_t value),
-    void (*gpio_set_interrupt)( Gpio_t *obj, IrqModes irqMode, IrqPriorities irqPriority, GpioIrqHandler *irqHandler),
-    void (*delay_ms)(uint32_t)
-    ){
-	bindings->spi_in_out = spi_in_out;
-	bindings->gpio_init = gpio_init;
-	bindings->gpio_write = gpio_write;
-	bindings->gpio_set_interrupt = gpio_set_interrupt;
-	bindings->delay_ms = delay_ms;
 }

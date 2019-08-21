@@ -153,18 +153,10 @@ typedef struct {
 	uint16_t (*spi_in_out)(Spi_t *obj, uint16_t outData);
 	void (*gpio_init)(Gpio_t *obj, PinNames pin, PinModes mode, PinConfigs config, PinTypes type, uint32_t value);
 	void (*gpio_write)(Gpio_t *obj, uint32_t value);
+    uint32_t (*gpio_read)(Gpio_t *obj);
 	void (*gpio_set_interrupt)( Gpio_t *obj, IrqModes irqMode, IrqPriorities irqPriority, GpioIrqHandler *irqHandler);
 	void (*delay_ms)(uint32_t);
 } BoardBindings_t;
-
-void board_set_bindings(
-    BoardBindings_t *,
-    uint16_t (*spi_in_out)(Spi_t *obj, uint16_t outData),
-    void (*gpio_init)(Gpio_t *obj, PinNames pin, PinModes mode, PinConfigs config, PinTypes type, uint32_t value),
-    void (*gpio_write)(Gpio_t *obj, uint32_t value),
-    void (*gpio_set_interrupt)( Gpio_t *obj, IrqModes irqMode, IrqPriorities irqPriority, GpioIrqHandler *irqHandler),
-    void (*delay_ms)(uint32_t)
-    );
 
 extern BoardBindings_t * bindings;
 

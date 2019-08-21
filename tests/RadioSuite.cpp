@@ -22,6 +22,10 @@ void gpio_init(Gpio_t *obj, PinNames pin, PinModes mode, PinConfigs config, PinT
 void gpio_write(Gpio_t *obj, uint32_t value){
 
 }
+
+uint32_t gpio_read(Gpio_t *obj){
+  return 0;
+}
 void gpio_set_interrupt( Gpio_t *obj, IrqModes irqMode, IrqPriorities irqPriority, GpioIrqHandler *irqHandler){
 
 }
@@ -38,6 +42,7 @@ static BoardBindings_t my_bindings {
   .spi_in_out = spi_in_out,
   .gpio_init = gpio_init,
   .gpio_write = gpio_write,
+  .gpio_read = gpio_read,
   .gpio_set_interrupt = gpio_set_interrupt,
   .delay_ms = delay_ms,
 };
