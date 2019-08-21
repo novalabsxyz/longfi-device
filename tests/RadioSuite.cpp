@@ -34,7 +34,7 @@ void delay_ms(uint32_t){
 }
 
 static Radio_t sx1276;
-//static Radio_t sx1272 = SX1272RadioNew(); 
+static Radio_t sx1272;
 static Radio_t sx126x; 
 
 static LongFi_t longfi_handle;
@@ -66,12 +66,11 @@ TEST(RadioGroup, SX1276)
   sx1276 = SX1276RadioNew();
   longfi_handle.bindings = &my_bindings;
 }
-// TEST(RadioGroup, SX1272)
-// {
-//     longfi_handle.radio = &sx1272;
-//     longfi_handle.config = radio_rf_config;
-//     longfi_handle.bindings = &my_bindings;
-// }
+TEST(RadioGroup, SX1272)
+{
+  sx1272 = SX1272RadioNew();
+  longfi_handle.bindings = &my_bindings;
+}
 TEST(RadioGroup, SX126x)
 {
   sx126x = SX126xRadioNew();
