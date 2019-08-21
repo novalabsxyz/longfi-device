@@ -23,9 +23,13 @@
 #ifndef __SX1272_BOARD_H__
 #define __SX1272_BOARD_H__
 
-#include <stdint.h>
-#include <stdbool.h>
-#include "sx1272.h"
+#include "../../board.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#define SX1272_BOARD_TCXO_WAKEUP_TIME 0
 
 /*!
  * \brief Radio hardware registers initialization definition
@@ -34,23 +38,23 @@
  */
 #define SX1272_RADIO_INIT_REGISTERS_VALUE                \
 {                                                 \
-    { MODEM_FSK , REG_LNA                , 0x23 },\
-    { MODEM_FSK , REG_RXCONFIG           , 0x1E },\
-    { MODEM_FSK , REG_RSSICONFIG         , 0xD2 },\
-    { MODEM_FSK , REG_AFCFEI             , 0x01 },\
-    { MODEM_FSK , REG_PREAMBLEDETECT     , 0xAA },\
-    { MODEM_FSK , REG_OSC                , 0x07 },\
-    { MODEM_FSK , REG_SYNCCONFIG         , 0x12 },\
-    { MODEM_FSK , REG_SYNCVALUE1         , 0xC1 },\
-    { MODEM_FSK , REG_SYNCVALUE2         , 0x94 },\
-    { MODEM_FSK , REG_SYNCVALUE3         , 0xC1 },\
-    { MODEM_FSK , REG_PACKETCONFIG1      , 0xD8 },\
-    { MODEM_FSK , REG_FIFOTHRESH         , 0x8F },\
-    { MODEM_FSK , REG_IMAGECAL           , 0x02 },\
-    { MODEM_FSK , REG_DIOMAPPING1        , 0x00 },\
-    { MODEM_FSK , REG_DIOMAPPING2        , 0x30 },\
-    { MODEM_LORA, REG_LR_DETECTOPTIMIZE  , 0x43 },\
-    { MODEM_LORA, REG_LR_PAYLOADMAXLENGTH, 0x40 },\
+    { MODEM_FSK , SX1272_REG_LNA                , 0x23 },\
+    { MODEM_FSK , SX1272_REG_RXCONFIG           , 0x1E },\
+    { MODEM_FSK , SX1272_REG_RSSICONFIG         , 0xD2 },\
+    { MODEM_FSK , SX1272_REG_AFCFEI             , 0x01 },\
+    { MODEM_FSK , SX1272_REG_PREAMBLEDETECT     , 0xAA },\
+    { MODEM_FSK , SX1272_REG_OSC                , 0x07 },\
+    { MODEM_FSK , SX1272_REG_SYNCCONFIG         , 0x12 },\
+    { MODEM_FSK , SX1272_REG_SYNCVALUE1         , 0xC1 },\
+    { MODEM_FSK , SX1272_REG_SYNCVALUE2         , 0x94 },\
+    { MODEM_FSK , SX1272_REG_SYNCVALUE3         , 0xC1 },\
+    { MODEM_FSK , SX1272_REG_PACKETCONFIG1      , 0xD8 },\
+    { MODEM_FSK , SX1272_REG_FIFOTHRESH         , 0x8F },\
+    { MODEM_FSK , SX1272_REG_IMAGECAL           , 0x02 },\
+    { MODEM_FSK , SX1272_REG_DIOMAPPING1        , 0x00 },\
+    { MODEM_FSK , SX1272_REG_DIOMAPPING2        , 0x30 },\
+    { MODEM_LORA, SX1272_REG_LR_DETECTOPTIMIZE  , 0x43 },\
+    { MODEM_LORA, SX1272_REG_LR_PAYLOADMAXLENGTH, 0x40 },\
 }                                                 \
 
 /*!
@@ -157,5 +161,9 @@ void SX1272DbgPinTxWrite( uint8_t state );
  * \param [IN] state Debug pin state
  */
 void SX1272DbgPinRxWrite( uint8_t state );
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // __SX1272_BOARD_H__

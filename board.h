@@ -12,8 +12,10 @@ extern "C" {
 
 #define NUM_IRQ_HANDLES 6
 
-//typedef void* Gpio_t;
-
+/*!
+ * Hardware IO IRQ callback function definition
+ */
+typedef void ( DioIrqHandler )( void*);
 
 typedef struct {
     void* Instance;
@@ -34,9 +36,12 @@ typedef struct {
 
 typedef enum
 {
-	RADIO_ANT_SWITCH_LF,
-	RADIO_ANT_SWITCH_HF,
-    RADIO_ANT_SWITCH_POWER,
+	RADIO_ANT_SWITCH_LF,        //SX1276 board
+	RADIO_ANT_SWITCH_HF,        //SX1276 board /* TODO: Are all these different names
+    RADIO_ANT_SWITCH_POWER,     //SX126x board /*       but for the same function??
+    RADIO_SWITCH_CTRL1,         //SX1272 board
+    RADIO_SWITCH_CTRL2,         //SX1272 board
+    RADIO_PWRAMP_CTRL,          //SX1272 board
     RADIO_NSS,
     RADIO_BUSY,
     RADIO_DEVICE_SEL,

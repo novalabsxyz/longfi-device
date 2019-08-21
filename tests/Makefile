@@ -52,7 +52,9 @@ INCLUDE_DIRS += $(CPPUTEST_HOME)/include
 INCLUDE_DIRS += $(CPPUTEST_HOME)/include/Platforms/Gcc
 INCLUDE_DIRS += ../
 INCLUDE_DIRS += ../radio
-INCLUDE_DIRS += ../radio/sx1276 ../radio/sx126x
+INCLUDE_DIRS += ../radio/sx1276
+INCLUDE_DIRS += ../radio/sx1272
+INCLUDE_DIRS += ../radio/sx126x
 
 
 # --- CPPUTEST_OBJS_DIR ---

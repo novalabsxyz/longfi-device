@@ -23,6 +23,10 @@
 #ifndef __SX1272_H__
 #define __SX1272_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdint.h>
 #include <stdbool.h>
 #include "../radio.h"
@@ -121,10 +125,10 @@ typedef struct
     RadioState_t             State;
     RadioModems_t            Modem;
     uint32_t                 Channel;
-    RadioFskSettings_t       Fsk;
-    RadioFskPacketHandler_t  FskPacketHandler;
-    RadioLoRaSettings_t      LoRa;
-    RadioLoRaPacketHandler_t LoRaPacketHandler;
+    SX1272_RadioFskSettings_t       Fsk;
+    SX1272_RadioFskPacketHandler_t  FskPacketHandler;
+    SX1272_RadioLoRaSettings_t      LoRa;
+    SX1272_RadioLoRaPacketHandler_t LoRaPacketHandler;
 }SX1272_RadioSettings_t;
 
 /*!
@@ -140,13 +144,8 @@ typedef struct SX1272_s
     Gpio_t        DIO4;
     Gpio_t        DIO5;
     Spi_t         Spi;
-    RadioSettings_t Settings;
+    SX1272_RadioSettings_t Settings;
 }SX1272_t;
-
-/*!
- * Hardware IO IRQ callback function definition
- */
-typedef void ( DioIrqHandler )( void* context );
 
 /*!
  * SX1272 definitions
@@ -418,6 +417,10 @@ void SX1272SetPublicNetwork( bool enable );
  */
 uint32_t SX1272GetWakeupTime( void );
 
-const Radio_t SX1272RadioNew();
+Radio_t SX1272RadioNew();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // __SX1272_H__

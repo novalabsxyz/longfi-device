@@ -1853,7 +1853,7 @@ void SX1276OnDio5Irq( void* context )
     }
 }
 
-const Radio_t SX1276RadioNew(){
+Radio_t SX1276RadioNew(){
         Radio_t radio = {
         SX1276Init,
         SX1276GetStatus,

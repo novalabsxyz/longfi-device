@@ -32,12 +32,6 @@
 extern "C" {
 #endif
 
-
-/*!
- * Hardware IO IRQ callback function definition
- */
-typedef void ( DioIrqHandler )( void*);
-
 /*!
  * \brief Initializes the radio I/Os pins interface
  */

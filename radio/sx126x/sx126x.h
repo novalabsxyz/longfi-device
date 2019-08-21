@@ -1136,7 +1136,7 @@ void SX126xWriteCommand( RadioCommands_t opcode, uint8_t *buffer, uint16_t size 
  */
 uint8_t SX126xReadCommand( RadioCommands_t opcode, uint8_t *buffer, uint16_t size );
 
-const Radio_t SX126xRadioNew();
+Radio_t SX126xRadioNew();
 
 #ifdef __cplusplus
 }

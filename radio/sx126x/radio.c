@@ -315,7 +315,7 @@ void SX126xRadioSetRxDutyCycle( uint32_t rxTime, uint32_t sleepTime );
  * Radio driver structure initialization
  */
 
-const Radio_t SX126xRadioNew(){
+Radio_t SX126xRadioNew(){
     Radio_t radio = {
         SX126xRadioInit,
         SX126xRadioGetStatus,
@@ -464,8 +464,8 @@ SX126x_t SX126x;
 /*!
  * Tx and Rx timers
  */
-TimerEvent_t TxTimeoutTimer;
-TimerEvent_t RxTimeoutTimer;
+TimerEvent_t SX126xTxTimeoutTimer;
+TimerEvent_t SX126xRxTimeoutTimer;
 
 /*!
  * Returns the known FSK bandwidth registers value
@@ -506,8 +506,8 @@ void SX126xRadioInit( RadioEvents_t *events )
     SX126xSetDioIrqParams( IRQ_RADIO_ALL, IRQ_RADIO_ALL, IRQ_RADIO_NONE, IRQ_RADIO_NONE );
 
     // Initialize driver timeout timers
-    TimerInit( &TxTimeoutTimer, SX126xRadioOnTxTimeoutIrq );
-    TimerInit( &RxTimeoutTimer, SX126xRadioOnRxTimeoutIrq );
+    TimerInit( &SX126xTxTimeoutTimer, SX126xRadioOnTxTimeoutIrq );
+    TimerInit( &SX126xRxTimeoutTimer, SX126xRadioOnRxTimeoutIrq );
 
     IrqFired = false;
 }
@@ -920,8 +920,8 @@ void SX126xRadioSend( uint8_t *buffer, uint8_t size )
     SX126xSetPacketParams( &SX126x.PacketParams );
 
     SX126xSendPayload( buffer, size, 0 );
-    TimerSetValue( &TxTimeoutTimer, TxTimeout );
-    TimerStart( &TxTimeoutTimer );
+    TimerSetValue( &SX126xTxTimeoutTimer, TxTimeout );
+    TimerStart( &SX126xTxTimeoutTimer );
 }
 
 void SX126xRadioSleep( void )
@@ -948,8 +948,8 @@ void SX126xRadioRx( uint32_t timeout )
 
     if( timeout != 0 )
     {
-        TimerSetValue( &RxTimeoutTimer, timeout );
-        TimerStart( &RxTimeoutTimer );
+        TimerSetValue( &SX126xRxTimeoutTimer, timeout );
+        TimerStart( &SX126xRxTimeoutTimer );
     }
 
     if( RxContinuous == true )
@@ -971,8 +971,8 @@ void SX126xRadioRxBoosted( uint32_t timeout )
 
     if( timeout != 0 )
     {
-        TimerSetValue( &RxTimeoutTimer, timeout );
-        TimerStart( &RxTimeoutTimer );
+        TimerSetValue( &SX126xRxTimeoutTimer, timeout );
+        TimerStart( &SX126xRxTimeoutTimer );
     }
 
     if( RxContinuous == true )
@@ -1006,8 +1006,8 @@ void SX126xRadioSetTxContinuousWave( uint32_t freq, int8_t power, uint16_t time 
     SX126xSetRfTxPower( power );
     SX126xSetTxContinuousWave( );
 
-    TimerSetValue( &TxTimeoutTimer, time  * 1e3 );
-    TimerStart( &TxTimeoutTimer );
+    TimerSetValue( &SX126xTxTimeoutTimer, time  * 1e3 );
+    TimerStart( &SX126xTxTimeoutTimer );
 }
 
 int16_t SX126xRadioRssi( RadioModems_t modem )
@@ -1121,7 +1121,7 @@ void SX126xRadioIrqProcess( void )
 
         if( ( irqRegs & IRQ_TX_DONE ) == IRQ_TX_DONE )
         {
-            TimerStop( &TxTimeoutTimer );
+            TimerStop( &SX126xTxTimeoutTimer );
             //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
             SX126xSetOperatingMode( MODE_STDBY_RC );
             if( ( SX126xRadioEvents != NULL ) && ( SX126xRadioEvents->TxDone != NULL ) )
@@ -1134,7 +1134,7 @@ void SX126xRadioIrqProcess( void )
         {
             uint8_t size;
 
-            TimerStop( &RxTimeoutTimer );
+            TimerStop( &SX126xRxTimeoutTimer );
             if( RxContinuous == false )
             {
                 //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
@@ -1182,7 +1182,7 @@ void SX126xRadioIrqProcess( void )
         {
             if( SX126xGetOperatingMode( ) == MODE_TX )
             {
-                TimerStop( &TxTimeoutTimer );
+                TimerStop( &SX126xTxTimeoutTimer );
                 //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
                 SX126xSetOperatingMode( MODE_STDBY_RC );
                 if( ( SX126xRadioEvents != NULL ) && ( SX126xRadioEvents->TxTimeout != NULL ) )
@@ -1192,7 +1192,7 @@ void SX126xRadioIrqProcess( void )
             }
             else if( SX126xGetOperatingMode( ) == MODE_RX )
             {
-                TimerStop( &RxTimeoutTimer );
+                TimerStop( &SX126xRxTimeoutTimer );
                 //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC
                 SX126xSetOperatingMode( MODE_STDBY_RC );
                 if( ( SX126xRadioEvents != NULL ) && ( SX126xRadioEvents->RxTimeout != NULL ) )
@@ -1219,7 +1219,7 @@ void SX126xRadioIrqProcess( void )
 
         if( ( irqRegs & IRQ_HEADER_ERROR ) == IRQ_HEADER_ERROR )
         {
-            TimerStop( &RxTimeoutTimer );
+            TimerStop( &SX126xRxTimeoutTimer );
             if( RxContinuous == false )
             {
                 //!< Update operating mode state to a value lower than \ref MODE_STDBY_XOSC

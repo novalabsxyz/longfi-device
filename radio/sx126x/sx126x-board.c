@@ -26,7 +26,7 @@
 /*!
  * Radio hardware and global parameters
  */
-SX126x_t SX126x;
+extern SX126x_t SX126x;
 
 /*!
  * Antenna switch GPIO pins objects
