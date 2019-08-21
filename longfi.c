@@ -96,13 +96,13 @@ size_t payload_bytes_in_subsequent_fragments(){
 }
 
 void longfi_rf_test(__attribute__((unused)) LongFi_t * handle){
-  uint8_t things[1];
+  uint8_t dummy_data = 0xAB;
   handle->radio->SetTxConfig( MODEM_LORA, TX_OUTPUT_POWER, 0, LORA_BANDWIDTH,
                                  LORA_SPREADING_FACTOR, LORA_CODINGRATE,
                                  LORA_PREAMBLE_LENGTH, LORA_FIX_LENGTH_PAYLOAD_ON,
                                  true, 0, 0, LORA_IQ_INVERSION_ON, 3000 );
   handle->radio->SetChannel(910000000);
-  handle->radio->Send(things, (uint8_t) sizeof(things));
+  handle->radio->Send(&dummy_data, (uint8_t) sizeof(dummy_data));
 }
 
 uint32_t longfi_get_random(LongFi_t * handle){
