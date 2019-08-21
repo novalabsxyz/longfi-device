@@ -233,7 +233,7 @@ void SX1272Init( RadioEvents_t *events )
         SX1272Write( SX1272RadioRegsInit[i].Addr, SX1272RadioRegsInit[i].Value );
     }
 
-    SX1272SetModem( MODEM_FSK );
+    SX1272SetModem( MODEM_LORA );
 
     SX1272.Settings.State = RF_IDLE;
 }

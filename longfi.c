@@ -110,7 +110,7 @@ uint32_t longfi_get_random(LongFi_t * handle){
 }
 
 void _send_random(LongFi_t * handle, uint8_t * data, size_t len){
-  uint32_t frequency = 910000000; 
+  uint32_t frequency; 
   bool free_to_transmit = false;
   while (!free_to_transmit){
     uint32_t random = handle->radio->Random()>>16;
