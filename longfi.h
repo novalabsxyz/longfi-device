@@ -61,6 +61,7 @@ LongFi_t longfi_new_handle(BoardBindings_t* bindings, Radio_t* radio, RfConfig_t
 
 void longfi_enable_tcxo();
 void longfi_init(LongFi_t * handle);
+uint32_t longfi_get_random(LongFi_t * handle);
 
 typedef enum ClientEvent {
 	ClientEvent_None,

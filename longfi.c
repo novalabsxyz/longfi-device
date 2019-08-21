@@ -105,6 +105,10 @@ void longfi_rf_test(__attribute__((unused)) LongFi_t * handle){
   handle->radio->Send(things, (uint8_t) sizeof(things));
 }
 
+uint32_t longfi_get_random(LongFi_t * handle){
+ return handle->radio->Random();
+}
+
 void _send_random(LongFi_t * handle, uint8_t * data, size_t len){
   uint32_t frequency = 910000000; 
   bool free_to_transmit = false;
