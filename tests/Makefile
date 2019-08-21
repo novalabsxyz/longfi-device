@@ -123,3 +123,4 @@ CPPUTEST_CXXFLAGS += -Wno-c++98-compat
 # Look at $(CPPUTEST_HOME)/build/MakefileWorker.mk for more controls
 
 include $(CPPUTEST_HOME)/build/MakefileWorker.mk
+
