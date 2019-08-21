@@ -926,7 +926,7 @@ void SX126xRadioSend( uint8_t *buffer, uint8_t size )
 
 void SX126xRadioSleep( void )
 {
-    SleepParams_t params = { 0 };
+    SleepParams_t params = { .Value = 0 };
 
     params.Fields.WarmStart = 1;
     SX126xSetSleep( params );
