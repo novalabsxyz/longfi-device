@@ -27,7 +27,6 @@
 extern "C" {
 #endif
 
-
 #include <stdint.h>
 #include <stdbool.h>
 #include "../radio.h"
@@ -428,7 +427,7 @@ void SX1276SetPublicNetwork( bool enable );
  */
 uint32_t SX1276GetWakeupTime( void );
 
-const Radio_t SX1276RadioNew();
+Radio_t SX1276RadioNew();
 
 #ifdef __cplusplus
 }

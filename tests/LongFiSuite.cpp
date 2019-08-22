@@ -82,7 +82,7 @@ TEST(LongFiGroup, SingleFragmentPacket)
     }
 }
 
-TEST(LongFiGroup, MultipleFragmentPacket)
+TEST(LongFiGroup, TwoFragmentPacket)
 {
     uint8_t test_data[] = {0xDE, 0xAD, 0xBE, 0xEF, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06,
         0x07, 0x08, 0x09, 0x0a, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 
@@ -141,6 +141,7 @@ TEST(LongFiGroup, MultipleFragmentPacket)
         BYTES_EQUAL(control_data2[i], send_buffer[i]);
     }
 }
+
 
 #include "radio.h"
 #include "mock-radio.h"

@@ -69,7 +69,7 @@ void longfi_set_buf(LongFi_t * handle, uint8_t * buffer, size_t buffer_len){
   internal.buffer_len = (buffer!=NULL) ? buffer_len : 0;
 }
 
-void longfi_rx(__attribute__((unused))  LongFi_t * handle){
+void longfi_rx(LongFi_t * handle){
   handle->radio->Rx(0);
 }
 
@@ -95,18 +95,22 @@ size_t payload_bytes_in_subsequent_fragments(){
   return payload_per_fragment[internal.spreading_factor] - sizeof(fragment_header_t);
 }
 
-void longfi_rf_test(__attribute__((unused)) LongFi_t * handle){
-  uint8_t things[1];
+void longfi_rf_test(LongFi_t * handle){
+  uint8_t dummy_data = 0xAB;
   handle->radio->SetTxConfig( MODEM_LORA, TX_OUTPUT_POWER, 0, LORA_BANDWIDTH,
                                  LORA_SPREADING_FACTOR, LORA_CODINGRATE,
                                  LORA_PREAMBLE_LENGTH, LORA_FIX_LENGTH_PAYLOAD_ON,
                                  true, 0, 0, LORA_IQ_INVERSION_ON, 3000 );
   handle->radio->SetChannel(910000000);
-  handle->radio->Send(things, (uint8_t) sizeof(things));
+  handle->radio->Send(&dummy_data, (uint8_t) sizeof(dummy_data));
+}
+
+uint32_t longfi_get_random(LongFi_t * handle){
+ return handle->radio->Random();
 }
 
 void _send_random(LongFi_t * handle, uint8_t * data, size_t len){
-  uint32_t frequency = 910000000; 
+  uint32_t frequency; 
   bool free_to_transmit = false;
   while (!free_to_transmit){
     uint32_t random = handle->radio->Random()>>16;
@@ -149,7 +153,7 @@ void longfi_send(LongFi_t * handle, __attribute__((unused))  QualityOfService qo
       .packet_id = 0, //packet_id means no fragments
       .mac = 0xEFFE,
     };
-    memcpy(Buffer, &pheader, sizeof(packet_header_t));
+    memmove(Buffer, &pheader, sizeof(packet_header_t));
     num_bytes_copy = MIN(len, payload_bytes_in_single_fragment_packet());
     internal.tx_len = sizeof(packet_header_t);
   } else {
@@ -165,13 +169,13 @@ void longfi_send(LongFi_t * handle, __attribute__((unused))  QualityOfService qo
       .num_fragments = num_fragments,
       .mac = 0xEFFE,
     };
-    memcpy(Buffer, &pheader, sizeof(packet_header_multiple_fragments_t));
+    memmove(Buffer, &pheader, sizeof(packet_header_multiple_fragments_t));
     num_bytes_copy = MIN(len, payload_bytes_in_first_fragment_of_many());
     internal.tx_len = sizeof(packet_header_multiple_fragments_t);
   }
 
   // copy the necessary amount of payload  
-  memcpy(&Buffer[internal.tx_len], data, num_bytes_copy);
+  memmove(&Buffer[internal.tx_len], data, num_bytes_copy);
   payload_consumed += num_bytes_copy;
   internal.tx_len += num_bytes_copy;
   // initialize tx_cnt with current len, as first transmit will be this
@@ -182,10 +186,10 @@ void longfi_send(LongFi_t * handle, __attribute__((unused))  QualityOfService qo
       .fragment_num = cnt_fragments,
       .mac = 0xEFFE,
     };
-    memcpy(&Buffer[internal.tx_len], &fheader, sizeof(fragment_header_t));
+    memmove(&Buffer[internal.tx_len], &fheader, sizeof(fragment_header_t));
     internal.tx_len += sizeof(fragment_header_t);
     num_bytes_copy = MIN(len - payload_consumed, payload_bytes_in_subsequent_fragments());
-    memcpy(&Buffer[internal.tx_len], &data[payload_consumed], num_bytes_copy);
+    memmove(&Buffer[internal.tx_len], &data[payload_consumed], num_bytes_copy);
     internal.tx_len += num_bytes_copy;
     payload_consumed+= num_bytes_copy;
   };
@@ -300,7 +304,7 @@ void OnRxDone( uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr )
   internal.cur_event = InternalEvent_RxDone;
   uint8_t rx_len = (uint8_t) MIN( (size_t) size, internal.buffer_len);
   internal.rx_len = rx_len;
-  memcpy(internal.buffer, payload, rx_len);
+  memmove(internal.buffer, payload, rx_len);
   RssiValue = rssi;
   SnrValue = snr;
 }

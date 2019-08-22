@@ -26,6 +26,10 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*!
  * Radio driver supported modems
  */
@@ -366,12 +370,8 @@ struct Radio_s
     void ( *SetRxDutyCycle ) ( uint32_t rxTime, uint32_t sleepTime );
 };
 
-/*!
- * \brief Radio driver
- *
- * \remark This variable is defined and initialized in the specific radio
- *         board implementation
- */
-extern const struct Radio_s Radio;
+#ifdef __cplusplus
+}
+#endif
 
 #endif // __RADIO_H__

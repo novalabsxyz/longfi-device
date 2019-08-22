@@ -23,12 +23,15 @@
 #ifndef __SX126x_H__
 #define __SX126x_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdint.h>
 #include <stdbool.h>
-#include <math.h>
-#include "gpio.h"
-#include "spi.h"
-#include "radio.h"
+#include "sx126x-board.h"
+#include "../../board.h"
+#include "../radio.h"
 
 #define SX1261                                      1
 #define SX1262                                      2
@@ -36,99 +39,99 @@
 /*!
  * Radio complete Wake-up Time with margin for temperature compensation
  */
-#define RADIO_WAKEUP_TIME                           3 // [ms]
+#define SX126x_RADIO_WAKEUP_TIME                           3 // [ms]
 
 /*!
  * \brief Compensation delay for SetAutoTx/Rx functions in 15.625 microseconds
  */
-#define AUTO_RX_TX_OFFSET                           2
+#define SX126x_AUTO_RX_TX_OFFSET                           2
 
 /*!
  * \brief LFSR initial value to compute IBM type CRC
  */
-#define CRC_IBM_SEED                                0xFFFF
+#define SX126x_CRC_IBM_SEED                                0xFFFF
 
 /*!
  * \brief LFSR initial value to compute CCIT type CRC
  */
-#define CRC_CCITT_SEED                              0x1D0F
+#define SX126x_CRC_CCITT_SEED                              0x1D0F
 
 /*!
  * \brief Polynomial used to compute IBM CRC
  */
-#define CRC_POLYNOMIAL_IBM                          0x8005
+#define SX126x_CRC_POLYNOMIAL_IBM                          0x8005
 
 /*!
  * \brief Polynomial used to compute CCIT CRC
  */
-#define CRC_POLYNOMIAL_CCITT                        0x1021
+#define SX126x_CRC_POLYNOMIAL_CCITT                        0x1021
 
 /*!
  * \brief The address of the register holding the first byte defining the CRC seed
  *
  */
-#define REG_LR_CRCSEEDBASEADDR                      0x06BC
+#define SX126x_REG_LR_CRCSEEDBASEADDR                      0x06BC
 
 /*!
  * \brief The address of the register holding the first byte defining the CRC polynomial
  */
-#define REG_LR_CRCPOLYBASEADDR                      0x06BE
+#define SX126x_REG_LR_CRCPOLYBASEADDR                      0x06BE
 
 /*!
  * \brief The address of the register holding the first byte defining the whitening seed
  */
-#define REG_LR_WHITSEEDBASEADDR_MSB                 0x06B8
-#define REG_LR_WHITSEEDBASEADDR_LSB                 0x06B9
+#define SX126x_REG_LR_WHITSEEDBASEADDR_MSB                 0x06B8
+#define SX126x_REG_LR_WHITSEEDBASEADDR_LSB                 0x06B9
 
 /*!
  * \brief The address of the register holding the packet configuration
  */
-#define REG_LR_PACKETPARAMS                         0x0704
+#define SX126x_REG_LR_PACKETPARAMS                         0x0704
 
 /*!
  * \brief The address of the register holding the payload size
  */
-#define REG_LR_PAYLOADLENGTH                        0x0702
+#define SX126x_REG_LR_PAYLOADLENGTH                        0x0702
 
 /*!
  * \brief The addresses of the registers holding SyncWords values
  */
-#define REG_LR_SYNCWORDBASEADDRESS                  0x06C0
+#define SX126x_REG_LR_SYNCWORDBASEADDRESS                  0x06C0
 
 /*!
  * \brief The addresses of the register holding LoRa Modem SyncWord value
  */
-#define REG_LR_SYNCWORD                             0x0740
+#define SX126x_REG_LR_SYNCWORD                             0x0740
 
 /*!
  * Syncword for Private LoRa networks
  */
-#define LORA_MAC_PRIVATE_SYNCWORD                   0x1424
+#define SX126x_LORA_MAC_PRIVATE_SYNCWORD                   0x1424
 
 /*!
  * Syncword for Public LoRa networks
  */
-#define LORA_MAC_PUBLIC_SYNCWORD                    0x3444
+#define SX126x_LORA_MAC_PUBLIC_SYNCWORD                    0x3444
 
 /*!
  * The address of the register giving a 4 bytes random number
  */
-#define RANDOM_NUMBER_GENERATORBASEADDR             0x0819
+#define SX126x_RANDOM_NUMBER_GENERATORBASEADDR             0x0819
 
 /*!
  * The address of the register holding RX Gain value (0x94: power saving, 0x96: rx boosted)
  */
-#define REG_RX_GAIN                                 0x08AC
+#define SX126x_REG_RX_GAIN                                 0x08AC
 
 /*!
  * Change the value on the device internal trimming capacitor
  */
-#define REG_XTA_TRIM                                0x0911
+#define SX126x_REG_XTA_TRIM                                0x0911
 
 /*!
  * Set the current max value in the over current protection
  */
-#define REG_OCP                                     0x08E7
+#define SX126x_REG_OCP                                     0x08E7
 
 /*!
  * \brief Structure describing the radio status
@@ -367,13 +370,13 @@ typedef enum
  */
 typedef enum
 {
-    RADIO_CRC_OFF                           = 0x01,         //!< No CRC in use
-    RADIO_CRC_1_BYTES                       = 0x00,
-    RADIO_CRC_2_BYTES                       = 0x02,
-    RADIO_CRC_1_BYTES_INV                   = 0x04,
-    RADIO_CRC_2_BYTES_INV                   = 0x06,
-    RADIO_CRC_2_BYTES_IBM                   = 0xF1,
-    RADIO_CRC_2_BYTES_CCIT                  = 0xF2,
+    SX126x_RADIO_CRC_OFF                           = 0x01,         //!< No CRC in use
+    SX126x_RADIO_CRC_1_BYTES                       = 0x00,
+    SX126x_RADIO_CRC_2_BYTES                       = 0x02,
+    SX126x_RADIO_CRC_1_BYTES_INV                   = 0x04,
+    SX126x_RADIO_CRC_2_BYTES_INV                   = 0x06,
+    SX126x_RADIO_CRC_2_BYTES_IBM                   = 0xF1,
+    SX126x_RADIO_CRC_2_BYTES_CCIT                  = 0xF2,
 }RadioCrcTypes_t;
 
 /*!
@@ -455,48 +458,48 @@ typedef enum
  */
 typedef enum RadioCommands_e
 {
-    RADIO_GET_STATUS                        = 0xC0,
-    RADIO_WRITE_REGISTER                    = 0x0D,
-    RADIO_READ_REGISTER                     = 0x1D,
-    RADIO_WRITE_BUFFER                      = 0x0E,
-    RADIO_READ_BUFFER                       = 0x1E,
-    RADIO_SET_SLEEP                         = 0x84,
-    RADIO_SET_STANDBY                       = 0x80,
-    RADIO_SET_FS                            = 0xC1,
-    RADIO_SET_TX                            = 0x83,
-    RADIO_SET_RX                            = 0x82,
-    RADIO_SET_RXDUTYCYCLE                   = 0x94,
-    RADIO_SET_CAD                           = 0xC5,
-    RADIO_SET_TXCONTINUOUSWAVE              = 0xD1,
-    RADIO_SET_TXCONTINUOUSPREAMBLE          = 0xD2,
-    RADIO_SET_PACKETTYPE                    = 0x8A,
-    RADIO_GET_PACKETTYPE                    = 0x11,
-    RADIO_SET_RFFREQUENCY                   = 0x86,
-    RADIO_SET_TXPARAMS                      = 0x8E,
-    RADIO_SET_PACONFIG                      = 0x95,
-    RADIO_SET_CADPARAMS                     = 0x88,
-    RADIO_SET_BUFFERBASEADDRESS             = 0x8F,
-    RADIO_SET_MODULATIONPARAMS              = 0x8B,
-    RADIO_SET_PACKETPARAMS                  = 0x8C,
-    RADIO_GET_RXBUFFERSTATUS                = 0x13,
-    RADIO_GET_PACKETSTATUS                  = 0x14,
-    RADIO_GET_RSSIINST                      = 0x15,
-    RADIO_GET_STATS                         = 0x10,
-    RADIO_RESET_STATS                       = 0x00,
-    RADIO_CFG_DIOIRQ                        = 0x08,
-    RADIO_GET_IRQSTATUS                     = 0x12,
-    RADIO_CLR_IRQSTATUS                     = 0x02,
-    RADIO_CALIBRATE                         = 0x89,
-    RADIO_CALIBRATEIMAGE                    = 0x98,
-    RADIO_SET_REGULATORMODE                 = 0x96,
-    RADIO_GET_ERROR                         = 0x17,
-    RADIO_CLR_ERROR                         = 0x07,
-    RADIO_SET_TCXOMODE                      = 0x97,
-    RADIO_SET_TXFALLBACKMODE                = 0x93,
-    RADIO_SET_RFSWITCHMODE                  = 0x9D,
-    RADIO_SET_STOPRXTIMERONPREAMBLE         = 0x9F,
-    RADIO_SET_LORASYMBTIMEOUT               = 0xA0,
-}RadioCommands_t;
+    SX126x_RADIO_GET_STATUS                        = 0xC0,
+    SX126x_RADIO_WRITE_REGISTER                    = 0x0D,
+    SX126x_RADIO_READ_REGISTER                     = 0x1D,
+    SX126x_RADIO_WRITE_BUFFER                      = 0x0E,
+    SX126x_RADIO_READ_BUFFER                       = 0x1E,
+    SX126x_RADIO_SET_SLEEP                         = 0x84,
+    SX126x_RADIO_SET_STANDBY                       = 0x80,
+    SX126x_RADIO_SET_FS                            = 0xC1,
+    SX126x_RADIO_SET_TX                            = 0x83,
+    SX126x_RADIO_SET_RX                            = 0x82,
+    SX126x_RADIO_SET_RXDUTYCYCLE                   = 0x94,
+    SX126x_RADIO_SET_CAD                           = 0xC5,
+    SX126x_RADIO_SET_TXCONTINUOUSWAVE              = 0xD1,
+    SX126x_RADIO_SET_TXCONTINUOUSPREAMBLE          = 0xD2,
+    SX126x_RADIO_SET_PACKETTYPE                    = 0x8A,
+    SX126x_RADIO_GET_PACKETTYPE                    = 0x11,
+    SX126x_RADIO_SET_RFFREQUENCY                   = 0x86,
+    SX126x_RADIO_SET_TXPARAMS                      = 0x8E,
+    SX126x_RADIO_SET_PACONFIG                      = 0x95,
+    SX126x_RADIO_SET_CADPARAMS                     = 0x88,
+    SX126x_RADIO_SET_BUFFERBASEADDRESS             = 0x8F,
+    SX126x_RADIO_SET_MODULATIONPARAMS              = 0x8B,
+    SX126x_RADIO_SET_PACKETPARAMS                  = 0x8C,
+    SX126x_RADIO_GET_RXBUFFERSTATUS                = 0x13,
+    SX126x_RADIO_GET_PACKETSTATUS                  = 0x14,
+    SX126x_RADIO_GET_RSSIINST                      = 0x15,
+    SX126x_RADIO_GET_STATS                         = 0x10,
+    SX126x_RADIO_RESET_STATS                       = 0x00,
+    SX126x_RADIO_CFG_DIOIRQ                        = 0x08,
+    SX126x_RADIO_GET_IRQSTATUS                     = 0x12,
+    SX126x_RADIO_CLR_IRQSTATUS                     = 0x02,
+    SX126x_RADIO_CALIBRATE                         = 0x89,
+    SX126x_RADIO_CALIBRATEIMAGE                    = 0x98,
+    SX126x_RADIO_SET_REGULATORMODE                 = 0x96,
+    SX126x_RADIO_GET_ERROR                         = 0x17,
+    SX126x_RADIO_CLR_ERROR                         = 0x07,
+    SX126x_RADIO_SET_TCXOMODE                      = 0x97,
+    SX126x_RADIO_SET_TXFALLBACKMODE                = 0x93,
+    SX126x_RADIO_SET_RFSWITCHMODE                  = 0x9D,
+    SX126x_RADIO_SET_STOPRXTIMERONPREAMBLE         = 0x9F,
+    SX126x_RADIO_SET_LORASYMBTIMEOUT               = 0xA0,
+} RadioCommands_t;
 
 /*!
  * \brief The type describing the modulation parameters for every packet types
@@ -680,11 +683,11 @@ typedef void ( DioIrqHandler )( void* context );
  *
  * \remark These defines are used for computing the frequency divider to set the RF frequency
  */
-#define XTAL_FREQ                                   ( double )32000000
-#define FREQ_DIV                                    ( double )pow( 2.0, 25.0 )
-#define FREQ_STEP                                   ( double )( XTAL_FREQ / FREQ_DIV )
+#define SX126x_XTAL_FREQ                                   ( double ) 32000000
+#define SX126x_FREQ_DIV                                    ( double ) pow( 2.0, 25.0 )
+#define SX126x_FREQ_STEP                                   ( double )( SX126x_XTAL_FREQ / SX126x_FREQ_DIV )
 
-#define RX_BUFFER_SIZE                              256
+#define SX126x_RX_BUFFER_SIZE                              256
 
 /*!
  * \brief The radio callbacks structure
@@ -1112,5 +1115,31 @@ void SX126xClearDeviceErrors( void );
  * \param [in]  irq           IRQ(s) to be cleared
  */
 void SX126xClearIrqStatus( uint16_t irq );
+
+/*!
+ * \brief Send a command that write data to the radio
+ *
+ * \param [in]  opcode        Opcode of the command
+ * \param [in]  buffer        Buffer to be send to the radio
+ * \param [in]  size          Size of the buffer to send
+ */
+void SX126xWriteCommand( RadioCommands_t opcode, uint8_t *buffer, uint16_t size );
+
+/*!
+ * \brief Send a command that read data from the radio
+ *
+ * \param [in]  opcode        Opcode of the command
+ * \param [out] buffer        Buffer holding data from the radio
+ * \param [in]  size          Size of the buffer
+ *
+ * \retval status Return command radio status
+ */
+uint8_t SX126xReadCommand( RadioCommands_t opcode, uint8_t *buffer, uint16_t size );
+
+Radio_t SX126xRadioNew();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // __SX126x_H__

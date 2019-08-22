@@ -12,8 +12,10 @@ extern "C" {
 
 #define NUM_IRQ_HANDLES 6
 
-//typedef void* Gpio_t;
-
+/*!
+ * Hardware IO IRQ callback function definition
+ */
+typedef void ( DioIrqHandler )( void*);
 
 typedef struct {
     void* Instance;
@@ -34,9 +36,15 @@ typedef struct {
 
 typedef enum
 {
-	RADIO_ANT_SWITCH_LF,
-	RADIO_ANT_SWITCH_HF,
+	RADIO_ANT_SWITCH_LF,        //SX1276 board
+	RADIO_ANT_SWITCH_HF,        //SX1276 board /* TODO: Are all these different names
+    RADIO_ANT_SWITCH_POWER,     //SX126x board /*       but for the same function??
+    RADIO_SWITCH_CTRL1,         //SX1272 board
+    RADIO_SWITCH_CTRL2,         //SX1272 board
+    RADIO_PWRAMP_CTRL,          //SX1272 board
     RADIO_NSS,
+    RADIO_BUSY,
+    RADIO_DEVICE_SEL,
     RADIO_DIO_0,
     RADIO_DIO_1,
     RADIO_DIO_2,
@@ -72,6 +80,8 @@ typedef enum
 
 void GpioInit( Gpio_t *obj, PinNames pin, PinModes mode, PinConfigs config, PinTypes type, uint32_t value );
 void GpioWrite( Gpio_t *obj, uint32_t value );
+uint32_t GpioRead( Gpio_t *obj );
+
 
 typedef void( IrqHandler )( void* );
 typedef void( GpioIrqHandler )( void* );
@@ -148,18 +158,10 @@ typedef struct {
 	uint16_t (*spi_in_out)(Spi_t *obj, uint16_t outData);
 	void (*gpio_init)(Gpio_t *obj, PinNames pin, PinModes mode, PinConfigs config, PinTypes type, uint32_t value);
 	void (*gpio_write)(Gpio_t *obj, uint32_t value);
+    uint32_t (*gpio_read)(Gpio_t *obj);
 	void (*gpio_set_interrupt)( Gpio_t *obj, IrqModes irqMode, IrqPriorities irqPriority, GpioIrqHandler *irqHandler);
 	void (*delay_ms)(uint32_t);
 } BoardBindings_t;
-
-void board_set_bindings(
-    BoardBindings_t *,
-    uint16_t (*spi_in_out)(Spi_t *obj, uint16_t outData),
-    void (*gpio_init)(Gpio_t *obj, PinNames pin, PinModes mode, PinConfigs config, PinTypes type, uint32_t value),
-    void (*gpio_write)(Gpio_t *obj, uint32_t value),
-    void (*gpio_set_interrupt)( Gpio_t *obj, IrqModes irqMode, IrqPriorities irqPriority, GpioIrqHandler *irqHandler),
-    void (*delay_ms)(uint32_t)
-    );
 
 extern BoardBindings_t * bindings;
 

@@ -23,11 +23,14 @@
 #ifndef __SX1272_H__
 #define __SX1272_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdint.h>
 #include <stdbool.h>
-#include "gpio.h"
-#include "spi.h"
-#include "radio.h"
+#include "../radio.h"
+#include "sx1272-board.h"
 #include "sx1272Regs-Fsk.h"
 #include "sx1272Regs-LoRa.h"
 
@@ -64,7 +67,7 @@ typedef struct
     bool     RxContinuous;
     uint32_t TxTimeout;
     uint32_t RxSingleTimeout;
-}RadioFskSettings_t;
+}SX1272_RadioFskSettings_t;
 
 /*!
  * Radio FSK packet handler state
@@ -80,7 +83,7 @@ typedef struct
     uint16_t NbBytes;
     uint8_t  FifoThresh;
     uint8_t  ChunkSize;
-}RadioFskPacketHandler_t;
+}SX1272_RadioFskPacketHandler_t;
 
 /*!
  * Radio LoRa modem parameters
@@ -102,7 +105,7 @@ typedef struct
     bool     RxContinuous;
     uint32_t TxTimeout;
     bool     PublicNetwork;
-}RadioLoRaSettings_t;
+}SX1272_RadioLoRaSettings_t;
 
 /*!
  * Radio LoRa packet handler state
@@ -112,7 +115,7 @@ typedef struct
     int8_t SnrValue;
     int16_t RssiValue;
     uint8_t Size;
-}RadioLoRaPacketHandler_t;
+}SX1272_RadioLoRaPacketHandler_t;
 
 /*!
  * Radio Settings
@@ -122,11 +125,11 @@ typedef struct
     RadioState_t             State;
     RadioModems_t            Modem;
     uint32_t                 Channel;
-    RadioFskSettings_t       Fsk;
-    RadioFskPacketHandler_t  FskPacketHandler;
-    RadioLoRaSettings_t      LoRa;
-    RadioLoRaPacketHandler_t LoRaPacketHandler;
-}RadioSettings_t;
+    SX1272_RadioFskSettings_t       Fsk;
+    SX1272_RadioFskPacketHandler_t  FskPacketHandler;
+    SX1272_RadioLoRaSettings_t      LoRa;
+    SX1272_RadioLoRaPacketHandler_t LoRaPacketHandler;
+}SX1272_RadioSettings_t;
 
 /*!
  * Radio hardware and global parameters
@@ -141,13 +144,8 @@ typedef struct SX1272_s
     Gpio_t        DIO4;
     Gpio_t        DIO5;
     Spi_t         Spi;
-    RadioSettings_t Settings;
+    SX1272_RadioSettings_t Settings;
 }SX1272_t;
-
-/*!
- * Hardware IO IRQ callback function definition
- */
-typedef void ( DioIrqHandler )( void* context );
 
 /*!
  * SX1272 definitions
@@ -418,5 +416,11 @@ void SX1272SetPublicNetwork( bool enable );
  * \retval time Radio plus board wakeup time in ms.
  */
 uint32_t SX1272GetWakeupTime( void );
+
+Radio_t SX1272RadioNew();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // __SX1272_H__

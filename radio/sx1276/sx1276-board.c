@@ -12,9 +12,7 @@ License: Revised BSD License, see LICENSE.TXT file include in the project
 
 Maintainer: Miguel Luis and Gregory Cristian
 */
-#include "board.h"
-#include "radio.h"
-#include "sx1276/sx1276.h"
+#include "sx1276.h"
 #include "sx1276-board.h"
 
 /*!
@@ -129,7 +127,60 @@ void SX1276Reset( )
 }
 
 
-void SX1276SetRfTxPower( int8_t power ){}
+void SX1276SetRfTxPower( int8_t power ){
+    // uint8_t paConfig, paDac;
+
+    // if( power < -4 )
+    // {
+    //     power = -4;
+    // }
+    // if( power > 20 )
+    // {
+    //     power = 20;
+    // }
+
+    // if( power > 15 )
+    // {
+    //     if( power > 17 )
+    //     {
+    //         paConfig = ( RF_PACONFIG_PASELECT_PABOOST | ( power - 5 ) );
+    //         paDac = RF_PADAC_20DBM_ON;
+    //     }
+    //     else
+    //     {
+    //         paConfig = ( RF_PACONFIG_PASELECT_PABOOST | ( power - 2 ) );
+    //         paDac = RF_PADAC_20DBM_OFF;
+    //     }
+    // }
+    // else
+    // {
+    //     if( power > 0 )
+    //     {
+    //         paConfig = ( RF_PACONFIG_PASELECT_RFO | ( 7 << 4 ) | ( power ) );
+    //         paDac = RF_PADAC_20DBM_OFF;
+    //     }
+    //     else
+    //     {
+    //         paConfig = ( RF_PACONFIG_PASELECT_RFO | ( 0 << 4 ) | ( power + 4 ) );
+    //         paDac = RF_PADAC_20DBM_OFF;
+    //     }
+    // }
+
+    // SX1276Write( REG_PACONFIG, paConfig );
+
+    //Pa maximum power
+    SX1276Write(SX1276_REG_PACONFIG, 0xFF);
+    
+    //150% LNA current & maximum gain
+    SX1276Write(SX1276_REG_LNA, 0x23);
+
+    //PaDac 20dBm on PA_BOOST
+    SX1276Write(SX1276_REG_PADAC, 0x9F);
+    
+    //Set RegOcp 240ma
+    SX1276Write(SX1276_REG_OCP, 0x3B);
+
+}
 
 void SX1276SetBoardTcxo(bool enable){}
 
