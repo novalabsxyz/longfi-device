@@ -97,6 +97,28 @@ void OnTxTimeout( void );
 void OnRxTimeout( void );
 void OnRxError( void );
 
+// Internal events are mapped from SX12xx events
+typedef enum {
+  InternalEvent_None,
+  InternalEvent_TxDone,
+  InternalEvent_RxDone,
+  InternalEvent_TxTimeout,
+  InternalEvent_RxTimeout,
+  InternalEvent_RxError,
+} InternalEvent_t;
+
+typedef struct {
+  uint8_t spreading_factor;
+  void (*dio_irq_handles[NUM_IRQ_HANDLES])();
+  RadioEvents_t radio_events;
+  InternalEvent_t cur_event;
+  uint8_t * buffer;
+  size_t buffer_len;
+  uint32_t rx_len;
+  uint32_t tx_cnt;
+  uint32_t tx_len;
+} LongFiInternal_t;
+
 /*
  * Private helper for handling internal events
  */

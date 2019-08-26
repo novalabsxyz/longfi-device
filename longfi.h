@@ -11,34 +11,6 @@ extern "C" {
 #include "board.h"
 #include "radio/radio.h"
 
-//// 
-// This section is internal stuff that needs to be declared so that size of LongFiInternal_t is known
-
-typedef enum {
-  InternalEvent_None,
-  InternalEvent_TxDone,
-  InternalEvent_RxDone,
-  InternalEvent_TxTimeout,
-  InternalEvent_RxTimeout,
-  InternalEvent_RxError,
-} InternalEvent_t;
-
-typedef struct {
-  uint8_t spreading_factor;
-  void (*dio_irq_handles[NUM_IRQ_HANDLES])();
-  RadioEvents_t radio_events;
-  InternalEvent_t cur_event;
-  uint8_t * buffer;
-  size_t buffer_len;
-  uint32_t rx_len;
-  uint32_t tx_cnt;
-  uint32_t tx_len;
-} LongFiInternal_t;
-
-// End of uninteresting section for client
-////
-
-
 typedef enum QualityOfService {
 	LONGFI_QOS_0, // YOLO packets out and go to sleep. RX only during network_poll
 	LONGFI_QOS_1, // make best effort to get ACKs, provide client notice of mail being available
