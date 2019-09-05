@@ -12,7 +12,7 @@ This is a prototype for the user facing API of Helium LongFi Protocol. In its cu
 * fragmenting packets such that TOA does not violate FCC
 * channel hopping such that multiple fragments may be transmitted without waits
 
-Notably, this library does not:
+Notably, this library does **not**:
 * configure TCXOs or handle antenna control
 * receive packets
 * encrypt packets
