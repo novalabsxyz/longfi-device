@@ -34,7 +34,11 @@ The process of integrating this code into a project is as follows:
 
 This library is designed to work with 8 channel receivers, such as the SX1301/SX1302. We have [a stripped down "hotspot" image available here](https://drive.google.com/file/d/1JfqozFRjeRuGcBKE5RAwseC0yw9oUW9Q/view?usp=sharing), which runs on production hardware as well as on the [RAK "Blackspot"](https://www.adafruit.com/product/4327).
 
-Once you find the device on the network, you can login using SSH.
+To copy the bootable sdcard.img onto the microSD card:
+
+`$ sudo dd if=output/images/sdcard.img of=/dev/<microSD> bs=1M`
+
+Insert into Raspberry Pi boot. Once you find the device on the network, you can login using SSH.
 
 You need to start the LongFi protocol layer: `/usr/bin/concentrate longfi &`
 
