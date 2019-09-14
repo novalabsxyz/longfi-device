@@ -65,12 +65,15 @@ TEST(RadioGroup, SX1276)
 {
   sx1276 = SX1276RadioNew();
   longfi_handle.bindings = &my_bindings;
+  longfi_handle.radio = &sx1276;
 }
+
 TEST(RadioGroup, SX1272)
 {
   sx1272 = SX1272RadioNew();
   longfi_handle.bindings = &my_bindings;
 }
+
 TEST(RadioGroup, SX126x)
 {
   sx126x = SX126xRadioNew();
