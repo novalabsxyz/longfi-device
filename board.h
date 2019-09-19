@@ -24,10 +24,10 @@ typedef struct {
 
 typedef struct {
 	void* Instance;
-} SPI_HandleTypeDef;
+} LF_SPI_HandleTypeDef;
 
 typedef struct {
-    SPI_HandleTypeDef Spi;
+    LF_SPI_HandleTypeDef Spi;
     Gpio_t Mosi;
     Gpio_t Miso;
     Gpio_t Sclk;
@@ -142,8 +142,6 @@ void DelayMs( uint32_t ms );
 void Delay( float s );
 
 void memcpy1( uint8_t *dst, const uint8_t *src, uint16_t size );
-
-void assert_param(bool expr);
 
 uint16_t SpiInOut( Spi_t *obj, uint16_t outData );
 
