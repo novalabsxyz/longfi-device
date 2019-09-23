@@ -51,7 +51,7 @@ typedef enum
     RADIO_DIO_3,
     RADIO_DIO_4,
     RADIO_DIO_5,
-    RADIO_RESET,
+    LF_RADIO_RESET,
     // Not connected
     LF_NC = (int)0xFFFFFFFF
 }PinNames;
@@ -59,8 +59,8 @@ typedef enum
 
 typedef enum
 {
-    PIN_INPUT = 0,
-    PIN_OUTPUT,
+    LF_PIN_INPUT = 0,
+    LF_PIN_OUTPUT,
     PIN_ALTERNATE_FCT,
     PIN_ANALOGIC
 } PinModes;
