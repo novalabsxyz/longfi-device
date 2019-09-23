@@ -53,7 +53,7 @@ typedef enum
     RADIO_DIO_5,
     RADIO_RESET,
     // Not connected
-    NC = (int)0xFFFFFFFF
+    LF_NC = (int)0xFFFFFFFF
 }PinNames;
 
 
