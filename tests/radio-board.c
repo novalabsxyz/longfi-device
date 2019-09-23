@@ -15,14 +15,14 @@ Gpio_t AntSwitchHf;
 
 void MockIoInit( void )
 {
-    GpioInit( &Mock.Spi.Nss, RADIO_NSS, PIN_OUTPUT, PIN_PUSH_PULL, PIN_PULL_UP, 1 );
+    GpioInit( &Mock.Spi.Nss, RADIO_NSS, LF_PIN_OUTPUT, PIN_PUSH_PULL, PIN_PULL_UP, 1 );
 
-    GpioInit( &Mock.DIO0, RADIO_DIO_0, PIN_INPUT, PIN_PUSH_PULL, PIN_PULL_UP, 0 );
-    GpioInit( &Mock.DIO1, RADIO_DIO_1, PIN_INPUT, PIN_PUSH_PULL, PIN_PULL_UP, 0 );
-    GpioInit( &Mock.DIO2, RADIO_DIO_2, PIN_INPUT, PIN_PUSH_PULL, PIN_PULL_UP, 0 );
-    GpioInit( &Mock.DIO3, RADIO_DIO_3, PIN_INPUT, PIN_PUSH_PULL, PIN_PULL_UP, 0 );
-    GpioInit( &Mock.DIO4, RADIO_DIO_4, PIN_INPUT, PIN_PUSH_PULL, PIN_PULL_UP, 0 );
-    GpioInit( &Mock.DIO5, RADIO_DIO_5, PIN_INPUT, PIN_PUSH_PULL, PIN_PULL_UP, 0 );
+    GpioInit( &Mock.DIO0, RADIO_DIO_0, LF_PIN_INPUT, PIN_PUSH_PULL, PIN_PULL_UP, 0 );
+    GpioInit( &Mock.DIO1, RADIO_DIO_1, LF_PIN_INPUT, PIN_PUSH_PULL, PIN_PULL_UP, 0 );
+    GpioInit( &Mock.DIO2, RADIO_DIO_2, LF_PIN_INPUT, PIN_PUSH_PULL, PIN_PULL_UP, 0 );
+    GpioInit( &Mock.DIO3, RADIO_DIO_3, LF_PIN_INPUT, PIN_PUSH_PULL, PIN_PULL_UP, 0 );
+    GpioInit( &Mock.DIO4, RADIO_DIO_4, LF_PIN_INPUT, PIN_PUSH_PULL, PIN_PULL_UP, 0 );
+    GpioInit( &Mock.DIO5, RADIO_DIO_5, LF_PIN_INPUT, PIN_PUSH_PULL, PIN_PULL_UP, 0 );
 }
 
 void MockIoIrqInit( IrqHandler **irqHandlers )
@@ -37,14 +37,14 @@ void MockIoIrqInit( IrqHandler **irqHandlers )
 
 void MockIoDeInit( void )
 {
-    GpioInit( &Mock.Spi.Nss, RADIO_NSS, PIN_OUTPUT, PIN_PUSH_PULL, PIN_NO_PULL, 1 );
+    GpioInit( &Mock.Spi.Nss, RADIO_NSS, LF_PIN_OUTPUT, PIN_PUSH_PULL, PIN_NO_PULL, 1 );
 
-    GpioInit( &Mock.DIO0, RADIO_DIO_0, PIN_INPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
-    GpioInit( &Mock.DIO1, RADIO_DIO_1, PIN_INPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
-    GpioInit( &Mock.DIO2, RADIO_DIO_2, PIN_INPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
-    GpioInit( &Mock.DIO3, RADIO_DIO_3, PIN_INPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
-    GpioInit( &Mock.DIO4, RADIO_DIO_4, PIN_INPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
-    GpioInit( &Mock.DIO5, RADIO_DIO_5, PIN_INPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
+    GpioInit( &Mock.DIO0, RADIO_DIO_0, LF_PIN_INPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
+    GpioInit( &Mock.DIO1, RADIO_DIO_1, LF_PIN_INPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
+    GpioInit( &Mock.DIO2, RADIO_DIO_2, LF_PIN_INPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
+    GpioInit( &Mock.DIO3, RADIO_DIO_3, LF_PIN_INPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
+    GpioInit( &Mock.DIO4, RADIO_DIO_4, LF_PIN_INPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
+    GpioInit( &Mock.DIO5, RADIO_DIO_5, LF_PIN_INPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
 }
 
 uint8_t MockGetPaSelect( uint32_t channel )
@@ -78,14 +78,14 @@ void MockSetAntSwLowPower( bool status )
 
 void MockAntSwInit( void )
 {
-    GpioInit( &AntSwitchLf, RADIO_ANT_SWITCH_LF, PIN_OUTPUT, PIN_PUSH_PULL, PIN_PULL_UP, 1 );
-    GpioInit( &AntSwitchHf, RADIO_ANT_SWITCH_HF, PIN_OUTPUT, PIN_PUSH_PULL, PIN_PULL_UP, 0 );
+    GpioInit( &AntSwitchLf, RADIO_ANT_SWITCH_LF, LF_PIN_OUTPUT, PIN_PUSH_PULL, PIN_PULL_UP, 1 );
+    GpioInit( &AntSwitchHf, RADIO_ANT_SWITCH_HF, LF_PIN_OUTPUT, PIN_PUSH_PULL, PIN_PULL_UP, 0 );
 }
 
 void MockAntSwDeInit( void )
 {
-    GpioInit( &AntSwitchLf, RADIO_ANT_SWITCH_LF, PIN_OUTPUT, PIN_OPEN_DRAIN, PIN_NO_PULL, 0 );
-    GpioInit( &AntSwitchHf, RADIO_ANT_SWITCH_HF, PIN_OUTPUT, PIN_OPEN_DRAIN, PIN_NO_PULL, 0 );
+    GpioInit( &AntSwitchLf, RADIO_ANT_SWITCH_LF, LF_PIN_OUTPUT, PIN_OPEN_DRAIN, PIN_NO_PULL, 0 );
+    GpioInit( &AntSwitchHf, RADIO_ANT_SWITCH_HF, LF_PIN_OUTPUT, PIN_OPEN_DRAIN, PIN_NO_PULL, 0 );
 }
 
 void MockSetAntSw( uint8_t rxTx )
