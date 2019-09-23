@@ -1701,6 +1701,7 @@ Radio_t SX1272RadioNew(){
         NULL, // void ( *IrqProcess )( void )
         NULL, // void ( *RxBoosted )( uint32_t timeout ) - SX126x Only
         NULL, // void ( *SetRxDutyCycle )( uint32_t rxTime, uint32_t sleepTime ) - SX126x Only
+        NULL, // void (*SetTcxo)(bool enable);
     };
     return radio;
 }

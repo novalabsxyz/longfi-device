@@ -344,7 +344,9 @@ Radio_t SX126xRadioNew(){
         SX126xRadioIrqProcess,
         // Available on SX126x only
         SX126xRadioRxBoosted,
-        SX126xRadioSetRxDutyCycle
+        SX126xRadioSetRxDutyCycle,
+        NULL, // void (*SetTcxo)(bool enable);
+
     };
     return radio;
 }

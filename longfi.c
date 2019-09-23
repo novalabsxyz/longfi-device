@@ -19,6 +19,10 @@ LongFi_t longfi_new_handle(BoardBindings_t* bindings, Radio_t* radio, RfConfig_t
   return handle;
 }
 
+void longfi_enable_tcxo(LongFi_t * handle) {
+  handle->radio->SetTcxo(true);
+}
+
 void longfi_init(LongFi_t * handle) {
 
   // store pointer to internal context for callback definitions

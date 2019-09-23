@@ -4,5 +4,7 @@ tests/configure
 tests/test-lib/
 tests/test-obj/
 tests/longfi_tests
+test-lib
+*.a
 *.o
 *.d

@@ -34,6 +34,9 @@ LongFi_t longfi_new_handle(BoardBindings_t* bindings, Radio_t* radio, RfConfig_t
 // initializes the library before usage
 void longfi_init(LongFi_t * handle);
 
+// enables Temperature Compensated External Oscillator
+void longfi_enable_tcxo(LongFi_t * handle);
+
 // these are the events to be handled by the client
 typedef enum ClientEvent {
 	ClientEvent_None, // this is a non-event, no handling required

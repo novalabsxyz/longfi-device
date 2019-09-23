@@ -368,6 +368,16 @@ struct Radio_s
      * \param [in]  sleepTime     Structure describing sleep timeout value
      */
     void ( *SetRxDutyCycle ) ( uint32_t rxTime, uint32_t sleepTime );
+
+    /*!
+     * \brief Enables Tcxo
+     *
+     * \remark Implemented for SX1276 only 
+     *
+     * \param [in]  bool        To enable or disable Tcxo
+     */
+    void ( *SetTcxo )(bool enable);
+
 };
 
 #ifdef __cplusplus
