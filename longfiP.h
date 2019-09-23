@@ -10,6 +10,10 @@ extern "C" {
 #define FREQ_SPACING                                   200000
 #define LONGFI_NUM_UPLINK_CHANNELS                          8
 
+#define RX_TIMEOUT_VALUE                            1000
+#define BUFFER_SIZE                                 128 // Define the payload size here
+
+
 const uint32_t uplink_channel_map[LONGFI_NUM_UPLINK_CHANNELS] = {
   RADIO_1 - FREQ_SPACING*2,
   RADIO_1 - FREQ_SPACING,
@@ -30,7 +34,7 @@ typedef enum {
 } LongFiSpreading_t;
 
 const uint32_t payload_per_fragment[NUM_SF] = {
-  24,24,24,24
+  BUFFER_SIZE,BUFFER_SIZE,BUFFER_SIZE,BUFFER_SIZE
 };
 
 const uint32_t fragments_per_channel[NUM_SF] = {
@@ -80,8 +84,6 @@ typedef struct {
 } fragment_header_t;
 #pragma pack(pop)
 
-#define RX_TIMEOUT_VALUE                            1000
-#define BUFFER_SIZE                                 128 // Define the payload size here
 
 /*
  *  Functions implemented here that SX1276 will call
