@@ -376,7 +376,7 @@ struct Radio_s
      *
      * \param [in]  bool        To enable or disable Tcxo
      */
-    void ( *SetTcxo )(bool enable);
+    void ( *EnableTcxo )( void );
 
 };
 
