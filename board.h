@@ -20,67 +20,67 @@ typedef void ( DioIrqHandler )( void*);
 typedef struct {
     void* Instance;
     void* port;
-} Gpio_t;
+} LF_Gpio_t;
 
 typedef struct {
 	void* Instance;
-} SPI_HandleTypeDef;
+} LF_SPI_HandleTypeDef;
 
 typedef struct {
-    SPI_HandleTypeDef Spi;
-    Gpio_t Mosi;
-    Gpio_t Miso;
-    Gpio_t Sclk;
-    Gpio_t Nss;
-} Spi_t;
+    LF_SPI_HandleTypeDef Spi;
+    LF_Gpio_t Mosi;
+    LF_Gpio_t Miso;
+    LF_Gpio_t Sclk;
+    LF_Gpio_t Nss;
+} LF_Spi_t;
 
 typedef enum
 {
-	RADIO_ANT_SWITCH_LF,        //SX1276 board
-	RADIO_ANT_SWITCH_HF,        //SX1276 board /* TODO: Are all these different names
-    RADIO_ANT_SWITCH_POWER,     //SX126x board /*       but for the same function??
-    RADIO_SWITCH_CTRL1,         //SX1272 board
-    RADIO_SWITCH_CTRL2,         //SX1272 board
-    RADIO_PWRAMP_CTRL,          //SX1272 board
-    RADIO_NSS,
-    RADIO_BUSY,
-    RADIO_DEVICE_SEL,
-    RADIO_DIO_0,
-    RADIO_DIO_1,
-    RADIO_DIO_2,
-    RADIO_DIO_3,
-    RADIO_DIO_4,
-    RADIO_DIO_5,
-    RADIO_RESET,
+	LF_RADIO_ANT_SWITCH_LF,        //SX1276 board
+	LF_RADIO_ANT_SWITCH_HF,        //SX1276 board /* TODO: Are all these different names
+    LF_RADIO_ANT_SWITCH_POWER,     //SX126x board /*       but for the same function??
+    LF_RADIO_SWITCH_CTRL1,         //SX1272 board
+    LF_RADIO_SWITCH_CTRL2,         //SX1272 board
+    LF_RADIO_PWRAMP_CTRL,          //SX1272 board
+    LF_RADIO_NSS,
+    LF_RADIO_BUSY,
+    LF_RADIO_DEVICE_SEL,
+    LF_RADIO_DIO_0,
+    LF_RADIO_DIO_1,
+    LF_RADIO_DIO_2,
+    LF_RADIO_DIO_3,
+    LF_RADIO_DIO_4,
+    LF_RADIO_DIO_5,
+    LF_RADIO_RESET,
     // Not connected
-    NC = (int)0xFFFFFFFF
+    LF_NC = (int)0xFFFFFFFF
 }PinNames;
 
 
 typedef enum
 {
-    PIN_INPUT = 0,
-    PIN_OUTPUT,
-    PIN_ALTERNATE_FCT,
-    PIN_ANALOGIC
+    LF_PIN_INPUT = 0,
+    LF_PIN_OUTPUT,
+    LF_PIN_ALTERNATE_FCT,
+    LF_PIN_ANALOGIC
 } PinModes;
 
 typedef enum
 {
-    PIN_PUSH_PULL = 0,
-    PIN_OPEN_DRAIN
+    LF_PIN_PUSH_PULL = 0,
+    LF_PIN_OPEN_DRAIN
 } PinConfigs;
 
 typedef enum
 {
-    PIN_NO_PULL = 0,
-    PIN_PULL_UP,
-    PIN_PULL_DOWN
+    LF_PIN_NO_PULL = 0,
+    LF_PIN_PULL_UP,
+    LF_PIN_PULL_DOWN
 } PinTypes;
 
-void GpioInit( Gpio_t *obj, PinNames pin, PinModes mode, PinConfigs config, PinTypes type, uint32_t value );
-void GpioWrite( Gpio_t *obj, uint32_t value );
-uint32_t GpioRead( Gpio_t *obj );
+void GpioInit( LF_Gpio_t *obj, PinNames pin, PinModes mode, PinConfigs config, PinTypes type, uint32_t value );
+void GpioWrite( LF_Gpio_t *obj, uint32_t value );
+uint32_t GpioRead( LF_Gpio_t *obj );
 
 
 typedef void( IrqHandler )( void* );
@@ -104,7 +104,7 @@ typedef enum
 } IrqPriorities;
 
 
-void GpioSetInterrupt( Gpio_t *obj, IrqModes irqMode, IrqPriorities irqPriority, GpioIrqHandler *irqHandler);
+void GpioSetInterrupt( LF_Gpio_t *obj, IrqModes irqMode, IrqPriorities irqPriority, GpioIrqHandler *irqHandler);
 
 
 /*!
@@ -143,9 +143,7 @@ void Delay( float s );
 
 void memcpy1( uint8_t *dst, const uint8_t *src, uint16_t size );
 
-void assert_param(bool expr);
-
-uint16_t SpiInOut( Spi_t *obj, uint16_t outData );
+uint16_t SpiInOut( LF_Spi_t *obj, uint16_t outData );
 
 
 // Above is everything that SX127x's depend on
@@ -155,11 +153,11 @@ uint16_t SpiInOut( Spi_t *obj, uint16_t outData );
 typedef struct Radio_s Radio_t;
 
 typedef struct {
-	uint16_t (*spi_in_out)(Spi_t *obj, uint16_t outData);
-	void (*gpio_init)(Gpio_t *obj, PinNames pin, PinModes mode, PinConfigs config, PinTypes type, uint32_t value);
-	void (*gpio_write)(Gpio_t *obj, uint32_t value);
-    uint32_t (*gpio_read)(Gpio_t *obj);
-	void (*gpio_set_interrupt)( Gpio_t *obj, IrqModes irqMode, IrqPriorities irqPriority, GpioIrqHandler *irqHandler);
+	uint16_t (*spi_in_out)(LF_Spi_t *obj, uint16_t outData);
+	void (*gpio_init)(LF_Gpio_t *obj, PinNames pin, PinModes mode, PinConfigs config, PinTypes type, uint32_t value);
+	void (*gpio_write)(LF_Gpio_t *obj, uint32_t value);
+    uint32_t (*gpio_read)(LF_Gpio_t *obj);
+	void (*gpio_set_interrupt)( LF_Gpio_t *obj, IrqModes irqMode, IrqPriorities irqPriority, GpioIrqHandler *irqHandler);
 	void (*delay_ms)(uint32_t);
 } BoardBindings_t;
 

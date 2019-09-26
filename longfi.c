@@ -20,7 +20,7 @@ LongFi_t longfi_new_handle(BoardBindings_t* bindings, Radio_t* radio, RfConfig_t
 }
 
 void longfi_enable_tcxo(LongFi_t * handle) {
-  handle->radio->SetTcxo(true);
+  handle->radio->EnableTcxo();
 }
 
 void longfi_init(LongFi_t * handle) {

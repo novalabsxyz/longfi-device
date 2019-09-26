@@ -1853,15 +1853,10 @@ void SX1276OnDio5Irq( void* context )
     }
 }
 
-void SX1276SetTcxo(bool enable){
-    if(enable){
-        SX1276Write( SX1276_REG_OCP, ( RF_OCP_ON | RF_OCP_TRIM_120_MA ) );
-        SX1276Write( SX1276_REG_TCXO, ( SX1276Read( SX1276_REG_TCXO ) & RF_TCXO_TCXOINPUT_MASK ) | RF_TCXO_TCXOINPUT_ON );
-        SX1276Write( SX1276_REG_OPMODE, ( SX1276Read( SX1276_REG_OPMODE ) & RF_OPMODE_MASK ) | RF_OPMODE_SLEEP );
-    } else {
-        // unimplemented
-        assert_param(false);
-    }
+void SX1276EnableTcxo( void ){
+    SX1276Write( SX1276_REG_OCP, ( RF_OCP_ON | RF_OCP_TRIM_120_MA ) );
+    SX1276Write( SX1276_REG_TCXO, ( SX1276Read( SX1276_REG_TCXO ) & RF_TCXO_TCXOINPUT_MASK ) | RF_TCXO_TCXOINPUT_ON );
+    SX1276Write( SX1276_REG_OPMODE, ( SX1276Read( SX1276_REG_OPMODE ) & RF_OPMODE_MASK ) | RF_OPMODE_SLEEP );
 }
 
 Radio_t SX1276RadioNew(){
@@ -1893,7 +1888,7 @@ Radio_t SX1276RadioNew(){
         NULL, // void ( *IrqProcess )( void )
         NULL, // void ( *RxBoosted )( uint32_t timeout ) - SX126x Only
         NULL, // void ( *SetRxDutyCycle )( uint32_t rxTime, uint32_t sleepTime ) - SX126x Only
-        SX1276SetTcxo,
+        SX1276EnableTcxo,
     };
     return radio;
 }
