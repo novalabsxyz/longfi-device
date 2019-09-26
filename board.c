@@ -18,25 +18,25 @@ void memcpy1( uint8_t *dst, const uint8_t *src, uint16_t size ){
 	memcpy(dst, src, size);
 }
 
-uint16_t SpiInOut( Spi_t *obj, uint16_t outData )
+uint16_t SpiInOut( LF_Spi_t *obj, uint16_t outData )
 {
 	return (*bindings->spi_in_out)(obj, outData);
 }
 
-void GpioInit( Gpio_t *obj, PinNames pin, PinModes mode, PinConfigs config, PinTypes type, uint32_t value ){
+void GpioInit( LF_Gpio_t *obj, PinNames pin, PinModes mode, PinConfigs config, PinTypes type, uint32_t value ){
 	(*bindings->gpio_init)(obj, pin, mode, config, type, value);
 }
 
-void GpioWrite( Gpio_t *obj, uint32_t value ){
+void GpioWrite( LF_Gpio_t *obj, uint32_t value ){
 	(*bindings->gpio_write)(obj, value);
 }
 
-uint32_t GpioRead( Gpio_t *obj ){
+uint32_t GpioRead( LF_Gpio_t *obj ){
 	return (*bindings->gpio_read)(obj);
 }
 
 
-void GpioSetInterrupt( Gpio_t *obj, IrqModes irqMode, IrqPriorities irqPriority, GpioIrqHandler *irqHandler){
+void GpioSetInterrupt( LF_Gpio_t *obj, IrqModes irqMode, IrqPriorities irqPriority, GpioIrqHandler *irqHandler){
 	(*bindings->gpio_set_interrupt)(obj, irqMode, irqPriority, irqHandler);
 }
 

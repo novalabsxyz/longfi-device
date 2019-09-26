@@ -136,14 +136,14 @@ typedef struct
  */
 typedef struct SX1272_s
 {
-    Gpio_t        Reset;
-    Gpio_t        DIO0;
-    Gpio_t        DIO1;
-    Gpio_t        DIO2;
-    Gpio_t        DIO3;
-    Gpio_t        DIO4;
-    Gpio_t        DIO5;
-    Spi_t         Spi;
+    LF_Gpio_t        Reset;
+    LF_Gpio_t        DIO0;
+    LF_Gpio_t        DIO1;
+    LF_Gpio_t        DIO2;
+    LF_Gpio_t        DIO3;
+    LF_Gpio_t        DIO4;
+    LF_Gpio_t        DIO5;
+    LF_Spi_t         Spi;
     SX1272_RadioSettings_t Settings;
 }SX1272_t;
 
