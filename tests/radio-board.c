@@ -10,8 +10,8 @@ static bool RadioIsActive = false;
 /*!
  * Antenna switch GPIO pins objects
  */
-Gpio_t AntSwitchLf;
-Gpio_t AntSwitchHf;
+LF_Gpio_t AntSwitchLf;
+LF_Gpio_t AntSwitchHf;
 
 void MockIoInit( void )
 {
