@@ -44,48 +44,37 @@ Gpio_t DbgPinRx;
 
 void SX126xIoInit( void )
 {
-    GpioInit( &SX126x.Spi.Nss, LF_RADIO_NSS, LF_PIN_OUTPUT, LF_PIN_PUSH_PULL, LF_PIN_PULL_UP, 1 );
-    GpioInit( &SX126x.BUSY, LF_RADIO_BUSY, LF_PIN_INPUT, LF_PIN_PUSH_PULL, LF_PIN_NO_PULL, 0 );
-    GpioInit( &SX126x.DIO1, LF_RADIO_DIO_1, LF_PIN_INPUT, LF_PIN_PUSH_PULL, LF_PIN_NO_PULL, 0 );
-    GpioInit( &DeviceSel, LF_RADIO_DEVICE_SEL, LF_PIN_INPUT, LF_PIN_PUSH_PULL, LF_PIN_NO_PULL, 0 );
 }
 
 void SX126xIoIrqInit( DioIrqHandler dioIrq )
 {
-    GpioSetInterrupt( &SX126x.DIO1, IRQ_RISING_EDGE, IRQ_HIGH_PRIORITY, dioIrq );
+    IoIrqInit(&dioIrq);
 }
 
 void SX126xIoDeInit( void )
 {
-    GpioInit( &SX126x.Spi.Nss, LF_RADIO_NSS, LF_PIN_ANALOGIC, LF_PIN_PUSH_PULL, LF_PIN_PULL_UP, 1 );
-    GpioInit( &SX126x.BUSY, LF_RADIO_BUSY, LF_PIN_ANALOGIC, LF_PIN_PUSH_PULL, LF_PIN_NO_PULL, 0 );
-    GpioInit( &SX126x.DIO1, LF_RADIO_DIO_1, LF_PIN_ANALOGIC, LF_PIN_PUSH_PULL, LF_PIN_NO_PULL, 0 );
+
 }
 
 void SX126xIoDbgInit( void )
 {
-#if defined( USE_RADIO_DEBUG )
-    GpioInit( &DbgPinTx, RADIO_DBG_PIN_TX, LF_PIN_OUTPUT, LF_PIN_PUSH_PULL, PIN_NO_PULL, 0 );
-    GpioInit( &DbgPinRx, RADIO_DBG_PIN_RX, LF_PIN_OUTPUT, LF_PIN_PUSH_PULL, PIN_NO_PULL, 0 );
-#endif
 }
 
 void SX126xIoTcxoInit( void )
 {
-    // No TCXO component available on this board design.
 }
 
 uint32_t SX126xGetBoardTcxoWakeupTime( void )
 {
-    return SX126x_RADIO_WAKEUP_TIME;
+    return 0;
 }
 
 void SX126xReset( void )
 {
     DelayMs( 10 );
-    GpioInit( &SX126x.Reset, LF_RADIO_RESET, LF_PIN_OUTPUT, LF_PIN_PUSH_PULL, LF_PIN_NO_PULL, 0 );
+    //GpioInit( &SX126x.Reset, LF_RADIO_RESET, LF_PIN_OUTPUT, LF_PIN_PUSH_PULL, LF_PIN_NO_PULL, 0 );
     DelayMs( 20 );
-    GpioInit( &SX126x.Reset, LF_RADIO_RESET, LF_PIN_ANALOGIC, LF_PIN_PUSH_PULL, LF_PIN_NO_PULL, 0 ); // internal pull-up
+    //GpioInit( &SX126x.Reset, LF_RADIO_RESET, LF_PIN_ANALOGIC, LF_PIN_PUSH_PULL, LF_PIN_NO_PULL, 0 ); // internal pull-up
     DelayMs( 10 );
 }
 
@@ -259,12 +248,12 @@ uint8_t SX126xGetDeviceId( void )
 
 void SX126xAntSwOn( void )
 {
-    GpioInit( &AntPow, LF_RADIO_ANT_SWITCH_POWER, LF_PIN_OUTPUT, LF_PIN_PUSH_PULL, LF_PIN_PULL_UP, 1 );
+    //GpioInit( &AntPow, LF_RADIO_ANT_SWITCH_POWER, LF_PIN_OUTPUT, LF_PIN_PUSH_PULL, LF_PIN_PULL_UP, 1 );
 }
 
 void SX126xAntSwOff( void )
 {
-    GpioInit( &AntPow, LF_RADIO_ANT_SWITCH_POWER, LF_PIN_ANALOGIC, LF_PIN_PUSH_PULL, LF_PIN_NO_PULL, 0 );
+    //GpioInit( &AntPow, LF_RADIO_ANT_SWITCH_POWER, LF_PIN_ANALOGIC, LF_PIN_PUSH_PULL, LF_PIN_NO_PULL, 0 );
 }
 
 bool SX126xCheckRfFrequency( uint32_t frequency )

@@ -76,44 +76,19 @@ static const uint8_t RfoTable[11] = { 1, 1, 1, 2, 2, 3, 4, 5, 6, 8, 9 };
 
 void SX1272IoInit( void )
 {
-    GpioInit( &SX1272.Spi.Nss, LF_RADIO_NSS, LF_PIN_OUTPUT, LF_PIN_PUSH_PULL, LF_PIN_PULL_UP, 1 );
-
-    GpioInit( &SX1272.DIO0, LF_RADIO_DIO_0, LF_PIN_INPUT, LF_PIN_PUSH_PULL, LF_PIN_PULL_UP, 0 );
-    GpioInit( &SX1272.DIO1, LF_RADIO_DIO_1, LF_PIN_INPUT, LF_PIN_PUSH_PULL, LF_PIN_PULL_UP, 0 );
-    GpioInit( &SX1272.DIO2, LF_RADIO_DIO_2, LF_PIN_INPUT, LF_PIN_PUSH_PULL, LF_PIN_PULL_UP, 0 );
-    GpioInit( &SX1272.DIO3, LF_RADIO_DIO_3, LF_PIN_INPUT, LF_PIN_PUSH_PULL, LF_PIN_PULL_UP, 0 );
-    GpioInit( &SX1272.DIO4, LF_RADIO_DIO_4, LF_PIN_INPUT, LF_PIN_PUSH_PULL, LF_PIN_PULL_UP, 0 );
-    GpioInit( &SX1272.DIO5, LF_RADIO_DIO_5, LF_PIN_INPUT, LF_PIN_PUSH_PULL, LF_PIN_PULL_UP, 0 );
 }
 
 void SX1272IoIrqInit( DioIrqHandler **irqHandlers )
 {
-    GpioSetInterrupt( &SX1272.DIO0, IRQ_RISING_EDGE, IRQ_HIGH_PRIORITY, irqHandlers[0] );
-    GpioSetInterrupt( &SX1272.DIO1, IRQ_RISING_EDGE, IRQ_HIGH_PRIORITY, irqHandlers[1] );
-    GpioSetInterrupt( &SX1272.DIO2, IRQ_RISING_EDGE, IRQ_HIGH_PRIORITY, irqHandlers[2] );
-    GpioSetInterrupt( &SX1272.DIO3, IRQ_RISING_EDGE, IRQ_HIGH_PRIORITY, irqHandlers[3] );
-    GpioSetInterrupt( &SX1272.DIO4, IRQ_RISING_EDGE, IRQ_HIGH_PRIORITY, irqHandlers[4] );
-    GpioSetInterrupt( &SX1272.DIO5, IRQ_RISING_EDGE, IRQ_HIGH_PRIORITY, irqHandlers[5] );
+    IoIrqInit(irqHandlers);
 }
 
 void SX1272IoDeInit( void )
 {
-    GpioInit( &SX1272.Spi.Nss, LF_RADIO_NSS, LF_PIN_OUTPUT, LF_PIN_PUSH_PULL, LF_PIN_PULL_UP, 1 );
-
-    GpioInit( &SX1272.DIO0, LF_RADIO_DIO_0, LF_PIN_INPUT, LF_PIN_PUSH_PULL, LF_PIN_NO_PULL, 0 );
-    GpioInit( &SX1272.DIO1, LF_RADIO_DIO_1, LF_PIN_INPUT, LF_PIN_PUSH_PULL, LF_PIN_NO_PULL, 0 );
-    GpioInit( &SX1272.DIO2, LF_RADIO_DIO_2, LF_PIN_INPUT, LF_PIN_PUSH_PULL, LF_PIN_NO_PULL, 0 );
-    GpioInit( &SX1272.DIO3, LF_RADIO_DIO_3, LF_PIN_INPUT, LF_PIN_PUSH_PULL, LF_PIN_NO_PULL, 0 );
-    GpioInit( &SX1272.DIO4, LF_RADIO_DIO_4, LF_PIN_INPUT, LF_PIN_PUSH_PULL, LF_PIN_NO_PULL, 0 );
-    GpioInit( &SX1272.DIO5, LF_RADIO_DIO_5, LF_PIN_INPUT, LF_PIN_PUSH_PULL, LF_PIN_NO_PULL, 0 );
 }
 
 void SX1272IoDbgInit( void )
 {
-#if defined( USE_RADIO_DEBUG )
-    GpioInit( &DbgPinTx, RADIO_DBG_PIN_TX, LF_PIN_OUTPUT, LF_PIN_PUSH_PULL, PIN_NO_PULL, 0 );
-    GpioInit( &DbgPinRx, RADIO_DBG_PIN_RX, LF_PIN_OUTPUT, LF_PIN_PUSH_PULL, PIN_NO_PULL, 0 );
-#endif
 }
 
 void SX1272IoTcxoInit( void )
@@ -148,13 +123,13 @@ void SX1272Reset( void )
     SX1272SetBoardTcxo( true );
 
     // Set RESET pin to 1
-    GpioInit( &SX1272.Reset, LF_RADIO_RESET, LF_PIN_OUTPUT, LF_PIN_PUSH_PULL, LF_PIN_NO_PULL, 1 );
+    //GpioInit( &SX1272.Reset, LF_RADIO_RESET, LF_PIN_OUTPUT, LF_PIN_PUSH_PULL, LF_PIN_NO_PULL, 1 );
 
     // Wait 1 ms
     DelayMs( 1 );
 
     // Configure RESET as input
-    GpioInit( &SX1272.Reset, LF_RADIO_RESET, LF_PIN_INPUT, LF_PIN_PUSH_PULL, LF_PIN_NO_PULL, 1 );
+    //GpioInit( &SX1272.Reset, LF_RADIO_RESET, LF_PIN_INPUT, LF_PIN_PUSH_PULL, LF_PIN_NO_PULL, 1 );
 
     // Wait 6 ms
     DelayMs( 6 );
@@ -208,16 +183,10 @@ void SX1272SetAntSwLowPower( bool status )
 
 void SX1272AntSwInit( void )
 {
-    GpioInit( &RadioSwitchCtrl1, LF_RADIO_SWITCH_CTRL1, LF_PIN_OUTPUT, LF_PIN_PUSH_PULL, LF_PIN_PULL_UP, 0 );
-    GpioInit( &RadioSwitchCtrl2, LF_RADIO_SWITCH_CTRL2, LF_PIN_OUTPUT, LF_PIN_PUSH_PULL, LF_PIN_PULL_UP, 0 );
-    GpioInit( &RadioPwrAmpCtrl , LF_RADIO_PWRAMP_CTRL , LF_PIN_OUTPUT, LF_PIN_PUSH_PULL, LF_PIN_PULL_UP, 0 );
 }
 
 void SX1272AntSwDeInit( void )
 {
-    GpioInit( &RadioSwitchCtrl1, LF_RADIO_SWITCH_CTRL1, LF_PIN_OUTPUT, LF_PIN_PUSH_PULL, LF_PIN_PULL_UP, 0 );
-    GpioInit( &RadioSwitchCtrl2, LF_RADIO_SWITCH_CTRL2, LF_PIN_OUTPUT, LF_PIN_PUSH_PULL, LF_PIN_PULL_UP, 0 );
-    GpioInit( &RadioPwrAmpCtrl , LF_RADIO_PWRAMP_CTRL , LF_PIN_OUTPUT, LF_PIN_PUSH_PULL, LF_PIN_PULL_UP, 0 );
 }
 
 void SX1272SetAntSw( uint8_t opMode )

@@ -32,89 +32,14 @@ extern "C"
     typedef struct
     {
         LF_SPI_HandleTypeDef Spi;
-        LF_Gpio_t            Mosi;
-        LF_Gpio_t            Miso;
-        LF_Gpio_t            Sclk;
         LF_Gpio_t            Nss;
     } LF_Spi_t;
 
-    typedef enum
-    {
-        LF_RADIO_ANT_SWITCH_LF, // SX1276 board
-        LF_RADIO_ANT_SWITCH_HF, // SX1276 board /* TODO: Are all these different names
-        LF_RADIO_ANT_SWITCH_POWER, // SX126x board /*       but for the same
-                                   // function??
-        LF_RADIO_SWITCH_CTRL1,     // SX1272 board
-        LF_RADIO_SWITCH_CTRL2,     // SX1272 board
-        LF_RADIO_PWRAMP_CTRL,      // SX1272 board
-        LF_RADIO_NSS,
-        LF_RADIO_BUSY,
-        LF_RADIO_DEVICE_SEL,
-        LF_RADIO_DIO_0,
-        LF_RADIO_DIO_1,
-        LF_RADIO_DIO_2,
-        LF_RADIO_DIO_3,
-        LF_RADIO_DIO_4,
-        LF_RADIO_DIO_5,
-        LF_RADIO_RESET,
-        // Not connected
-        LF_NC = (int)0xFFFFFFFF
-    } PinNames;
-
-    typedef enum
-    {
-        LF_PIN_INPUT = 0,
-        LF_PIN_OUTPUT,
-        LF_PIN_ALTERNATE_FCT,
-        LF_PIN_ANALOGIC
-    } PinModes;
-
-    typedef enum
-    {
-        LF_PIN_PUSH_PULL = 0,
-        LF_PIN_OPEN_DRAIN
-    } PinConfigs;
-
-    typedef enum
-    {
-        LF_PIN_NO_PULL = 0,
-        LF_PIN_PULL_UP,
-        LF_PIN_PULL_DOWN
-    } PinTypes;
-
-    void     GpioInit(LF_Gpio_t * obj,
-                      PinNames    pin,
-                      PinModes    mode,
-                      PinConfigs  config,
-                      PinTypes    type,
-                      uint32_t    value);
     void     GpioWrite(LF_Gpio_t * obj, uint32_t value);
     uint32_t GpioRead(LF_Gpio_t * obj);
 
     typedef void(IrqHandler)(void *);
     typedef void(GpioIrqHandler)(void *);
-
-    typedef enum
-    {
-        NO_IRQ = 0,
-        IRQ_RISING_EDGE,
-        IRQ_FALLING_EDGE,
-        IRQ_RISING_FALLING_EDGE
-    } IrqModes;
-
-    typedef enum
-    {
-        IRQ_VERY_LOW_PRIORITY = 0,
-        IRQ_LOW_PRIORITY,
-        IRQ_MEDIUM_PRIORITY,
-        IRQ_HIGH_PRIORITY,
-        IRQ_VERY_HIGH_PRIORITY
-    } IrqPriorities;
-
-    void GpioSetInterrupt(LF_Gpio_t *      obj,
-                          IrqModes         irqMode,
-                          IrqPriorities    irqPriority,
-                          GpioIrqHandler * irqHandler);
 
     /*!
      * \brief Timer object description

@@ -39,22 +39,6 @@ GpioRead(LF_Gpio_t * obj)
 }
 
 void
-GpioInit(LF_Gpio_t * obj,
-         PinNames    pin,
-         PinModes    mode,
-         PinConfigs  config,
-         PinTypes    type,
-         uint32_t    value)
-{
-}
-void
-GpioSetInterrupt(LF_Gpio_t *      obj,
-                 IrqModes         irqMode,
-                 IrqPriorities    irqPriority,
-                 GpioIrqHandler * irqHandler)
-{
-}
-void
 TimerInit(TimerEvent_t * obj, void (*callback)(void *))
 {
 }
