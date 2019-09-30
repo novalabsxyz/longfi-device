@@ -40,10 +40,8 @@ static Radio_t sx126x;
 static LongFi_t longfi_handle;
 static BoardBindings_t my_bindings {
   .spi_in_out = spi_in_out,
-  .gpio_init = gpio_init,
   .gpio_write = gpio_write,
   .gpio_read = gpio_read,
-  .gpio_set_interrupt = gpio_set_interrupt,
   .delay_ms = delay_ms,
 };
 

@@ -36,8 +36,8 @@ typedef struct {
 
 typedef enum
 {
-	LF_RADIO_ANT_SWITCH_LF,        //SX1276 board
-	LF_RADIO_ANT_SWITCH_HF,        //SX1276 board /* TODO: Are all these different names
+    LF_RADIO_ANT_SWITCH_LF,        //SX1276 board
+    LF_RADIO_ANT_SWITCH_HF,        //SX1276 board /* TODO: Are all these different names
     LF_RADIO_ANT_SWITCH_POWER,     //SX126x board /*       but for the same function??
     LF_RADIO_SWITCH_CTRL1,         //SX1272 board
     LF_RADIO_SWITCH_CTRL2,         //SX1272 board
@@ -153,12 +153,10 @@ uint16_t SpiInOut( LF_Spi_t *obj, uint16_t outData );
 typedef struct Radio_s Radio_t;
 
 typedef struct {
-	uint16_t (*spi_in_out)(LF_Spi_t *obj, uint16_t outData);
-	void (*gpio_init)(LF_Gpio_t *obj, PinNames pin, PinModes mode, PinConfigs config, PinTypes type, uint32_t value);
-	void (*gpio_write)(LF_Gpio_t *obj, uint32_t value);
+    uint16_t (*spi_in_out)(LF_Spi_t *obj, uint16_t outData);
+    void (*gpio_write)(LF_Gpio_t *obj, uint32_t value);
     uint32_t (*gpio_read)(LF_Gpio_t *obj);
-	void (*gpio_set_interrupt)( LF_Gpio_t *obj, IrqModes irqMode, IrqPriorities irqPriority, GpioIrqHandler *irqHandler);
-	void (*delay_ms)(uint32_t);
+    void (*delay_ms)(uint32_t);
 } BoardBindings_t;
 
 extern BoardBindings_t * bindings;

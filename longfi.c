@@ -291,7 +291,7 @@ ClientEvent _handle_internal_event(LongFi_t * handle){
   return ClientEvent_None;
 }
 
-// each sx12xx board definition can invoke this
+// each sx12xx board definition must invoke this
 void IoIrqInit(IrqHandler* irq_handlers[NUM_IRQ_HANDLES]){
   for(uint32_t i=0; i<NUM_IRQ_HANDLES; i++){
      internal.dio_irq_handles[i] = irq_handlers[i]; 
