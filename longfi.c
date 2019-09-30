@@ -171,14 +171,14 @@ void
 _send_random(LongFi_t * handle, uint8_t * data, size_t len)
 {
     uint32_t frequency;
-    bool     free_to_transmit = false;
-    while (!free_to_transmit)
-    {
-        uint32_t random = (*bindings->get_random_bits)(4);
-        frequency = uplink_channel_map[random % LONGFI_NUM_UPLINK_CHANNELS];
-        free_to_transmit =
-            handle->radio->IsChannelFree(MODEM_LORA, frequency, -65, 0);
-    }
+    // bool     free_to_transmit = false;
+    // while (!free_to_transmit)
+    // {
+    uint32_t random = (*bindings->get_random_bits)(4);
+    frequency = uplink_channel_map[random % LONGFI_NUM_UPLINK_CHANNELS];
+        // free_to_transmit =
+        //     handle->radio->IsChannelFree(MODEM_LORA, frequency, -65, 0);
+    // }
     handle->radio->SetTxConfig(MODEM_LORA,
                                TX_OUTPUT_POWER,
                                0,
