@@ -23,7 +23,7 @@ typedef struct {
 } LF_Gpio_t;
 
 typedef struct {
-	void* Instance;
+    void* Instance;
 } LF_SPI_HandleTypeDef;
 
 typedef struct {
@@ -153,9 +153,9 @@ uint16_t SpiInOut( LF_Spi_t *obj, uint16_t outData );
 typedef struct Radio_s Radio_t;
 
 typedef struct {
-    uint16_t (*spi_in_out)(LF_Spi_t *obj, uint16_t outData);
-    void (*gpio_write)(LF_Gpio_t *obj, uint32_t value);
-    uint32_t (*gpio_read)(LF_Gpio_t *obj);
+    uint8_t (*spi_in_out)(LF_Spi_t *obj, uint8_t outData);
+    void (*gpio_write)(LF_Gpio_t *obj, bool value);
+    bool (*gpio_read)(LF_Gpio_t *obj);
     void (*delay_ms)(uint32_t);
 } BoardBindings_t;
 

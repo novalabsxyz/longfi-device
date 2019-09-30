@@ -13,24 +13,22 @@ RfConfig_t radio_rf_config = {
     .device_id = 0xABCD,
 };
 
-uint16_t spi_in_out(LF_Spi_t *obj, uint16_t outData){
+uint8_t spi_in_out(LF_Spi_t *obj, uint8_t outData){
   return 0x3E;
 };
+
 void gpio_init(LF_Gpio_t *obj, PinNames pin, PinModes mode, PinConfigs config, PinTypes type, uint32_t value){
-
-}
-void gpio_write(LF_Gpio_t *obj, uint32_t value){
-
 }
 
-uint32_t gpio_read(LF_Gpio_t *obj){
-  return 0;
+void gpio_write(LF_Gpio_t *obj, bool value){
+}
+
+bool gpio_read(LF_Gpio_t *obj){
+  return false;
 }
 void gpio_set_interrupt( LF_Gpio_t *obj, IrqModes irqMode, IrqPriorities irqPriority, GpioIrqHandler *irqHandler){
-
 }
 void delay_ms(uint32_t){
-
 }
 
 static Radio_t sx1276;
