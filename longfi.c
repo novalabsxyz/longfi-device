@@ -117,7 +117,7 @@ void _send_random(LongFi_t * handle, uint8_t * data, size_t len){
   uint32_t frequency; 
   bool free_to_transmit = false;
   while (!free_to_transmit){
-    uint32_t random = handle->radio->Random()>>16;
+    uint32_t random = (*bindings->get_random_bits)(4);
     frequency = uplink_channel_map[random%LONGFI_NUM_UPLINK_CHANNELS];
     free_to_transmit = handle->radio->IsChannelFree(MODEM_LORA, frequency, -65, 0);
   }
@@ -163,7 +163,8 @@ void longfi_send(LongFi_t * handle, __attribute__((unused))  QualityOfService qo
   } else {
     // cannot allow packet_id = 0
     while (packet_id == 0) {
-      packet_id = (uint8_t) handle->radio->Random();
+      // packet_id is singled byte, so look for several bits
+      packet_id = (*bindings->get_random_bits)(8);
     }
     packet_header_multiple_fragments_t pheader  = {
       .oui = handle->config.oui,

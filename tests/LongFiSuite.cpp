@@ -1,5 +1,6 @@
 #include <CppUTest/TestHarness.h>
 
+#include "../board.h"
 #include "../longfi.h"
 #include "../longfiP.h"
 #include "radio-board.h"
@@ -12,12 +13,15 @@ RfConfig_t longfi_rf_config = {
 
 static Radio_t radio = MockRadioNew();
 static LongFi_t longfi_handle;
-
+// implemented in RadioSuite.cpp
+extern BoardBindings_t my_bindings;
 
 TEST_GROUP(LongFiGroup)
 {
     void setup()
    {
+    longfi_handle.bindings = &my_bindings;
+
     longfi_handle.radio = &radio;
     longfi_handle.config = longfi_rf_config;
     longfi_init(&longfi_handle);

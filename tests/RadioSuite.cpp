@@ -31,16 +31,21 @@ void gpio_set_interrupt( LF_Gpio_t *obj, IrqModes irqMode, IrqPriorities irqPrio
 void delay_ms(uint32_t){
 }
 
+uint32_t get_random_bits(uint8_t){
+  return 0xE0;
+}
+
 static Radio_t sx1276;
 static Radio_t sx1272;
 static Radio_t sx126x; 
 
 static LongFi_t longfi_handle;
-static BoardBindings_t my_bindings {
+BoardBindings_t my_bindings {
   .spi_in_out = spi_in_out,
   .gpio_write = gpio_write,
   .gpio_read = gpio_read,
   .delay_ms = delay_ms,
+  .get_random_bits = get_random_bits,
 };
 
 

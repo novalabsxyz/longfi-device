@@ -157,6 +157,7 @@ typedef struct {
     void (*gpio_write)(LF_Gpio_t *obj, bool value);
     bool (*gpio_read)(LF_Gpio_t *obj);
     void (*delay_ms)(uint32_t);
+    uint32_t (*get_random_bits)(uint8_t);
 } BoardBindings_t;
 
 extern BoardBindings_t * bindings;
