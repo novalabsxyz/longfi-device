@@ -23,7 +23,9 @@ memcpy1(uint8_t * dst, const uint8_t * src, uint16_t size)
 uint16_t
 SpiInOut(LF_Spi_t * obj, uint16_t outData)
 {
-    return (uint16_t)(*bindings->spi_in_out)(obj, (uint8_t)outData);
+    uint16_t ret = 0;
+    ret |= (*bindings->spi_in_out)(obj, (uint8_t) outData);
+    return ret;
 }
 
 void
