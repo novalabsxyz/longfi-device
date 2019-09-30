@@ -2,59 +2,98 @@
 
 BoardBindings_t * bindings = NULL;
 
-
-void DelayMs( uint32_t ms )
+void
+DelayMs(uint32_t ms)
 {
     (*bindings->delay_ms)(ms);
 }
 
-void Delay( float s )
+void
+Delay(float s)
 {
-    DelayMs( s * 1000.0f );
+    DelayMs(s * 1000.0f);
 }
 
-void memcpy1( uint8_t *dst, const uint8_t *src, uint16_t size ){
+void
+memcpy1(uint8_t * dst, const uint8_t * src, uint16_t size)
+{
     memcpy(dst, src, size);
 }
 
-uint16_t SpiInOut( LF_Spi_t *obj, uint16_t outData )
+uint16_t
+SpiInOut(LF_Spi_t * obj, uint16_t outData)
 {
-  return (uint16_t) (*bindings->spi_in_out)(obj, (uint8_t) outData);
+    return (uint16_t)(*bindings->spi_in_out)(obj, (uint8_t)outData);
 }
 
-
-void GpioWrite( LF_Gpio_t *obj, uint32_t value ){
-    (*bindings->gpio_write)(obj, (bool) value);
+void
+GpioWrite(LF_Gpio_t * obj, uint32_t value)
+{
+    (*bindings->gpio_write)(obj, (bool)value);
 }
 
-uint32_t GpioRead( LF_Gpio_t *obj ){
+uint32_t
+GpioRead(LF_Gpio_t * obj)
+{
     return (*bindings->gpio_read)(obj);
 }
 
-void GpioInit( LF_Gpio_t *obj, PinNames pin, PinModes mode, PinConfigs config, PinTypes type, uint32_t value ){
+void
+GpioInit(LF_Gpio_t * obj,
+         PinNames    pin,
+         PinModes    mode,
+         PinConfigs  config,
+         PinTypes    type,
+         uint32_t    value)
+{
 }
-void GpioSetInterrupt( LF_Gpio_t *obj, IrqModes irqMode, IrqPriorities irqPriority, GpioIrqHandler *irqHandler){
+void
+GpioSetInterrupt(LF_Gpio_t *      obj,
+                 IrqModes         irqMode,
+                 IrqPriorities    irqPriority,
+                 GpioIrqHandler * irqHandler)
+{
 }
-void TimerInit( TimerEvent_t *obj, void ( *callback )( void*) ){
+void
+TimerInit(TimerEvent_t * obj, void (*callback)(void *))
+{
 }
-void TimerIrqHandler( void ){
+void
+TimerIrqHandler(void)
+{
 }
-void TimerStart( TimerEvent_t *obj ){
+void
+TimerStart(TimerEvent_t * obj)
+{
 }
-void TimerStop( TimerEvent_t *obj ){
+void
+TimerStop(TimerEvent_t * obj)
+{
 }
-void TimerReset( TimerEvent_t *obj ){
+void
+TimerReset(TimerEvent_t * obj)
+{
 }
-void TimerSetValue( TimerEvent_t *obj, uint32_t value) {
+void
+TimerSetValue(TimerEvent_t * obj, uint32_t value)
+{
 }
-TimerTime_t TimerGetCurrentTime( void ){
+TimerTime_t
+TimerGetCurrentTime(void)
+{
     return 0;
 }
-TimerTime_t TimerGetElapsedTime( TimerTime_t savedTime ){
+TimerTime_t
+TimerGetElapsedTime(TimerTime_t savedTime)
+{
     return 0;
 }
-TimerTime_t TimerGetFutureTime( TimerTime_t eventInFuture ){
+TimerTime_t
+TimerGetFutureTime(TimerTime_t eventInFuture)
+{
     return 0;
 }
-void TimerLowPowerHandler( void ){
+void
+TimerLowPowerHandler(void)
+{
 }
