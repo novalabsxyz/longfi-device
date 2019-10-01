@@ -13,24 +13,22 @@ RfConfig_t radio_rf_config = {
     .device_id = 0xABCD,
 };
 
-uint16_t spi_in_out(LF_Spi_t *obj, uint16_t outData){
+uint8_t spi_in_out(LF_Spi_t *obj, uint8_t outData){
   return 0x3E;
 };
-void gpio_init(LF_Gpio_t *obj, PinNames pin, PinModes mode, PinConfigs config, PinTypes type, uint32_t value){
 
-}
-void gpio_write(LF_Gpio_t *obj, uint32_t value){
-
+void gpio_write(LF_Gpio_t *obj, bool value){
 }
 
-uint32_t gpio_read(LF_Gpio_t *obj){
-  return 0;
+bool gpio_read(LF_Gpio_t *obj){
+  return false;
 }
-void gpio_set_interrupt( LF_Gpio_t *obj, IrqModes irqMode, IrqPriorities irqPriority, GpioIrqHandler *irqHandler){
 
-}
 void delay_ms(uint32_t){
+}
 
+uint32_t get_random_bits(uint8_t){
+  return 0xE0;
 }
 
 static Radio_t sx1276;
@@ -38,13 +36,12 @@ static Radio_t sx1272;
 static Radio_t sx126x; 
 
 static LongFi_t longfi_handle;
-static BoardBindings_t my_bindings {
+BoardBindings_t my_bindings {
   .spi_in_out = spi_in_out,
-  .gpio_init = gpio_init,
   .gpio_write = gpio_write,
   .gpio_read = gpio_read,
-  .gpio_set_interrupt = gpio_set_interrupt,
   .delay_ms = delay_ms,
+  .get_random_bits = get_random_bits,
 };
 
 
