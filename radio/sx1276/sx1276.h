@@ -429,6 +429,8 @@ uint32_t SX1276GetWakeupTime( void );
 
 Radio_t SX1276RadioNew();
 
+void SX1276EnableTcxo( void );
+
 #ifdef __cplusplus
 }
 #endif

@@ -127,7 +127,7 @@ extern "C"
     /*
      * Private helper for handling internal events
      */
-    ClientEvent _handle_internal_event(LongFi_t * handle);
+    ClientEvent_t _handle_internal_event(LongFi_t * handle);
 
     /*
      * Private helper for counting bytes

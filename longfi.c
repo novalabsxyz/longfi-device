@@ -200,7 +200,6 @@ _send_random(LongFi_t * handle, uint8_t * data, size_t len)
 
 void
 longfi_send(LongFi_t *                               handle,
-            __attribute__((unused)) QualityOfService qos,
             const uint8_t *                          data,
             size_t                                   len)
 {
@@ -285,10 +284,10 @@ longfi_send(LongFi_t *                               handle,
     _send_random(handle, Buffer, internal.tx_cnt);
 }
 
-RxPacket
+RxPacket_t
 longfi_get_rx(__attribute__((unused)) LongFi_t * handle)
 {
-    RxPacket rx = {
+    RxPacket_t rx = {
         .buf  = internal.buffer,
         .len  = internal.rx_len,
         .rssi = RssiValue,
@@ -299,8 +298,8 @@ longfi_get_rx(__attribute__((unused)) LongFi_t * handle)
     return rx;
 }
 
-ClientEvent
-longfi_handle_event(LongFi_t * handle, RfEvent event)
+ClientEvent_t
+longfi_handle_event(LongFi_t * handle, RfEvent_t event)
 {
     internal.cur_event = InternalEvent_None;
 
@@ -340,7 +339,7 @@ longfi_handle_event(LongFi_t * handle, RfEvent event)
     return _handle_internal_event(handle);
 }
 
-ClientEvent
+ClientEvent_t
 _handle_internal_event(LongFi_t * handle)
 {
     switch (internal.cur_event)

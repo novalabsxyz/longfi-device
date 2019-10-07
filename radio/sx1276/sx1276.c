@@ -41,7 +41,7 @@ typedef struct
     RadioModems_t Modem;
     uint8_t       Addr;
     uint8_t       Value;
-}RadioRegisters_t;
+} RadioRegisters_t;
 
 /*!
  * FSK bandwidth definition
@@ -50,7 +50,7 @@ typedef struct
 {
     uint32_t bandwidth;
     uint8_t  RegValue;
-}FskBandwidth_t;
+} FskBandwidth_t;
 
 
 /*
