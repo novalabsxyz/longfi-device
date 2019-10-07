@@ -12,14 +12,6 @@ extern "C"
 #include <stdint.h>
 #include <stdlib.h>
 
-    typedef enum QualityOfService
-    {
-        LONGFI_QOS_0,     // send packets with no ACK
-        LONGFI_QOS_1,     // wait for ACK (unimplemented)
-        LONGFI_QOS_2,     // (unimplemented)
-        _MAX = 0xFFFFFFFF // force 32-bit value
-    } QualityOfService;
-
     typedef struct
     {
         uint32_t oui;       // organizations unique identifier
@@ -45,12 +37,12 @@ extern "C"
     void longfi_enable_tcxo(LongFi_t * handle);
 
     // these are the events to be handled by the client
-    typedef enum ClientEvent
+    typedef enum ClientEvent_t
     {
         ClientEvent_None,   // this is a non-event, no handling required
         ClientEvent_TxDone, // the full transmit is complete (1 or more fragments)
         ClientEvent_Rx,     // a full packet was received
-    } ClientEvent;
+    } ClientEvent_t;
 
     // this will give ownership of a buffer to longfi library
     // this should determine max size of transmit/receive BUT currently a static
@@ -61,27 +53,26 @@ extern "C"
     // it is not safe to use this function again without have received
     // ClientEvent_TxDone
     void longfi_send(LongFi_t *       handle,
-                     QualityOfService qos,
                      const uint8_t *  data,
                      size_t           len);
 
     // received packets are returned to the client this way
     // buf is the pointer to the buffer configured in longfi_set_buf
-    typedef struct RxPacket
+    typedef struct RxPacket_t
     {
         uint8_t * buf;
         size_t    len;
         int16_t   rssi;
         int8_t    snr;
-    } RxPacket;
+    } RxPacket_t;
 
     // this returns the received packet
     // (currently there is no user API for receiving packets)
-    RxPacket longfi_get_rx();
+    RxPacket_t longfi_get_rx();
 
     // these are system generated events that the client must collect and push
     // into longfi_handle_event all the DIO events are pin interrupts
-    typedef enum RfEvent
+    typedef enum RfEvent_t
     {
         DIO0,   // TxDone or Rx
         DIO1,   // unimplemented
@@ -92,11 +83,11 @@ extern "C"
         Timer1, // unimplemented
         Timer2, // unimplemented
         Timer3  // unimplemented
-    } RfEvent;
+    } RfEvent_t;
 
     // to be used by client to loop over process_event
     // run at a low priority
-    ClientEvent longfi_handle_event(LongFi_t * handle, RfEvent);
+    ClientEvent_t longfi_handle_event(LongFi_t * handle, RfEvent_t rf_event);
 
     // sends a byte (0xAB) at 910MHz - useful for setting of RF hardware test
     void longfi_rf_test(LongFi_t * handle);

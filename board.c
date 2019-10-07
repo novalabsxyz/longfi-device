@@ -31,13 +31,13 @@ SpiInOut(LF_Spi_t * obj, uint16_t outData)
 void
 GpioWrite(LF_Gpio_t * obj, uint32_t value)
 {
-    (*bindings->gpio_write)(obj, (bool)value);
+    (*bindings->spi_nss)((bool) value);
 }
 
 uint32_t
 GpioRead(LF_Gpio_t * obj)
 {
-    return (*bindings->gpio_read)(obj);
+    return 0;
 }
 
 void

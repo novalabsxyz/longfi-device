@@ -59,7 +59,7 @@ uint8_t * send_buffer = 0;
 TEST(LongFiGroup, SingleFragmentPacket)
 {
     uint8_t test_data[] = {0xDE, 0xAD, 0xBE, 0xEF};
-    longfi_send(&longfi_handle, LONGFI_QOS_0, test_data, sizeof(test_data));
+    longfi_send(&longfi_handle, test_data, sizeof(test_data));
     
     // assert that the packet sent is equal to test_data plus packet_header
     LONGS_EQUAL(
@@ -92,7 +92,7 @@ TEST(LongFiGroup, TwoFragmentPacket)
         0x07, 0x08, 0x09, 0x0a, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 
         0x19, 0x20};
 
-    longfi_send(&longfi_handle, LONGFI_QOS_0, test_data, sizeof(test_data));
+    longfi_send(&longfi_handle, test_data, sizeof(test_data));
     
     // first packet is 24 bytes
     LONGS_EQUAL(

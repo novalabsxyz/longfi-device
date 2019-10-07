@@ -19,6 +19,7 @@ Maintainer: Miguel Luis and Gregory Cristian
  * Flag used to set the RF switch control pins in low power mode when the radio is not active.
  */
 static bool RadioIsActive = false;
+static uint8_t selected_power = 0;
 
 /*!
  * Antenna switch GPIO pins objects
@@ -53,19 +54,12 @@ uint8_t SX1276GetPaSelect( uint32_t channel )
 
 void SX1276SetAntSwLowPower( bool status )
 {
-    if( RadioIsActive != status )
-    {
-        RadioIsActive = status;
-    
-        if( status == false )
-        {
-            SX1276AntSwInit( );
-        }
-        else
-        {
-            SX1276AntSwDeInit( );
+    if(status) {
+        if( bindings->set_antenna_pins!= NULL ){
+            (*bindings->set_antenna_pins)(AntModeSleep, 0);
         }
     }
+    RadioIsActive = status;
 }
 
 void SX1276AntSwInit( void )
@@ -76,8 +70,23 @@ void SX1276AntSwDeInit( void )
 {
 }
 
-void SX1276SetAntSw( uint8_t rxTx )
+void SX1276SetAntSw( uint8_t opMode )
 {
+
+    if( bindings->set_antenna_pins!= NULL ){
+        switch( opMode )
+        {
+        case SX1276_RFLR_OPMODE_SLEEP:
+            (*bindings->set_antenna_pins)(AntModeSleep, 0);
+            break;
+        case SX1276_RFLR_OPMODE_TRANSMITTER:
+            (*bindings->set_antenna_pins)(AntModeTx, selected_power);
+            break;
+        default:
+            (*bindings->set_antenna_pins)(AntModeRx, 0);
+            break;
+        }
+    }
 
 }
 
@@ -88,10 +97,26 @@ bool SX1276CheckRfFrequency( uint32_t frequency )
 
 void SX1276Reset( )
 {
+    // if user has given board_tcxo pointer
+    // enable it
+    if(bindings->set_board_tcxo!=NULL){
+        (*bindings->reset)(true);
+        (*bindings->delay_ms)(1);
+        (*bindings->reset)(false);
+        uint8_t osc_setup_time = (*bindings->set_board_tcxo)(true);
+        (*bindings->delay_ms)(osc_setup_time);
+        SX1276EnableTcxo();
+    };
+
+    // reset required, even after TCXO enabling routine
+    (*bindings->reset)(true);
+    (*bindings->delay_ms)(1);
+    (*bindings->reset)(false);
 }
 
 
 void SX1276SetRfTxPower( int8_t power ){
+    power = power;
     // uint8_t paConfig, paDac;
 
     // if( power < -4 )
