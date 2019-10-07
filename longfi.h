@@ -11,13 +11,18 @@ extern "C"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
-
+    /*!
+     * Configure device with necessary network routing information
+     */
     typedef struct
     {
         uint32_t oui;       // organizations unique identifier
         uint16_t device_id; // device identifier within organization
     } RfConfig_t;
 
+    /*!
+     * LongFi handler for library
+     */
     typedef struct
     {
         Radio_t * radio; // pointer to struct of SX12XX radio functions
@@ -26,17 +31,27 @@ extern "C"
         RfConfig_t config;
     } LongFi_t;
 
+    /*!
+     * \brief  Constructor for LongFi handle
+     *
+     * \param [IN] bindings  System bindings for radio driver
+     * \param [IN] radio     Handle to radio struct
+     * \param [IN] config    RF Network Configuration
+     */
     LongFi_t longfi_new_handle(BoardBindings_t * bindings,
                                Radio_t *         radio,
                                RfConfig_t        config);
 
-    // initializes the library before usage
+    /*!
+     * \brief  Run time initialization of library
+     *
+     * \param [IN] handle
+     */
     void longfi_init(LongFi_t * handle);
 
-    // enables Temperature Compensated External Oscillator
-    void longfi_enable_tcxo(LongFi_t * handle);
-
-    // these are the events to be handled by the client
+    /*!
+     * Events to be handle by client
+     */
     typedef enum ClientEvent_t
     {
         ClientEvent_None,   // this is a non-event, no handling required
@@ -44,20 +59,31 @@ extern "C"
         ClientEvent_Rx,     // a full packet was received
     } ClientEvent_t;
 
-    // this will give ownership of a buffer to longfi library
-    // this should determine max size of transmit/receive BUT currently a static
-    // buffer in longfi.c does
+    /*!
+     * \brief Provide ownership of a buffer to the library. Sets maximum transmit and receive
+     *
+     * \param [IN] handle
+     * \param [IN] buffer        A pointer to the memory
+     * \param [IN] buffer_len    Size of memory in bytes
+     */
     void longfi_set_buf(LongFi_t * handle, uint8_t * buffer, size_t buffer_len);
 
-    // client can asyncronously dispatch a send
-    // it is not safe to use this function again without have received
-    // ClientEvent_TxDone
+
+    /*!
+     * \brief  Dispatches a packet to the protocol. It is not safe to use this function
+     * again without waiting for a ClientEvent_TxDone
+     * 
+     * \param [IN] handle
+     * \param [IN] buffer        A pointer to the memory
+     * \param [IN] buffer_len    Size of memory in bytes
+     */
     void longfi_send(LongFi_t *       handle,
                      const uint8_t *  data,
                      size_t           len);
 
-    // received packets are returned to the client this way
-    // buf is the pointer to the buffer configured in longfi_set_buf
+    /*!
+     * The structure of a received packet
+     */
     typedef struct RxPacket_t
     {
         uint8_t * buf;
@@ -66,12 +92,18 @@ extern "C"
         int8_t    snr;
     } RxPacket_t;
 
-    // this returns the received packet
-    // (currently there is no user API for receiving packets)
+    /*!
+     * \brief Gets a downlink packet. This is to be called after a ClientEvent_Rx
+     *
+     * \retval RxPacket_t returns a received packet, including ownership
+     * Give a buffer back to LongFi using longfi_set_buf to send or receive again
+     */
     RxPacket_t longfi_get_rx();
 
-    // these are system generated events that the client must collect and push
-    // into longfi_handle_event all the DIO events are pin interrupts
+    /*!
+     * These are system generated events that the client must collect and push
+     * into longfi_handle_event. All the DIO events are pin interrupts
+     */
     typedef enum RfEvent_t
     {
         DIO0,   // TxDone or Rx
@@ -85,16 +117,23 @@ extern "C"
         Timer3  // unimplemented
     } RfEvent_t;
 
-    // to be used by client to loop over process_event
-    // run at a low priority
+    /*!
+     * \brief To be used by client in a low-priorty loop, feeding events into the library
+     *
+     * \param [IN] LongFi_t
+     * \param [IN] RfEvent_t   A system generated event
+     *
+     * \retval ClientEvent_t should be handled by a client
+     */
     ClientEvent_t longfi_handle_event(LongFi_t * handle, RfEvent_t rf_event);
 
-    // sends a byte (0xAB) at 910MHz - useful for setting of RF hardware test
+    /*!
+     * \brief Continuously sends a byte byte (0xAB) at 910MHz.
+     * Useful for setting of RF hardware test
+     *
+     * \param [IN] LongFi_t
+     */
     void longfi_rf_test(LongFi_t * handle);
-
-    // returns a random 32-bit number based on RSSI readings
-    // beware: this puts the radio to sleep after getting readings
-    uint32_t longfi_get_random(LongFi_t * handle);
 
     extern const struct Radio_s Radio;
 
