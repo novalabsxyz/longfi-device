@@ -4,7 +4,7 @@ dist: bionic
 
 before_script:
   - sudo apt-get update
-  - sudo apt-get install cmake
+  - sudo apt-get install cmake doxygen
   - sudo apt-get install g++-multilib libc6-dev-i386 gcc-arm-none-eabi libnewlib-arm-none-eabi
 
 script:
