@@ -9,4 +9,4 @@ before_script:
 
 script:
   - cmake -H. -Bbuild -DBUILD_TESTING=OFF -DCMAKE_TOOLCHAIN_FILE=../toolchain-gcc-arm-none-eabi.cmake
-  - cmake -C build
+  - make -C build
