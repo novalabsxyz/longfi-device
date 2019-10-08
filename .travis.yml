@@ -2,18 +2,10 @@ language: cpp
 
 dist: trusty
 
-env:
- global:
-   - CPPUTEST_HOME=/tmp/cpputest-3.8
-
 before_script:
-  - wget https://github.com/cpputest/cpputest/releases/download/v3.8/cpputest-3.8.tar.gz -O /tmp/cpputest.tar.gz
-  - tar -xzvf /tmp/cpputest.tar.gz -C /tmp
-  - cd /tmp/cpputest-3.8
-  - ./autogen.sh
-  - ./configure
-  - make
-  - cd $TRAVIS_BUILD_DIR/tests
+  - sudo apt-get update
+  - sudo apt-get install cmake g++-multilib libc6-dev-i386 gcc-arm-none-eabi libnewlib-arm-none-eabi
 
 script:
-  - make
+  - cmake -H. -Bbuild -DBUILD_TESTING=OFF -DCMAKE_TOOLCHAIN_FILE=../toolchain-gcc-arm-none-eabi.cmake
+  - cmake -C build
