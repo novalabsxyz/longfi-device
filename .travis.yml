@@ -3,6 +3,7 @@ language: cpp
 dist: trusty
 
 before_script:
+  - echo "deb http://cz.archive.ubuntu.com/ubuntu disco main universe" | sudo tee -a /etc/apt/sources.list
   - sudo apt-get update
   - sudo apt-get install cmake g++-multilib libc6-dev-i386 gcc-arm-none-eabi libnewlib-arm-none-eabi
 
