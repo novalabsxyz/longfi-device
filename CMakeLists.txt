@@ -12,10 +12,10 @@ set(CMAKE_C_STANDARD 99)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE OFF)
 
-add_compile_options(-fPIC)
+add_compile_options(-fPIC -mno-pic-data-is-text-relative)
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fpic -fpic")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpic")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC -mno-pic-data-is-text-relative")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -mno-pic-data-is-text-relative")
 ##########################################################################
 # External                                                               #
 ##########################################################################
@@ -49,8 +49,6 @@ target_include_directories(longfi
   PUBLIC ${PROJECT_SOURCE_DIR}
   )
 
-target_compile_options(longfi PRIVATE -fPIC)
-set_property(TARGET ${PROJECT_NAME} PROPERTY POSITION_INDEPENDENT_CODE FALSE)
 install(TARGETS longfi lfc golay cursor cursor_varint
         DESTINATION lib
   )
