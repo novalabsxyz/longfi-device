@@ -10,7 +10,12 @@ project(LongFiDevice
 
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_POSITION_INDEPENDENT_CODE OFF)
 
+add_compile_options(-fPIC)
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fpic")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpic")
 ##########################################################################
 # External                                                               #
 ##########################################################################
@@ -37,9 +42,15 @@ add_library(longfi
 )
 
 target_link_libraries(longfi
-  PRIVATE lfc golay cursor cursor_varint
+  PUBLIC lfc golay cursor cursor_varint
   )
   
 target_include_directories(longfi
   PUBLIC ${PROJECT_SOURCE_DIR}
+  )
+
+target_compile_options(longfi PRIVATE -fPIC)
+
+install(TARGETS longfi lfc golay cursor cursor_varint
+        DESTINATION lib
   )
