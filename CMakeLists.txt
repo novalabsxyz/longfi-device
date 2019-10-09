@@ -3,7 +3,7 @@
 ##########################################################################
 cmake_minimum_required(VERSION 3.11)
 
-project(LongFiDevice
+project(longfi
   VERSION   1.0
   LANGUAGES C
   )
@@ -14,7 +14,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE OFF)
 
 add_compile_options(-fPIC)
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fpic")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fpic -fpic")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpic")
 ##########################################################################
 # External                                                               #
@@ -50,7 +50,7 @@ target_include_directories(longfi
   )
 
 target_compile_options(longfi PRIVATE -fPIC)
-
+set_property(TARGET ${PROJECT_NAME} PROPERTY POSITION_INDEPENDENT_CODE FALSE)
 install(TARGETS longfi lfc golay cursor cursor_varint
         DESTINATION lib
   )
