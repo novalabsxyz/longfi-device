@@ -49,6 +49,6 @@ target_include_directories(longfi
   PUBLIC ${PROJECT_SOURCE_DIR}
   )
 
-install(TARGETS longfi lfc golay cursor cursor_varint
+install(TARGETS longfi sx12xx  
         DESTINATION lib
   )
