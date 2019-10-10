@@ -12,12 +12,13 @@ int8_t  SnrValue  = 0;
 static LongFiInternal_t internal;
 
 LongFi_t
-longfi_new_handle(BoardBindings_t * bindings, Radio_t * radio, RfConfig_t config)
+longfi_new_handle(BoardBindings_t * bindings, Radio_t * radio, LongFiConfig_t config,union LongFiAuthCallbacks * auth_cb)
 {
     LongFi_t handle = {
         .radio    = radio,
         .config   = config,
         .bindings = bindings,
+        .auth_cb  = auth_cb,
     };
     return handle;
 }

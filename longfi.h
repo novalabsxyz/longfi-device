@@ -11,6 +11,16 @@ extern "C"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
+
+   /*!
+     * Authentication modes
+     */
+    typedef enum
+    {
+        PresharedKey128,
+        // TODO: ECDH
+    } LongFiAuthMode_t;
+
     /*!
      * Configure device with necessary network routing information
      */
@@ -18,7 +28,16 @@ extern "C"
     {
         uint32_t oui;       // organizations unique identifier
         uint16_t device_id; // device identifier within organization
-    } RfConfig_t;
+        LongFiAuthMode_t auth_mode;
+    } LongFiConfig_t;
+
+    /*!
+     * Configure
+     */
+    union LongFiAuthCallbacks {
+        uint8_t * (*get_preshared_key)();
+        // other auth types will have other callbacks
+    } LongFiAuthCallbacks;
 
     /*!
      * LongFi handler for library
@@ -27,8 +46,9 @@ extern "C"
     {
         Radio_t * radio; // pointer to struct of SX12XX radio functions
         BoardBindings_t *
-                   bindings; // pointer to struct of system bindings, defined in board.h
-        RfConfig_t config;
+                                    bindings; // pointer to struct of system bindings, defined in board.h
+        LongFiConfig_t              config;
+        union LongFiAuthCallbacks * auth_cb;
     } LongFi_t;
 
     /*!
@@ -40,7 +60,8 @@ extern "C"
      */
     LongFi_t longfi_new_handle(BoardBindings_t * bindings,
                                Radio_t *         radio,
-                               RfConfig_t        config);
+                               LongFiConfig_t        config,
+                               union LongFiAuthCallbacks * auth_cb);
 
     /*!
      * \brief  Run time initialization of library
