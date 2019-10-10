@@ -6,19 +6,30 @@
 
 ## About
 
-This is a prototype for the user facing API of Helium LongFi Protocol. In its current form, it is hardly a protocol at all but some of the pieces are there to allow for in-field testing. It currently supports the following:
-* sending packets at full power at SF10
-* routing packets using OUI and device ID
-* fragmenting packets such that TOA does not violate FCC
-* channel hopping such that multiple fragments may be transmitted without waits
+This is project leverages LongFi-Core and connects it to Semtech LoRa radios (SX12xx).
 
-Notably, this library does **not**:
-* configure TCXOs or handle antenna control
-* receive packets
-* encrypt packets
-* encode packets
-* throttle spreading factor
-* throttle transmit power
+Currently, only uplink is supported.
+
+## Building
+
+1. Generate makefile in `build/`. You only need to do this once.
+   ```
+   cmake -H. -Bbuild -DBUILD_TESTING=OFF
+   ```
+   or to cross-compile for for arm
+   ```
+   cmake -H. -Bbuild -DBUILD_TESTING=OFF -DCMAKE_TOOLCHAIN_FILE=../toolchain-gcc-arm-none-eabi.cmake
+   ```
+1. Compile
+   ```
+   make -C build
+   ```
+1. Documentation
+   ```
+   make -C build docs
+   open build/docs/html/index.html
+   ```
+
 
 ## Usage
 

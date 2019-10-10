@@ -1,5 +1,6 @@
 #include "board.h"
 #include "longfiP.h"
+#include "lfc/priv/lfc_dg_ser.h"
 #include <string.h>
 
 uint16_t BufferSize = BUFFER_SIZE;
