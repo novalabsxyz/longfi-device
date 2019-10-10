@@ -49,6 +49,6 @@ target_include_directories(longfi
   PUBLIC ${PROJECT_SOURCE_DIR}
   )
 
-install(TARGETS longfi sx12xx  
+install(TARGETS longfi
         DESTINATION lib
   )

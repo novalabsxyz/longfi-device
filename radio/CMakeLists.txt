@@ -6,3 +6,7 @@ add_library(sx12xx STATIC
   sx1276/sx1276-board.c
   sx1276/sx1276.c
   )
+
+install(TARGETS sx12xx
+        DESTINATION lib
+  )
