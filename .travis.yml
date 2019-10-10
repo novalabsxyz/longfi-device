@@ -1,6 +1,6 @@
-language: cpp
-
 dist: bionic
+
+language: cpp
 
 before_script:
   - sudo apt-get update
