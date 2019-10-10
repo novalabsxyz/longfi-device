@@ -12,7 +12,7 @@ extern "C"
 #include <stdint.h>
 #include <stdlib.h>
 
-   /*!
+    /*!
      * Authentication modes
      */
     typedef enum
@@ -26,8 +26,8 @@ extern "C"
      */
     typedef struct
     {
-        uint32_t oui;       // organizations unique identifier
-        uint16_t device_id; // device identifier within organization
+        uint32_t         oui;       // organizations unique identifier
+        uint16_t         device_id; // device identifier within organization
         LongFiAuthMode_t auth_mode;
     } LongFiConfig_t;
 
@@ -58,9 +58,9 @@ extern "C"
      * \param [IN] radio     Handle to radio struct
      * \param [IN] config    RF Network Configuration
      */
-    LongFi_t longfi_new_handle(BoardBindings_t * bindings,
-                               Radio_t *         radio,
-                               LongFiConfig_t        config,
+    LongFi_t longfi_new_handle(BoardBindings_t *           bindings,
+                               Radio_t *                   radio,
+                               LongFiConfig_t              config,
                                union LongFiAuthCallbacks * auth_cb);
 
     /*!
@@ -91,16 +91,14 @@ extern "C"
 
 
     /*!
-     * \brief  Dispatches a packet to the protocol. It is not safe to use this function
-     * again without waiting for a ClientEvent_TxDone
-     * 
+     * \brief  Dispatches a packet to the protocol. It is not safe to use this
+     * function again without waiting for a ClientEvent_TxDone
+     *
      * \param [IN] handle
      * \param [IN] buffer        A pointer to the memory
      * \param [IN] buffer_len    Size of memory in bytes
      */
-    void longfi_send(LongFi_t *       handle,
-                     const uint8_t *  data,
-                     size_t           len);
+    void longfi_send(LongFi_t * handle, const uint8_t * data, size_t len);
 
     /*!
      * The structure of a received packet
