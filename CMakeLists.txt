@@ -42,7 +42,7 @@ add_library(longfi
 )
 
 target_link_libraries(longfi
-  PUBLIC lfc golay cursor cursor_varint
+  PUBLIC lfc golay cursor cursor_varint sx12xx
   )
   
 target_include_directories(longfi
