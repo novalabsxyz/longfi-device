@@ -1,5 +1,4 @@
 #include "board.h"
-#include "lfc/priv/lfc_dg_ser.h"
 #include "longfiP.h"
 #include <string.h>
 
