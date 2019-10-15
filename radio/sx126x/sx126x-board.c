@@ -245,8 +245,9 @@ uint8_t SX126xGetDeviceId( void )
 
 void SX126xAntSwOn( void )
 {
-
-    //GpioInit( &AntPow, LF_RADIO_ANT_SWITCH_POWER, LF_PIN_OUTPUT, LF_PIN_PUSH_PULL, LF_PIN_PULL_UP, 1 );
+    if( bindings->set_antenna_pins!= NULL ){
+        (*bindings->set_antenna_pins)(AntModeTx, 0);
+    }
 }
 
 void SX126xAntSwOff( void )
