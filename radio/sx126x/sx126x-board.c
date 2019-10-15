@@ -248,6 +248,7 @@ uint8_t SX126xGetDeviceId( void )
 
 void SX126xAntSwOn( void )
 {
+    SX126xSetDio2AsRfSwitchCtrl(true);
     if( bindings->set_antenna_pins!= NULL ){
         (*bindings->set_antenna_pins)(AntModeTx, 0);
     }
@@ -255,6 +256,7 @@ void SX126xAntSwOn( void )
 
 void SX126xAntSwOff( void )
 {
+    SX126xSetDio2AsRfSwitchCtrl(false);
     if( bindings->set_antenna_pins!= NULL ){
         (*bindings->set_antenna_pins)(AntModeSleep, 0);
     }
