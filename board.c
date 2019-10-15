@@ -24,14 +24,14 @@ uint16_t
 SpiInOut(LF_Spi_t * obj, uint16_t outData)
 {
     uint16_t ret = 0;
-    ret |= (*bindings->spi_in_out)(obj, (uint8_t) outData);
+    ret |= (*bindings->spi_in_out)(obj, (uint8_t)outData);
     return ret;
 }
 
 void
 GpioWrite(LF_Gpio_t * obj, uint32_t value)
 {
-    (*bindings->spi_nss)((bool) value);
+    (*bindings->spi_nss)((bool)value);
 }
 
 uint32_t

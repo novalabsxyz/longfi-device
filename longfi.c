@@ -1,6 +1,6 @@
 #include "board.h"
-#include "longfiP.h"
 #include "lfc/priv/lfc_dg_ser.h"
+#include "longfiP.h"
 #include <string.h>
 
 uint16_t BufferSize = BUFFER_SIZE;
@@ -12,12 +12,16 @@ int8_t  SnrValue  = 0;
 static LongFiInternal_t internal;
 
 LongFi_t
-longfi_new_handle(BoardBindings_t * bindings, Radio_t * radio, RfConfig_t config)
+longfi_new_handle(BoardBindings_t *           bindings,
+                  Radio_t *                   radio,
+                  LongFiConfig_t              config,
+                  union LongFiAuthCallbacks * auth_cb)
 {
     LongFi_t handle = {
         .radio    = radio,
         .config   = config,
         .bindings = bindings,
+        .auth_cb  = auth_cb,
     };
     return handle;
 }
@@ -176,9 +180,9 @@ _send_random(LongFi_t * handle, uint8_t * data, size_t len)
     // while (!free_to_transmit)
     // {
     uint32_t random = (*bindings->get_random_bits)(4);
-    frequency = uplink_channel_map[random % LONGFI_NUM_UPLINK_CHANNELS];
-        // free_to_transmit =
-        //     handle->radio->IsChannelFree(MODEM_LORA, frequency, -65, 0);
+    frequency       = uplink_channel_map[random % LONGFI_NUM_UPLINK_CHANNELS];
+    // free_to_transmit =
+    //     handle->radio->IsChannelFree(MODEM_LORA, frequency, -65, 0);
     // }
     handle->radio->SetTxConfig(MODEM_LORA,
                                TX_OUTPUT_POWER,
@@ -200,9 +204,7 @@ _send_random(LongFi_t * handle, uint8_t * data, size_t len)
 #include <stdio.h>
 
 void
-longfi_send(LongFi_t *                               handle,
-            const uint8_t *                          data,
-            size_t                                   len)
+longfi_send(LongFi_t * handle, const uint8_t * data, size_t len)
 {
     uint32_t num_fragments;
     size_t   payload_consumed = 0;

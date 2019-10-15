@@ -38,7 +38,8 @@ extern "C"
     void     GpioWrite(LF_Gpio_t * obj, uint32_t value);
     uint32_t GpioRead(LF_Gpio_t * obj);
 
-    typedef enum AntPinsMode_t {
+    typedef enum AntPinsMode_t
+    {
         AntModeTx,
         AntModeRx,
         AntModeSleep,
@@ -95,12 +96,15 @@ extern "C"
         // must provide for drivers to work
         uint8_t (*spi_in_out)(LF_Spi_t * obj, uint8_t outData);
         void (*spi_nss)(bool sel);
-         void (*reset)(bool enable);
+        void (*reset)(bool enable);
         void (*delay_ms)(uint32_t);
         uint32_t (*get_random_bits)(uint8_t);
         // optional board control
-        uint8_t (*set_board_tcxo)(bool enable);                           // to control power supply TCXO (wake/sleep)
-        void (*set_antenna_pins)(AntPinsMode_t mode, uint8_t power);      // to control antenna pins for TX/RX/Sleep
+        uint8_t (*set_board_tcxo)(
+            bool enable); // to control power supply TCXO (wake/sleep)
+        void (*set_antenna_pins)(
+            AntPinsMode_t mode,
+            uint8_t       power); // to control antenna pins for TX/RX/Sleep
     } BoardBindings_t;
 
     extern BoardBindings_t * bindings;

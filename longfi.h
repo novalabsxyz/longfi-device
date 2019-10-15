@@ -11,14 +11,33 @@ extern "C"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
+
+    /*!
+     * Authentication modes
+     */
+    typedef enum
+    {
+        PresharedKey128,
+        // TODO: ECDH
+    } LongFiAuthMode_t;
+
     /*!
      * Configure device with necessary network routing information
      */
     typedef struct
     {
-        uint32_t oui;       // organizations unique identifier
-        uint16_t device_id; // device identifier within organization
-    } RfConfig_t;
+        uint32_t         oui;       // organizations unique identifier
+        uint16_t         device_id; // device identifier within organization
+        LongFiAuthMode_t auth_mode;
+    } LongFiConfig_t;
+
+    /*!
+     * Configure
+     */
+    union LongFiAuthCallbacks {
+        uint8_t * (*get_preshared_key)();
+        // other auth types will have other callbacks
+    } LongFiAuthCallbacks;
 
     /*!
      * LongFi handler for library
@@ -27,8 +46,9 @@ extern "C"
     {
         Radio_t * radio; // pointer to struct of SX12XX radio functions
         BoardBindings_t *
-                   bindings; // pointer to struct of system bindings, defined in board.h
-        RfConfig_t config;
+                                    bindings; // pointer to struct of system bindings, defined in board.h
+        LongFiConfig_t              config;
+        union LongFiAuthCallbacks * auth_cb;
     } LongFi_t;
 
     /*!
@@ -38,9 +58,10 @@ extern "C"
      * \param [IN] radio     Handle to radio struct
      * \param [IN] config    RF Network Configuration
      */
-    LongFi_t longfi_new_handle(BoardBindings_t * bindings,
-                               Radio_t *         radio,
-                               RfConfig_t        config);
+    LongFi_t longfi_new_handle(BoardBindings_t *           bindings,
+                               Radio_t *                   radio,
+                               LongFiConfig_t              config,
+                               union LongFiAuthCallbacks * auth_cb);
 
     /*!
      * \brief  Run time initialization of library
@@ -70,16 +91,14 @@ extern "C"
 
 
     /*!
-     * \brief  Dispatches a packet to the protocol. It is not safe to use this function
-     * again without waiting for a ClientEvent_TxDone
-     * 
+     * \brief  Dispatches a packet to the protocol. It is not safe to use this
+     * function again without waiting for a ClientEvent_TxDone
+     *
      * \param [IN] handle
      * \param [IN] buffer        A pointer to the memory
      * \param [IN] buffer_len    Size of memory in bytes
      */
-    void longfi_send(LongFi_t *       handle,
-                     const uint8_t *  data,
-                     size_t           len);
+    void longfi_send(LongFi_t * handle, const uint8_t * data, size_t len);
 
     /*!
      * The structure of a received packet
