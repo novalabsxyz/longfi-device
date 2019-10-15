@@ -65,11 +65,11 @@ void SX126xIoDbgInit( void )
 
 void SX126xIoTcxoInit( void )
 {
-    // CalibrationParams_t calibParam;
+    CalibrationParams_t calibParam;
 
-    // SX126xSetDio3AsTcxoCtrl( TCXO_CTRL_1_7V, SX126xGetBoardTcxoWakeupTime( ) << 6 ); // convert from ms to SX126x time base
-    // calibParam.Value = 0x7F;
-    // SX126xCalibrate( calibParam );
+    SX126xSetDio3AsTcxoCtrl( TCXO_CTRL_1_7V, SX126xGetBoardTcxoWakeupTime( ) << 6 ); // convert from ms to SX126x time base
+    calibParam.Value = 0x7F;
+    SX126xCalibrate( calibParam );
 }
 
 uint32_t SX126xGetBoardTcxoWakeupTime( void )
