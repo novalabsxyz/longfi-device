@@ -865,41 +865,41 @@ uint32_t SX126xRadioTimeOnAir( RadioModems_t modem, uint8_t pktLen )
 {
     uint32_t airTime = 0;
 
-    switch( modem )
-    {
-    case MODEM_FSK:
-        {
-           airTime = rint( ( 8 * ( SX126x.PacketParams.Params.Gfsk.PreambleLength +
-                                     ( SX126x.PacketParams.Params.Gfsk.SyncWordLength >> 3 ) +
-                                     ( ( SX126x.PacketParams.Params.Gfsk.HeaderType == RADIO_PACKET_FIXED_LENGTH ) ? 0.0 : 1.0 ) +
-                                     pktLen +
-                                     ( ( SX126x.PacketParams.Params.Gfsk.CrcLength == SX126x_RADIO_CRC_2_BYTES ) ? 2.0 : 0 ) ) /
-                                     SX126x.ModulationParams.Params.Gfsk.BitRate ) * 1e3 );
-        }
-        break;
-    case MODEM_LORA:
-        {
-            double ts = SX126xRadioLoRaSymbTime[SX126x.ModulationParams.Params.LoRa.Bandwidth - 4][12 - SX126x.ModulationParams.Params.LoRa.SpreadingFactor];
-            // time of preamble
-            double tPreamble = ( SX126x.PacketParams.Params.LoRa.PreambleLength + 4.25 ) * ts;
-            // Symbol length of payload and time
-            double tmp = ceil( ( 8 * pktLen - 4 * SX126x.ModulationParams.Params.LoRa.SpreadingFactor +
-                                 28 + 16 * SX126x.PacketParams.Params.LoRa.CrcMode -
-                                 ( ( SX126x.PacketParams.Params.LoRa.HeaderType == LORA_PACKET_FIXED_LENGTH ) ? 20 : 0 ) ) /
-                                 ( double )( 4 * ( SX126x.ModulationParams.Params.LoRa.SpreadingFactor -
-                                 ( ( SX126x.ModulationParams.Params.LoRa.LowDatarateOptimize > 0 ) ? 2 : 0 ) ) ) ) *
-                                 ( ( SX126x.ModulationParams.Params.LoRa.CodingRate % 4 ) + 4 );
-            double nPayload = 8 + ( ( tmp > 0 ) ? tmp : 0 );
-            double tPayload = nPayload * ts;
-            // Time on air
-            double tOnAir = tPreamble + tPayload;
-            // return milli seconds
-            airTime = floor( tOnAir + 0.999 );
-        }
-        break;
-    default:
-    break;
-    }
+    // switch( modem )
+    // {
+    // case MODEM_FSK:
+    //     {
+    //        airTime = rint( ( 8 * ( SX126x.PacketParams.Params.Gfsk.PreambleLength +
+    //                                  ( SX126x.PacketParams.Params.Gfsk.SyncWordLength >> 3 ) +
+    //                                  ( ( SX126x.PacketParams.Params.Gfsk.HeaderType == RADIO_PACKET_FIXED_LENGTH ) ? 0.0 : 1.0 ) +
+    //                                  pktLen +
+    //                                  ( ( SX126x.PacketParams.Params.Gfsk.CrcLength == SX126x_RADIO_CRC_2_BYTES ) ? 2.0 : 0 ) ) /
+    //                                  SX126x.ModulationParams.Params.Gfsk.BitRate ) * 1e3 );
+    //     }
+    //     break;
+    // case MODEM_LORA:
+    //     {
+    //         double ts = SX126xRadioLoRaSymbTime[SX126x.ModulationParams.Params.LoRa.Bandwidth - 4][12 - SX126x.ModulationParams.Params.LoRa.SpreadingFactor];
+    //         // time of preamble
+    //         double tPreamble = ( SX126x.PacketParams.Params.LoRa.PreambleLength + 4.25 ) * ts;
+    //         // Symbol length of payload and time
+    //         double tmp = ceil( ( 8 * pktLen - 4 * SX126x.ModulationParams.Params.LoRa.SpreadingFactor +
+    //                              28 + 16 * SX126x.PacketParams.Params.LoRa.CrcMode -
+    //                              ( ( SX126x.PacketParams.Params.LoRa.HeaderType == LORA_PACKET_FIXED_LENGTH ) ? 20 : 0 ) ) /
+    //                              ( double )( 4 * ( SX126x.ModulationParams.Params.LoRa.SpreadingFactor -
+    //                              ( ( SX126x.ModulationParams.Params.LoRa.LowDatarateOptimize > 0 ) ? 2 : 0 ) ) ) ) *
+    //                              ( ( SX126x.ModulationParams.Params.LoRa.CodingRate % 4 ) + 4 );
+    //         double nPayload = 8 + ( ( tmp > 0 ) ? tmp : 0 );
+    //         double tPayload = nPayload * ts;
+    //         // Time on air
+    //         double tOnAir = tPreamble + tPayload;
+    //         // return milli seconds
+    //         airTime = floor( tOnAir + 0.999 );
+    //     }
+    //     break;
+    // default:
+    // break;
+    // }
     return airTime;
 
 }
@@ -1107,6 +1107,7 @@ void SX126xRadioOnRxTimeoutIrq( void* context )
 void SX126xRadioOnDioIrq( void* context )
 {
     IrqFired = true;
+    SX126xRadioIrqProcess();
 }
 
 void SX126xRadioIrqProcess( void )

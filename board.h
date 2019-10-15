@@ -99,12 +99,17 @@ extern "C"
         void (*reset)(bool enable);
         void (*delay_ms)(uint32_t);
         uint32_t (*get_random_bits)(uint8_t);
-        // optional board control
+        bool (*busy_pin_status)(); // only necessary for SX126x
+                                   // optional board control
+        // if external PA, this callback allows you to reduce power
+        // of SX12xx and to do any PA switching
+        uint8_t (*reduce_power)(uint8_t);
         uint8_t (*set_board_tcxo)(
             bool enable); // to control power supply TCXO (wake/sleep)
         void (*set_antenna_pins)(
             AntPinsMode_t mode,
             uint8_t       power); // to control antenna pins for TX/RX/Sleep
+
     } BoardBindings_t;
 
     extern BoardBindings_t * bindings;

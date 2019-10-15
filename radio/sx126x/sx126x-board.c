@@ -42,6 +42,9 @@ Gpio_t DbgPinTx;
 Gpio_t DbgPinRx;
 #endif
 
+static bool RadioIsActive = false;
+
+
 void SX126xIoInit( void )
 {
 }
@@ -62,31 +65,34 @@ void SX126xIoDbgInit( void )
 
 void SX126xIoTcxoInit( void )
 {
+    CalibrationParams_t calibParam;
+
+    SX126xSetDio3AsTcxoCtrl( TCXO_CTRL_1_7V, SX126xGetBoardTcxoWakeupTime( ) << 6 ); // convert from ms to SX126x time base
+    calibParam.Value = 0x7F;
+    SX126xCalibrate( calibParam );
 }
 
 uint32_t SX126xGetBoardTcxoWakeupTime( void )
 {
-    return 0;
+    return 6;
 }
 
 void SX126xReset( void )
 {
-    DelayMs( 10 );
-    //GpioInit( &SX126x.Reset, LF_RADIO_RESET, LF_PIN_OUTPUT, LF_PIN_PUSH_PULL, LF_PIN_NO_PULL, 0 );
-    DelayMs( 20 );
-    //GpioInit( &SX126x.Reset, LF_RADIO_RESET, LF_PIN_ANALOGIC, LF_PIN_PUSH_PULL, LF_PIN_NO_PULL, 0 ); // internal pull-up
-    DelayMs( 10 );
+    // reset required, even after TCXO enabling routine
+    (*bindings->reset)(true);
+    (*bindings->delay_ms)(20);
+    (*bindings->reset)(false);
+    (*bindings->delay_ms)(10);
 }
 
 void SX126xWaitOnBusy( void )
 {
-    while( GpioRead( &SX126x.BUSY ) == 1 );
+    while( (*bindings->busy_pin_status)() == 1);
 }
 
 void SX126xWakeup( void )
 {
-    //CRITICAL_SECTION_BEGIN( );
-
     GpioWrite( &SX126x.Spi.Nss, 0 );
 
     SpiInOut( &SX126x.Spi, SX126x_RADIO_GET_STATUS );
@@ -96,8 +102,6 @@ void SX126xWakeup( void )
 
     // Wait for chip to be ready.
     SX126xWaitOnBusy( );
-
-    //CRITICAL_SECTION_END( );
 }
 
 void SX126xWriteCommand( RadioCommands_t command, uint8_t *buffer, uint16_t size )
@@ -231,29 +235,30 @@ void SX126xReadBuffer( uint8_t offset, uint8_t *buffer, uint8_t size )
 
 void SX126xSetRfTxPower( int8_t power )
 {
+    if( bindings->reduce_power!= NULL ){
+        power -= (*bindings->reduce_power)(power);
+    }
     SX126xSetTxParams( power, RADIO_RAMP_40_US );
 }
 
 uint8_t SX126xGetDeviceId( void )
 {
-    if( GpioRead( &DeviceSel ) == 1 )
-    {
-        return SX1261;
-    }
-    else
-    {
-        return SX1262;
-    }
+    return SX1262;
 }
 
 void SX126xAntSwOn( void )
 {
-    //GpioInit( &AntPow, LF_RADIO_ANT_SWITCH_POWER, LF_PIN_OUTPUT, LF_PIN_PUSH_PULL, LF_PIN_PULL_UP, 1 );
+    if( bindings->set_antenna_pins!= NULL ){
+        (*bindings->set_antenna_pins)(AntModeTx, 0);
+    }
 }
 
 void SX126xAntSwOff( void )
 {
-    //GpioInit( &AntPow, LF_RADIO_ANT_SWITCH_POWER, LF_PIN_ANALOGIC, LF_PIN_PUSH_PULL, LF_PIN_NO_PULL, 0 );
+    if( bindings->set_antenna_pins!= NULL ){
+        (*bindings->set_antenna_pins)(AntModeSleep, 0);
+    }
+    RadioIsActive = false;
 }
 
 bool SX126xCheckRfFrequency( uint32_t frequency )
@@ -262,14 +267,3 @@ bool SX126xCheckRfFrequency( uint32_t frequency )
     return true;
 }
 
-#if defined( USE_RADIO_DEBUG )
-void SX126xDbgPinTxWrite( uint8_t state )
-{
-    GpioWrite( &DbgPinTx, state );
-}
-
-void SX126xDbgPinRxWrite( uint8_t state )
-{
-    GpioWrite( &DbgPinRx, state );
-}
-#endif
