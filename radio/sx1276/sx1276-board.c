@@ -116,6 +116,9 @@ void SX1276Reset( )
 
 
 void SX1276SetRfTxPower( int8_t power ){
+    if( bindings->reduce_power!= NULL ){
+        power -= (*bindings->reduce_power)(power);
+    }
     power = power;
     // uint8_t paConfig, paDac;
 
