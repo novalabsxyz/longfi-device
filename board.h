@@ -105,6 +105,7 @@ extern "C"
         void (*set_antenna_pins)(
             AntPinsMode_t mode,
             uint8_t       power); // to control antenna pins for TX/RX/Sleep
+        bool (*busy_pin_status)(); //
     } BoardBindings_t;
 
     extern BoardBindings_t * bindings;

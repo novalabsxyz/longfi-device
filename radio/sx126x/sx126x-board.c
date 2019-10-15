@@ -81,19 +81,18 @@ void SX126xReset( void )
 {
     // reset required, even after TCXO enabling routine
     (*bindings->reset)(true);
-    (*bindings->delay_ms)(1);
+    (*bindings->delay_ms)(20);
     (*bindings->reset)(false);
+    (*bindings->delay_ms)(10);
 }
 
 void SX126xWaitOnBusy( void )
 {
-    while( GpioRead( &SX126x.BUSY ) == 1 );
+    while( (*bindings->busy_pin_status)() == 1);
 }
 
 void SX126xWakeup( void )
 {
-    //CRITICAL_SECTION_BEGIN( );
-
     GpioWrite( &SX126x.Spi.Nss, 0 );
 
     SpiInOut( &SX126x.Spi, SX126x_RADIO_GET_STATUS );
@@ -103,8 +102,6 @@ void SX126xWakeup( void )
 
     // Wait for chip to be ready.
     SX126xWaitOnBusy( );
-
-    //CRITICAL_SECTION_END( );
 }
 
 void SX126xWriteCommand( RadioCommands_t command, uint8_t *buffer, uint16_t size )
