@@ -235,6 +235,9 @@ void SX126xReadBuffer( uint8_t offset, uint8_t *buffer, uint8_t size )
 
 void SX126xSetRfTxPower( int8_t power )
 {
+    if( bindings->reduce_power!= NULL ){
+        power -= (*bindings->reduce_power)(power);
+    }
     SX126xSetTxParams( power, RADIO_RAMP_40_US );
 }
 
