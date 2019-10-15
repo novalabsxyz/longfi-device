@@ -311,7 +311,11 @@ longfi_handle_event(LongFi_t * handle, RfEvent_t event)
         (*(internal.dio_irq_handles[0]))();
         break;
     case DIO1:
-        (*internal.dio_irq_handles[1])();
+        if (internal.dio_irq_handles[1]!= NULL){
+            (*internal.dio_irq_handles[1])();
+        } else {
+            (*(internal.dio_irq_handles[0]))();
+        }
         break;
     case DIO2:
         (*internal.dio_irq_handles[2])();
