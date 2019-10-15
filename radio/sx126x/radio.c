@@ -1107,6 +1107,7 @@ void SX126xRadioOnRxTimeoutIrq( void* context )
 void SX126xRadioOnDioIrq( void* context )
 {
     IrqFired = true;
+    SX126xRadioIrqProcess();
 }
 
 void SX126xRadioIrqProcess( void )
