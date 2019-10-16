@@ -12,10 +12,6 @@ set(CMAKE_C_STANDARD 99)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE OFF)
 
-add_compile_options(-mno-pic-data-is-text-relative)
-
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mno-pic-data-is-text-relative")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mno-pic-data-is-text-relative")
 ##########################################################################
 # External                                                               #
 ##########################################################################
