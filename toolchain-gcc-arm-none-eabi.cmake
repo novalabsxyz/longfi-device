@@ -14,11 +14,15 @@ set(CMAKE_C_COMPILER   ${TOOLCHAIN_CC})
 set(CMAKE_CXX_COMPILER ${TOOLCHAIN_CXX})
 set(CMAKE_SYSTEM_NAME Generic)
 
+# All
+set(CMAKE_C_FLAGS "-ffunction-sections -fdata-sections -mthumb -march=armv6s-m")
+set(CMAKE_CXX_FLAGS "-ffunction-sections -fdata-sections -mthumb -march=armv6s-m")
+
 # Debug
 set(CMAKE_C_FLAGS_DEBUG "-ggdb3 -Og")
 set(CMAKE_CXX_FLAGS_DEBUG "-ggdb3 -Og")
 
 # Release
 set(CMAKE_C_FLAGS_RELEASE "-DNDEBUG -Os -flto")
-set(CMAKE_CXX_FLAGS_RELEASE "-DNDEBUG -Os -flto ")
+set(CMAKE_CXX_FLAGS_RELEASE "-DNDEBUG -Os -flto")
 set(CMAKE_EXE_LINKER_FLAGS_RELEASE "-Os -flto -Wno-lto-type-mismatch")
