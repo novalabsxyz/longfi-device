@@ -218,6 +218,8 @@ longfi_send(LongFi_t * handle, const uint8_t * data, size_t len)
 {
     size_t output_length = BUFFER_SIZE; 
     enum lfc_res response = lfc_transmit(&handle->lfc, data, len, &Buffer[0], &output_length);
+    internal.tx_len = output_length;
+    internal.tx_cnt = output_length;
     _send_random(handle, Buffer, output_length);
 }
 
