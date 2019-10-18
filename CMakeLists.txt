@@ -19,7 +19,7 @@ include(FetchContent)
 FetchContent_Declare(
   lfc
   GIT_REPOSITORY ssh://git@github.com/helium/longfi-core.git
-  GIT_TAG        1245935979eedb3b821a53514aa29c60bd0c57f4
+  GIT_TAG        1b2f3b75484cc7da537f521f00929f7201596d43
   )
 FetchContent_GetProperties(lfc)
 if(NOT lfc)
@@ -42,7 +42,7 @@ target_link_libraries(longfi
   )
   
 target_include_directories(longfi
-  PUBLIC ${PROJECT_SOURCE_DIR} ${lfc_SOURCE_DIR}/include/
+  PUBLIC ${PROJECT_SOURCE_DIR} ${lfc_SOURCE_DIR}/include
   )
 
 install(TARGETS longfi
