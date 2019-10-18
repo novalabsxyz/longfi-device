@@ -39,7 +39,7 @@ The process of integrating this code into a project is as follows:
 * *gather RfEvents*: the client must capture RfEvents, but currently we only care about `DIO0`. You can capture this event with simple polling or by making it interrupt generated. A robust integration should maintain a FIFO queue of events and dispatch them sequentially
 * *dispatch RfEvents*: the client must dispatch the `longfi_handle_event` function with the events gathered above; a robust integration should dispatch this function at a low priority, allowing the system to respond to other higher priority events
 
-##
+## Testing
 
 You can setup a hotspot for testing by following [this tutorial](https://developer.helium.com/hotspot/developer-setup).
 
