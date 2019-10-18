@@ -37,7 +37,7 @@ extern "C"
     union LongFiAuthCallbacks {
         uint8_t * (*get_preshared_key)();
         // other auth types will have other callbacks
-    } LongFiAuthCallbacks;
+    };
 
     /*!
      * LongFi handler for library
