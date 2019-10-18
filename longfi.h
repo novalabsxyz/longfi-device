@@ -11,6 +11,8 @@ extern "C"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include "lfc/lfc.h"
+
 
     /*!
      * Authentication modes
@@ -49,6 +51,7 @@ extern "C"
                                     bindings; // pointer to struct of system bindings, defined in board.h
         LongFiConfig_t              config;
         union LongFiAuthCallbacks * auth_cb;
+        struct lfc       lfc;
     } LongFi_t;
 
     /*!
