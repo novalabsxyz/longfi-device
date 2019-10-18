@@ -35,6 +35,7 @@ add_subdirectory(radio)
 add_library(longfi
   board.c
   longfi.c
+  ${lfc_SOURCE_DIR}/include/lfc/lfc.h
 )
 
 target_link_libraries(longfi
@@ -42,7 +43,7 @@ target_link_libraries(longfi
   )
   
 target_include_directories(longfi
-  PUBLIC ${PROJECT_SOURCE_DIR} lfc golay cursor cursor_varint sx12xx
+  PUBLIC ${PROJECT_SOURCE_DIR}
   )
 
 install(TARGETS longfi
