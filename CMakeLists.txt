@@ -42,7 +42,7 @@ target_link_libraries(longfi
   )
   
 target_include_directories(longfi
-  PUBLIC ${PROJECT_SOURCE_DIR}
+  PUBLIC ${PROJECT_SOURCE_DIR} lfc golay cursor cursor_varint sx12xx
   )
 
 install(TARGETS longfi
