@@ -14,20 +14,20 @@ LongFi_t
 longfi_new_handle(BoardBindings_t *           bindings,
                   Radio_t *                   radio,
                   LongFiConfig_t              config,
-                  union LongFiAuthCallbacks * auth_cb)
+                  union LongFiAuthCallbacks   auth_cb_set)
 {
     LongFi_t handle = {
         .radio    = radio,
         .config   = config,
         .bindings = bindings,
-        .auth_cb  = auth_cb,
+        .auth_cb  = auth_cb_set,
         .lfc = {
             .seq = 0,
             .cfg = {
                 .cb_data = NULL,
                 .oui = config.oui,
                 .did = config.device_id,
-                .key = auth_cb->get_preshared_key,
+                .key = auth_cb_set.preshared_key,
                 .key_len = 16,
             },
         }
