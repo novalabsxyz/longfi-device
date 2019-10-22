@@ -42,7 +42,7 @@ target_link_libraries(longfi
   )
   
 target_include_directories(longfi
-  PUBLIC ${PROJECT_SOURCE_DIR}
+  PUBLIC ${PROJECT_SOURCE_DIR} ${lfc_SOURCE_DIR}/include
   )
 
 install(TARGETS longfi

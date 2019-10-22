@@ -14,13 +14,23 @@ LongFi_t
 longfi_new_handle(BoardBindings_t *           bindings,
                   Radio_t *                   radio,
                   LongFiConfig_t              config,
-                  union LongFiAuthCallbacks * auth_cb)
+                  union LongFiAuthCallbacks   auth_cb_set)
 {
     LongFi_t handle = {
         .radio    = radio,
         .config   = config,
         .bindings = bindings,
-        .auth_cb  = auth_cb,
+        .auth_cb  = auth_cb_set,
+        .lfc = {
+            .seq = 0,
+            .cfg = {
+                .cb_data = NULL,
+                .oui = config.oui,
+                .did = config.device_id,
+                .key = auth_cb_set.preshared_key,
+                .key_len = 16,
+            },
+        }
     };
     return handle;
 }
@@ -34,6 +44,7 @@ longfi_enable_tcxo(LongFi_t * handle)
 void
 longfi_init(LongFi_t * handle)
 {
+
     // store pointer to internal context for callback definitions
     bindings = handle->bindings;
 
@@ -205,85 +216,11 @@ _send_random(LongFi_t * handle, uint8_t * data, size_t len)
 void
 longfi_send(LongFi_t * handle, const uint8_t * data, size_t len)
 {
-    uint32_t num_fragments;
-    size_t   payload_consumed = 0;
-    uint8_t  packet_id        = 0;
-    size_t   num_bytes_copy;
-
-    if (len < payload_bytes_in_single_fragment_packet())
-    {
-        num_fragments = 1;
-    }
-    else
-    {
-        uint32_t remaining_len = len - payload_bytes_in_first_fragment_of_many();
-        num_fragments =
-            1 + remaining_len / payload_bytes_in_subsequent_fragments();
-
-        // if there was remainder, we need a final fragment
-        if (remaining_len % payload_bytes_in_subsequent_fragments() != 0)
-        {
-            num_fragments += 1;
-        }
-    }
-
-    // copy in short header for single fragment packets
-    if (num_fragments <= 1)
-    {
-        packet_header_t pheader = {
-            .oui       = handle->config.oui,
-            .device_id = handle->config.device_id,
-            .packet_id = 0, // packet_id means no fragments
-            .mac       = 0xEFFE,
-        };
-        memmove(Buffer, &pheader, sizeof(packet_header_t));
-        num_bytes_copy  = MIN(len, payload_bytes_in_single_fragment_packet());
-        internal.tx_len = sizeof(packet_header_t);
-    }
-    else
-    {
-        // cannot allow packet_id = 0
-        while (packet_id == 0)
-        {
-            // packet_id is singled byte, so look for several bits
-            packet_id = (*bindings->get_random_bits)(8);
-        }
-        packet_header_multiple_fragments_t pheader = {
-            .oui           = handle->config.oui,
-            .device_id     = handle->config.device_id,
-            .packet_id     = packet_id,
-            .fragment_num  = 0x00,
-            .num_fragments = num_fragments,
-            .mac           = 0xEFFE,
-        };
-        memmove(Buffer, &pheader, sizeof(packet_header_multiple_fragments_t));
-        num_bytes_copy  = MIN(len, payload_bytes_in_first_fragment_of_many());
-        internal.tx_len = sizeof(packet_header_multiple_fragments_t);
-    }
-
-    // copy the necessary amount of payload
-    memmove(&Buffer[internal.tx_len], data, num_bytes_copy);
-    payload_consumed += num_bytes_copy;
-    internal.tx_len += num_bytes_copy;
-    // initialize tx_cnt with current len, as first transmit will be this
-    internal.tx_cnt = internal.tx_len;
-    for (uint32_t cnt_fragments = 1; cnt_fragments < num_fragments;
-         cnt_fragments++)
-    {
-        fragment_header_t fheader = {
-            .packet_id    = packet_id,
-            .fragment_num = cnt_fragments,
-            .mac          = 0xEFFE,
-        };
-        memmove(&Buffer[internal.tx_len], &fheader, sizeof(fragment_header_t));
-        internal.tx_len += sizeof(fragment_header_t);
-        num_bytes_copy =
-            MIN(len - payload_consumed, payload_bytes_in_subsequent_fragments());
-        memmove(&Buffer[internal.tx_len], &data[payload_consumed], num_bytes_copy);
-        internal.tx_len += num_bytes_copy;
-        payload_consumed += num_bytes_copy;
-    };
-    _send_random(handle, Buffer, internal.tx_cnt);
+    size_t output_length = BUFFER_SIZE; 
+    lfc_transmit(&handle->lfc, data, len, &Buffer[0], &output_length);
+    internal.tx_len = output_length;
+    internal.tx_cnt = output_length;
+    _send_random(handle, Buffer, output_length);
 }
 
 RxPacket_t
