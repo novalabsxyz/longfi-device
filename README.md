@@ -33,7 +33,7 @@ Currently, only uplink is supported.
 
 ## Usage
 
-Several libraries show usage of this library:
+Several libraries demonstrate usage of this library:
 * [longfi-st-hal](https://github.com/helium/longfi-st-hal): a simple bare metal superloop for STM32L0XX
 * [longfi-device-rs](https://github.com/helium/longfi-device-rs/): a bare metal Rust binding, including example and Board Support Crate references in README
 * [longfi-arduino](https://github.com/helium/longfi-arduino): an Arduino binding, simplifying usage for several boards with Arduino board support
