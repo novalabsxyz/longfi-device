@@ -11,6 +11,8 @@ extern "C"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include "lfc/lfc.h"
+
 
     /*!
      * Authentication modes
@@ -35,7 +37,7 @@ extern "C"
      * Configure
      */
     union LongFiAuthCallbacks {
-        uint8_t * (*get_preshared_key)();
+        const uint8_t * preshared_key;
         // other auth types will have other callbacks
     };
 
@@ -48,7 +50,8 @@ extern "C"
         BoardBindings_t *
                                     bindings; // pointer to struct of system bindings, defined in board.h
         LongFiConfig_t              config;
-        union LongFiAuthCallbacks * auth_cb;
+        union LongFiAuthCallbacks   auth_cb;
+        struct lfc       lfc;
     } LongFi_t;
 
     /*!
@@ -61,7 +64,7 @@ extern "C"
     LongFi_t longfi_new_handle(BoardBindings_t *           bindings,
                                Radio_t *                   radio,
                                LongFiConfig_t              config,
-                               union LongFiAuthCallbacks * auth_cb);
+                               union LongFiAuthCallbacks   auth_cb);
 
     /*!
      * \brief  Run time initialization of library
