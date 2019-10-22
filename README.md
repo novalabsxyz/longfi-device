@@ -4,7 +4,9 @@
 
 ## About
 
-This is project leverages LongFi-Core and connects it to Semtech LoRa radios (SX12xx).
+This is project leverages [LongFi-Core](https://github.com/helium/longfi-core) as a protocol layer and connects it to Semtech LoRa radios (SX12xx).
+
+Currently, frequency and transmit power are controlled within this library, but those responsibilities are intended to migrate to the protocol layer.
 
 Currently, only uplink is supported.
 
@@ -14,9 +16,9 @@ Currently, only uplink is supported.
    ```
    cmake -H. -Bbuild -DBUILD_TESTING=OFF
    ```
-   or to cross-compile for for arm
+   or to cross-compile for for armv6s-m (such as STM32L0xx)
    ```
-   cmake -H. -Bbuild -DBUILD_TESTING=OFF -DCMAKE_TOOLCHAIN_FILE=../toolchain-gcc-arm-none-eabi.cmake
+   cmake -H. -Bbuild -DBUILD_TESTING=OFF -DCMAKE_TOOLCHAIN_FILE=../toolchain-gcc-arm-none-eabi.cmake -DCMAKE_FLAGS="-march=armv6s-m"
    ```
 1. Compile
    ```
@@ -31,13 +33,39 @@ Currently, only uplink is supported.
 
 ## Usage
 
-An example of the simple blocking client code can be seen in the [Arduino wrapper](https://github.com/helium/longfi-arduino/blob/master/src/LongFi.cpp).
+Several libraries show usage of this library:
+* [longfi-st-hal](https://github.com/helium/longfi-st-hal): a simple bare metal superloop for STM32L0XX
+* [longfi-device-rs](https://github.com/helium/longfi-device-rs/): a bare metal Rust binding, including example and Board Support Crate references in README
+* [longfi-arduino](https://github.com/helium/longfi-arduino): an Arduino binding, simplifying usage for several boards with Arduino board support
 
 The process of integrating this code into a project is as follows:
 
-* *create system bindings*: the library needs access to some system functions as defined in `BoardBindings_t` in `board.h`. These are principally `SPI`, `GPIO`, and `Delay` function pointers. The current definitions have broad input parameters to match the demands of the SX12xx drivers; as we hone in on LongFi, we may be able to prune some of these. To use the library in its current state, all you really need are `spi_in_out` and `gpio_write` to control the `CHIP_SELECT` line. You must mock out all the rest of the functions so as not to dispatch a NULL function.
-* *gather RfEvents*: the client must capture RfEvents, but currently we only care about `DIO0`. You can capture this event with simple polling or by making it interrupt generated. A robust integration should maintain a FIFO queue of events and dispatch them sequentially
+* *create system bindings*: the library needs access to some system functions as defined in `BoardBindings_t` in `board.h`:
+```
+ typedef struct
+ {
+     // must provide for drivers to work
+     uint8_t (*spi_in_out)(LF_Spi_t * obj, uint8_t outData);
+     void (*spi_nss)(bool sel);
+     void (*reset)(bool enable);
+     void (*delay_ms)(uint32_t);
+     uint32_t (*get_random_bits)(uint8_t);
+     bool (*busy_pin_status)(); // only necessary for SX126x
+                                // optional board control
+     // if external PA, this callback allows you to reduce power
+     // of SX12xx and to do any PA switching
+     uint8_t (*reduce_power)(uint8_t);
+     uint8_t (*set_board_tcxo)(
+         bool enable); // to control power supply TCXO (wake/sleep)
+     void (*set_antenna_pins)(
+         AntPinsMode_t mode,
+         uint8_t       power); // to control antenna pins for TX/RX/Sleep
+
+ } BoardBindings_t;
+```
+* *gather RfEvents*: the client must capture RfEvents, but currently we only care about `DIO0` for SX127x and `DIO1` for SX126x. You can capture this event with simple polling or by making it interrupt generated. A robust integration should maintain a FIFO queue of events and dispatch them sequentially
 * *dispatch RfEvents*: the client must dispatch the `longfi_handle_event` function with the events gathered above; a robust integration should dispatch this function at a low priority, allowing the system to respond to other higher priority events
+* *send message*: the client can send messages, but must take care to only dispatch a single send at time; `ClientEvent_TxDone` signals that the library is ready to send again
 
 ## Testing
 
