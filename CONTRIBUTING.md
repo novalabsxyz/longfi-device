@@ -10,7 +10,7 @@ our way or a bug to report:
   write up of the PR with details on what it does.
 
 * **Reporting Bugs**: Open an issue [against this
-  repo](https://github.com/helium/libp2p_crypto/issues) with as much
+  repo](https://github.com/helium/longfi-device/issues) with as much
   detail as you can. At the very least you'll include steps to
   reproduce the problem.
 
