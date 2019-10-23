@@ -16,7 +16,7 @@ Currently, only uplink is supported.
    ```
    cmake -H. -Bbuild -DBUILD_TESTING=OFF
    ```
-   or to cross-compile for for armv6s-m (such as STM32L0xx)
+   or to cross-compile for armv6s-m (such as STM32L0xx)
    ```
    cmake -H. -Bbuild -DBUILD_TESTING=OFF -DCMAKE_TOOLCHAIN_FILE=../toolchain-gcc-arm-none-eabi.cmake -DCMAKE_FLAGS="-march=armv6s-m"
    ```
