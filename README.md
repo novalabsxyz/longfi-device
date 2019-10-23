@@ -4,7 +4,7 @@
 
 ## About
 
-This is project leverages [LongFi-Core](https://github.com/helium/longfi-core) as a protocol layer and connects it to Semtech LoRa radios (SX12xx).
+This project leverages [LongFi-Core](https://github.com/helium/longfi-core) as a protocol layer and connects it to Semtech LoRa radios (SX12xx).
 
 Currently, frequency and transmit power are controlled within this library, but those responsibilities are intended to migrate to the protocol layer.
 
