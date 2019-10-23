@@ -19,7 +19,7 @@ include(FetchContent)
 FetchContent_Declare(
   lfc
   GIT_REPOSITORY ssh://git@github.com/helium/longfi-core.git
-  GIT_TAG        ef2e20acbfc456366bb0f29ca89e76d0b61c019f
+  GIT_TAG        ea66583679f6d4e6e03e9b6385f1c4424cc89a2a
   )
 FetchContent_GetProperties(lfc)
 if(NOT lfc)
