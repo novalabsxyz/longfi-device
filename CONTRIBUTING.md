@@ -6,7 +6,7 @@ our way or a bug to report:
 
 * **Contributing Code**: If you have new code or a bug fix, fork this
   repo, create a logically-named branch, and [submit a PR against this
-  repo](https://github.com/helium/longfi-device/issues). Include a
+  repo](https://github.com/helium/longfi-device/pulls). Include a
   write up of the PR with details on what it does.
 
 * **Reporting Bugs**: Open an issue [against this
