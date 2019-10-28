@@ -14,11 +14,11 @@ Currently, only uplink is supported.
 
 1. Generate makefile in `build/`. You only need to do this once.
    ```
-   cmake -H. -Bbuild -DBUILD_TESTING=OFF
+   cmake -H. -Bbuild
    ```
    or to cross-compile for armv6s-m (such as STM32L0xx)
    ```
-   cmake -H. -Bbuild -DBUILD_TESTING=OFF -DCMAKE_TOOLCHAIN_FILE=../toolchain-gcc-arm-none-eabi.cmake -DCMAKE_FLAGS="-march=armv6s-m"
+   cmake -H. -Bbuild  -DCMAKE_TOOLCHAIN_FILE=../toolchain-gcc-arm-none-eabi.cmake -DCMAKE_FLAGS="-march=armv6s-m"
    ```
 1. Compile
    ```
