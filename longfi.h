@@ -7,11 +7,11 @@ extern "C"
 #endif
 
 #include "board.h"
+#include "lfc/lfc.h"
 #include "radio/radio.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include "lfc/lfc.h"
 
 
     /*!
@@ -48,10 +48,10 @@ extern "C"
     {
         Radio_t * radio; // pointer to struct of SX12XX radio functions
         BoardBindings_t *
-                                    bindings; // pointer to struct of system bindings, defined in board.h
-        LongFiConfig_t              config;
-        union LongFiAuthCallbacks   auth_cb;
-        struct lfc       lfc;
+                                  bindings; // pointer to struct of system bindings, defined in board.h
+        LongFiConfig_t            config;
+        union LongFiAuthCallbacks auth_cb;
+        struct lfc                lfc;
     } LongFi_t;
 
     /*!
@@ -61,10 +61,10 @@ extern "C"
      * \param [IN] radio     Handle to radio struct
      * \param [IN] config    RF Network Configuration
      */
-    LongFi_t longfi_new_handle(BoardBindings_t *           bindings,
-                               Radio_t *                   radio,
-                               LongFiConfig_t              config,
-                               union LongFiAuthCallbacks   auth_cb);
+    LongFi_t longfi_new_handle(BoardBindings_t *         bindings,
+                               Radio_t *                 radio,
+                               LongFiConfig_t            config,
+                               union LongFiAuthCallbacks auth_cb);
 
     /*!
      * \brief  Run time initialization of library

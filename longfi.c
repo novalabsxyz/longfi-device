@@ -11,27 +11,26 @@ int8_t  SnrValue  = 0;
 static LongFiInternal_t internal;
 
 LongFi_t
-longfi_new_handle(BoardBindings_t *           bindings,
-                  Radio_t *                   radio,
-                  LongFiConfig_t              config,
-                  union LongFiAuthCallbacks   auth_cb_set)
+longfi_new_handle(BoardBindings_t *         bindings,
+                  Radio_t *                 radio,
+                  LongFiConfig_t            config,
+                  union LongFiAuthCallbacks auth_cb_set)
 {
-    LongFi_t handle = {
-        .radio    = radio,
-        .config   = config,
-        .bindings = bindings,
-        .auth_cb  = auth_cb_set,
-        .lfc = {
-            .seq = 0,
-            .cfg = {
-                .cb_data = NULL,
-                .oui = config.oui,
-                .did = config.device_id,
-                .key = auth_cb_set.preshared_key,
-                .key_len = 16,
-            },
-        }
-    };
+    LongFi_t handle = {.radio    = radio,
+                       .config   = config,
+                       .bindings = bindings,
+                       .auth_cb  = auth_cb_set,
+                       .lfc      = {
+                           .seq = 0,
+                           .cfg =
+                               {
+                                   .cb_data = NULL,
+                                   .oui     = config.oui,
+                                   .did     = config.device_id,
+                                   .key     = auth_cb_set.preshared_key,
+                                   .key_len = 16,
+                               },
+                       }};
     return handle;
 }
 
@@ -44,7 +43,6 @@ longfi_enable_tcxo(LongFi_t * handle)
 void
 longfi_init(LongFi_t * handle)
 {
-
     // store pointer to internal context for callback definitions
     bindings = handle->bindings;
 
@@ -216,7 +214,7 @@ _send_random(LongFi_t * handle, uint8_t * data, size_t len)
 void
 longfi_send(LongFi_t * handle, const uint8_t * data, size_t len)
 {
-    size_t output_length = BUFFER_SIZE; 
+    size_t output_length = BUFFER_SIZE;
     lfc_transmit(&handle->lfc, data, len, &Buffer[0], &output_length);
     internal.tx_len = output_length;
     internal.tx_cnt = output_length;

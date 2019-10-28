@@ -6,20 +6,16 @@ extern "C"
 {
 #endif
 
-#define RADIO_1 920600000
-#define RADIO_2 916600000
-#define FREQ_SPACING 200000
 #define LONGFI_NUM_UPLINK_CHANNELS 8
 
-    const uint32_t uplink_channel_map[LONGFI_NUM_UPLINK_CHANNELS] =
-        {RADIO_1 - FREQ_SPACING * 2,
-         RADIO_1 - FREQ_SPACING,
-         RADIO_1,
-         RADIO_2 - FREQ_SPACING * 2,
-         RADIO_2 - FREQ_SPACING,
-         RADIO_2,
-         RADIO_2 + FREQ_SPACING,
-         RADIO_2 + FREQ_SPACING * 2};
+    const uint32_t uplink_channel_map[LONGFI_NUM_UPLINK_CHANNELS] = {916000000,
+                                                                     916200000,
+                                                                     916400000,
+                                                                     916600000,
+                                                                     916800000,
+                                                                     917000000,
+                                                                     917200000,
+                                                                     917400000};
 
 #define NUM_SF (4)
     typedef enum
