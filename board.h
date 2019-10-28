@@ -94,13 +94,13 @@ extern "C"
     typedef struct
     {
         // must provide for drivers to work
-        uint8_t (*spi_in_out)(LF_Spi_t * obj, uint8_t outData);
+        uint8_t (*spi_in_out)(uint8_t outData);
         void (*spi_nss)(bool sel);
         void (*reset)(bool enable);
         void (*delay_ms)(uint32_t);
         uint32_t (*get_random_bits)(uint8_t);
         bool (*busy_pin_status)(); // only necessary for SX126x
-                                   // optional board control
+        // the rest of these functions are optional for board control
         // if external PA, this callback allows you to reduce power
         // of SX12xx and to do any PA switching
         uint8_t (*reduce_power)(uint8_t);

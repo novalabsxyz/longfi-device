@@ -11,6 +11,7 @@ project(longfi
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE OFF)
+set(BUILD_TESTING OFF)
 
 ##########################################################################
 # External                                                               #

@@ -24,7 +24,7 @@ uint16_t
 SpiInOut(LF_Spi_t * obj, uint16_t outData)
 {
     uint16_t ret = 0;
-    ret |= (*bindings->spi_in_out)(obj, (uint8_t)outData);
+    ret |= (*bindings->spi_in_out)((uint8_t)outData);
     return ret;
 }
 
