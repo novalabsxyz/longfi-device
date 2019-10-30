@@ -19,7 +19,7 @@ set(BUILD_TESTING OFF)
 include(FetchContent)
 FetchContent_Declare(
   lfc
-  GIT_REPOSITORY ssh://git@github.com/helium/longfi-core.git
+  GIT_REPOSITORY https://github.com/helium/longfi-core.git
   GIT_TAG        0.1.0
   )
 FetchContent_GetProperties(lfc)
