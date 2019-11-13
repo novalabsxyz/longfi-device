@@ -20,6 +20,7 @@ extern "C"
     typedef enum
     {
         PresharedKey128,
+	_LongFiAuthModeMax = 0xFFFFFFFF // fore 32-bit value
         // TODO: ECDH
     } LongFiAuthMode_t;
 
