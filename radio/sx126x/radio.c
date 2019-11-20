@@ -507,6 +507,8 @@ void SX126xRadioInit( RadioEvents_t *events )
     SX126xSetTxParams( 0, RADIO_RAMP_200_US );
     SX126xSetDioIrqParams( IRQ_RADIO_ALL, IRQ_RADIO_ALL, IRQ_RADIO_NONE, IRQ_RADIO_NONE );
 
+    SX126xIoTcxoInit();
+
     // Initialize driver timeout timers
     TimerInit( &SX126xTxTimeoutTimer, SX126xRadioOnTxTimeoutIrq );
     TimerInit( &SX126xRxTimeoutTimer, SX126xRadioOnRxTimeoutIrq );
