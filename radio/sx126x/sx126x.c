@@ -94,7 +94,7 @@ void SX126xInit( DioIrqHandler dioIrq )
     SX126xSetStandby( STDBY_RC );
 
     // Initialize TCXO control
-    SX126xIoTcxoInit( );
+    SX126xIoTcxoInit();
 
     SX126xSetDio2AsRfSwitchCtrl( true );
     SX126xSetOperatingMode( MODE_STDBY_RC );
@@ -544,95 +544,32 @@ void SX126xSetModulationParams( ModulationParams_t *modulationParams )
         SX126xSetPacketType( modulationParams->PacketType );
     }
 
-    switch( modulationParams->PacketType )
-    {
-    case PACKET_TYPE_GFSK:
-        n = 8;
-        tempVal = ( uint32_t )( 32 * ( ( double )SX126x_XTAL_FREQ / ( double )modulationParams->Params.Gfsk.BitRate ) );
-        buf[0] = ( tempVal >> 16 ) & 0xFF;
-        buf[1] = ( tempVal >> 8 ) & 0xFF;
-        buf[2] = tempVal & 0xFF;
-        buf[3] = modulationParams->Params.Gfsk.ModulationShaping;
-        buf[4] = modulationParams->Params.Gfsk.Bandwidth;
-        tempVal = ( uint32_t )( ( double )modulationParams->Params.Gfsk.Fdev / ( double )SX126x_FREQ_STEP );
-        buf[5] = ( tempVal >> 16 ) & 0xFF;
-        buf[6] = ( tempVal >> 8 ) & 0xFF;
-        buf[7] = ( tempVal& 0xFF );
-        SX126xWriteCommand( SX126x_RADIO_SET_MODULATIONPARAMS, buf, n );
-        break;
-    case PACKET_TYPE_LORA:
-        n = 4;
-        buf[0] = modulationParams->Params.LoRa.SpreadingFactor;
-        buf[1] = modulationParams->Params.LoRa.Bandwidth;
-        buf[2] = modulationParams->Params.LoRa.CodingRate;
-        buf[3] = modulationParams->Params.LoRa.LowDatarateOptimize;
+    n = 4;
+    buf[0] = modulationParams->Params.LoRa.SpreadingFactor;
+    buf[1] = modulationParams->Params.LoRa.Bandwidth;
+    buf[2] = modulationParams->Params.LoRa.CodingRate;
+    buf[3] = modulationParams->Params.LoRa.LowDatarateOptimize;
 
-        SX126xWriteCommand( SX126x_RADIO_SET_MODULATIONPARAMS, buf, n );
+    SX126xWriteCommand( SX126x_RADIO_SET_MODULATIONPARAMS, buf, n );
 
-        break;
-    default:
-    case PACKET_TYPE_NONE:
-        return;
-    }
 }
 
-void SX126xSetPacketParams( PacketParams_t *packetParams )
+void SX126xSetPacketParams( PacketParams_t *packetParams)
 {
-    uint8_t n;
+    uint8_t n = 6;
     uint8_t crcVal = 0;
-    uint8_t buf[9] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+    uint8_t buf[6] = { 
+        ( packetParams->Params.LoRa.PreambleLength >> 8 ) & 0xFF,
+        packetParams->Params.LoRa.PreambleLength, 
+        LoRaHeaderType = packetParams->Params.LoRa.HeaderType, 
+        packetParams->Params.LoRa.PayloadLength, 
+        packetParams->Params.LoRa.CrcMode, 
+        packetParams->Params.LoRa.InvertIQ, 
+    };
 
-    // Check if required configuration corresponds to the stored packet type
-    // If not, silently update radio packet type
-    if( PacketType != packetParams->PacketType )
-    {
-        SX126xSetPacketType( packetParams->PacketType );
-    }
-
-    switch( packetParams->PacketType )
-    {
-    case PACKET_TYPE_GFSK:
-        if( packetParams->Params.Gfsk.CrcLength == SX126x_RADIO_CRC_2_BYTES_IBM )
-        {
-            SX126xSetCrcSeed( SX126x_CRC_IBM_SEED );
-            SX126xSetCrcPolynomial( SX126x_CRC_POLYNOMIAL_IBM );
-            crcVal = SX126x_RADIO_CRC_2_BYTES;
-        }
-        else if( packetParams->Params.Gfsk.CrcLength == SX126x_RADIO_CRC_2_BYTES_CCIT )
-        {
-            SX126xSetCrcSeed( SX126x_CRC_CCITT_SEED );
-            SX126xSetCrcPolynomial( SX126x_CRC_POLYNOMIAL_CCITT );
-            crcVal = SX126x_RADIO_CRC_2_BYTES_INV;
-        }
-        else
-        {
-            crcVal = packetParams->Params.Gfsk.CrcLength;
-        }
-        n = 9;
-        buf[0] = ( packetParams->Params.Gfsk.PreambleLength >> 8 ) & 0xFF;
-        buf[1] = packetParams->Params.Gfsk.PreambleLength;
-        buf[2] = packetParams->Params.Gfsk.PreambleMinDetect;
-        buf[3] = ( packetParams->Params.Gfsk.SyncWordLength /*<< 3*/ ); // convert from byte to bit
-        buf[4] = packetParams->Params.Gfsk.AddrComp;
-        buf[5] = packetParams->Params.Gfsk.HeaderType;
-        buf[6] = packetParams->Params.Gfsk.PayloadLength;
-        buf[7] = crcVal;
-        buf[8] = packetParams->Params.Gfsk.DcFree;
-        break;
-    case PACKET_TYPE_LORA:
-        n = 6;
-        buf[0] = ( packetParams->Params.LoRa.PreambleLength >> 8 ) & 0xFF;
-        buf[1] = packetParams->Params.LoRa.PreambleLength;
-        buf[2] = LoRaHeaderType = packetParams->Params.LoRa.HeaderType;
-        buf[3] = packetParams->Params.LoRa.PayloadLength;
-        buf[4] = packetParams->Params.LoRa.CrcMode;
-        buf[5] = packetParams->Params.LoRa.InvertIQ;
-        break;
-    default:
-    case PACKET_TYPE_NONE:
-        return;
-    }
     SX126xWriteCommand( SX126x_RADIO_SET_PACKETPARAMS, buf, n );
+    Delay(200);
+    SX126xWaitOnBusy( );
 }
 
 void SX126xSetCadParams( RadioLoRaCadSymbols_t cadSymbolNum, uint8_t cadDetPeak, uint8_t cadDetMin, RadioCadExitModes_t cadExitMode, uint32_t cadTimeout )

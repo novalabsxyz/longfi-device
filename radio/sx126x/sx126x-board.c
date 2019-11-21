@@ -70,13 +70,11 @@ void SX126xIoTcxoInit( void )
     SX126xSetDio3AsTcxoCtrl( TCXO_CTRL_1_7V, SX126xGetBoardTcxoWakeupTime( ) << 6 ); // convert from ms to SX126x time base
     calibParam.Value = 0x7F;
     SX126xCalibrate( calibParam );
-
-    SX126xSetDio2AsRfSwitchCtrl(true);
 }
 
 uint32_t SX126xGetBoardTcxoWakeupTime( void )
 {
-    return 6;
+    return 8;
 }
 
 void SX126xReset( void )
@@ -102,8 +100,6 @@ void SX126xWakeup( void )
 
     GpioWrite( &SX126x.Spi.Nss, 1 );
 
-    // Wait for chip to be ready.
-    SX126xWaitOnBusy( );
 }
 
 void SX126xWriteCommand( RadioCommands_t command, uint8_t *buffer, uint16_t size )
@@ -253,11 +249,11 @@ void SX126xAntSwOn( void )
     if( bindings->set_antenna_pins!= NULL ){
         (*bindings->set_antenna_pins)(AntModeTx, 0);
     }
+    RadioIsActive = true;
 }
 
 void SX126xAntSwOff( void )
 {
-
     if( bindings->set_antenna_pins!= NULL ){
         (*bindings->set_antenna_pins)(AntModeSleep, 0);
     }
