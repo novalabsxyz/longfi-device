@@ -292,6 +292,7 @@ _handle_internal_event(LongFi_t * handle)
         // if all the tx data is sent, we're done!
         if (internal.tx_len == internal.tx_cnt)
         {
+            handle->radio->Sleep();
             return ClientEvent_TxDone;
         }
         // else we are sending another fragment
