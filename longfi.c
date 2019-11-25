@@ -35,12 +35,6 @@ longfi_new_handle(BoardBindings_t *         bindings,
 }
 
 void
-longfi_enable_tcxo(LongFi_t * handle)
-{
-    handle->radio->EnableTcxo();
-}
-
-void
 longfi_init(LongFi_t * handle)
 {
     // store pointer to internal context for callback definitions
@@ -76,36 +70,8 @@ longfi_init(LongFi_t * handle)
     // implemented here
     handle->radio->Init(&internal.radio_events);
 
-    handle->radio->SetChannel(uplink_channel_map[0]);
-
-    handle->radio->SetTxConfig(MODEM_LORA,
-                               TX_OUTPUT_POWER,
-                               0,
-                               LORA_BANDWIDTH,
-                               LORA_SPREADING_FACTOR,
-                               LORA_CODINGRATE,
-                               LORA_PREAMBLE_LENGTH,
-                               LORA_FIX_LENGTH_PAYLOAD_ON,
-                               true,
-                               0,
-                               0,
-                               LORA_IQ_INVERSION_ON,
-                               3000);
-
-    handle->radio->SetRxConfig(MODEM_LORA,
-                               LORA_BANDWIDTH,
-                               LORA_SPREADING_FACTOR,
-                               LORA_CODINGRATE,
-                               0,
-                               LORA_PREAMBLE_LENGTH,
-                               LORA_SYMBOL_TIMEOUT,
-                               LORA_FIX_LENGTH_PAYLOAD_ON,
-                               0,
-                               true,
-                               0,
-                               0,
-                               LORA_IQ_INVERSION_ON,
-                               true);
+    // sleep the radio and wait for a send or receive call
+    handle->radio->Sleep();
 }
 
 void
@@ -246,11 +212,8 @@ longfi_handle_event(LongFi_t * handle, RfEvent_t event)
         (*(internal.dio_irq_handles[0]))();
         break;
     case DIO1:
-        // if (internal.dio_irq_handles[1]!= NULL){
-        //     (*internal.dio_irq_handles[1])();
-        // } else {
+        // SX126x library only has the one handle, so fire it even fore DIO1
         (*(internal.dio_irq_handles[0]))();
-        //}
         break;
     case DIO2:
         (*internal.dio_irq_handles[2])();
@@ -292,6 +255,8 @@ _handle_internal_event(LongFi_t * handle)
         // if all the tx data is sent, we're done!
         if (internal.tx_len == internal.tx_cnt)
         {
+            // sleep when done transmitting
+            handle->radio->Sleep();
             return ClientEvent_TxDone;
         }
         // else we are sending another fragment
