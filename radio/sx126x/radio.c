@@ -907,7 +907,7 @@ uint32_t SX126xRadioTimeOnAir( RadioModems_t modem, uint8_t pktLen )
 void SX126xRadioSend( uint8_t *buffer, uint8_t size )
 {
     // Initialize TCXO control (workaround since)
-    SX126xIoTcxoInit();
+    //SX126xIoTcxoInit();
 
     SX126xSetDioIrqParams( IRQ_TX_DONE | IRQ_RX_TX_TIMEOUT,
                            IRQ_TX_DONE | IRQ_RX_TX_TIMEOUT,
