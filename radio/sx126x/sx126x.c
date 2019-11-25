@@ -633,6 +633,8 @@ void SX126xSetPacketParams( PacketParams_t *packetParams )
         return;
     }
     SX126xWriteCommand( SX126x_RADIO_SET_PACKETPARAMS, buf, n );
+    Delay(200);
+    SX126xWaitOnBusy( );
 }
 
 void SX126xSetCadParams( RadioLoRaCadSymbols_t cadSymbolNum, uint8_t cadDetPeak, uint8_t cadDetMin, RadioCadExitModes_t cadExitMode, uint32_t cadTimeout )

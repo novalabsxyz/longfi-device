@@ -70,8 +70,6 @@ void SX126xIoTcxoInit( void )
     SX126xSetDio3AsTcxoCtrl( TCXO_CTRL_1_7V, SX126xGetBoardTcxoWakeupTime( ) << 6 ); // convert from ms to SX126x time base
     calibParam.Value = 0x7F;
     SX126xCalibrate( calibParam );
-
-    SX126xSetDio2AsRfSwitchCtrl(true);
 }
 
 uint32_t SX126xGetBoardTcxoWakeupTime( void )
