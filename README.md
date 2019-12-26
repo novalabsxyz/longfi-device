@@ -20,9 +20,18 @@ Currently, only uplink is supported.
    ```
    cmake -H. -Bbuild  -DCMAKE_TOOLCHAIN_FILE=../toolchain-gcc-arm-none-eabi.cmake -DCMAKE_FLAGS="-march=armv6s-m"
    ```
+   or to cross compile for Heltec ESP32
+   ```
+   PATH="$PATH:~/.arduino15/packages/Heltec-esp32/tools/xtensa-esp32-elf-gcc/1.22.0-80-g6c4433a-5.2.0/bin/" cmake -H. -Bbuild  -DCMAKE_TOOLCHAIN_FILE=toolchain-gcc-xtensa-esp32.cmake
+   ```
 1. Compile
    ```
    make -C build
+   ```
+1. Copy built static libraries to Arduino LongFi
+   use esp32/cortex-m0/etc depending on what board you've built for
+   ```
+   find ./ -iname "*.a" -exec cp {} /home/lokkju/Arduino/libraries/LongFi/src/esp32/ \;
    ```
 1. Documentation
    ```
