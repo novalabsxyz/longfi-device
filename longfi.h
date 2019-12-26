@@ -129,15 +129,15 @@ extern "C"
      */
     typedef enum RfEvent_t
     {
-        DIO0,   // TxDone or Rx
-        DIO1,   // unimplemented
-        DIO2,   // unimplemented
-        DIO3,   // unimplemented
-        DIO4,   // unimplemented
-        DIO5,   // unimplemented
-        Timer1, // unimplemented
-        Timer2, // unimplemented
-        Timer3  // unimplemented
+        RFE_DIO0,   // TxDone or Rx
+        RFE_DIO1,   // unimplemented
+        RFE_DIO2,   // unimplemented
+        RFE_DIO3,   // unimplemented
+        RFE_DIO4,   // unimplemented
+        RFE_DIO5,   // unimplemented
+        RFE_Timer1, // unimplemented
+        RFE_Timer2, // unimplemented
+        RFE_Timer3  // unimplemented
     } RfEvent_t;
 
     /*!
