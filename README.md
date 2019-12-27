@@ -31,7 +31,7 @@ Currently, only uplink is supported.
 1. Copy built static libraries to Arduino LongFi
    use esp32/cortex-m0/etc depending on what board you've built for
    ```
-   find ./ -iname "*.a" -exec cp {} /home/lokkju/Arduino/libraries/LongFi/src/esp32/ \;
+   find ./ -iname "*.a" -exec cp {} ~/Arduino/libraries/LongFi/src/esp32/ \;
    ```
 1. Documentation
    ```
