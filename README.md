@@ -22,7 +22,7 @@ Currently, only uplink is supported.
    ```
    or to cross compile for Heltec ESP32 (after [setting up the Heltec ESP32 toolchain](https://docs.espressif.com/projects/esp-idf/en/release-v3.0/get-started/linux-setup.html))
    ```
-   PATH="$PATH:~/.arduino15/packages/Heltec-esp32/tools/xtensa-esp32-elf-gcc/1.22.0-80-g6c4433a-5.2.0/bin/" cmake -H. -Bbuild  -DCMAKE_TOOLCHAIN_FILE=toolchain-gcc-xtensa-esp32.cmake
+ cmake -H. -Bbuild  -DCMAKE_TOOLCHAIN_FILE=toolchain-gcc-xtensa-esp32.cmake
    ```
 1. Compile
    ```
