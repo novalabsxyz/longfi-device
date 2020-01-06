@@ -208,32 +208,32 @@ longfi_handle_event(LongFi_t * handle, RfEvent_t event)
 
     switch (event)
     {
-    case DIO0:
+    case RFE_DIO0:
         (*(internal.dio_irq_handles[0]))();
         break;
-    case DIO1:
+    case RFE_DIO1:
         // SX126x library only has the one handle, so fire it even fore DIO1
         (*(internal.dio_irq_handles[0]))();
         break;
-    case DIO2:
+    case RFE_DIO2:
         (*internal.dio_irq_handles[2])();
         break;
-    case DIO3:
+    case RFE_DIO3:
         (*internal.dio_irq_handles[3])();
         break;
-    case DIO4:
+    case RFE_DIO4:
         (*internal.dio_irq_handles[4])();
         break;
-    case DIO5:
+    case RFE_DIO5:
         (*internal.dio_irq_handles[5])();
         break;
-    case Timer1:
+    case RFE_Timer1:
         // TODO: needs to dispatch the callback stashed from TimerInit
         break;
-    case Timer2:
+    case RFE_Timer2:
         // TODO: needs to dispatch the callback stashed from TimerInit
         break;
-    case Timer3:
+    case RFE_Timer3:
         // TODO: needs to dispatch the callback stashed from TimerInit
         break;
     default:

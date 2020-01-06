@@ -20,6 +20,10 @@ Currently, only uplink is supported.
    ```
    cmake -H. -Bbuild  -DCMAKE_TOOLCHAIN_FILE=../toolchain-gcc-arm-none-eabi.cmake -DCMAKE_FLAGS="-march=armv6s-m"
    ```
+   or to cross compile for Heltec ESP32 (after [setting up the Heltec ESP32 toolchain](https://docs.espressif.com/projects/esp-idf/en/release-v3.0/get-started/linux-setup.html))
+   ```
+ cmake -H. -Bbuild  -DCMAKE_TOOLCHAIN_FILE=toolchain-gcc-xtensa-esp32.cmake
+   ```
 1. Compile
    ```
    make -C build
@@ -63,7 +67,7 @@ The process of integrating this code into a project is as follows:
 
  } BoardBindings_t;
 ```
-* *gather RfEvents*: the client must capture RfEvents, but currently we only care about `DIO0` for SX127x and `DIO1` for SX126x. You can capture this event with simple polling or by making it interrupt generated. A robust integration should maintain a FIFO queue of events and dispatch them sequentially
+* *gather RfEvents*: the client must capture RfEvents, but currently we only care about `RFE_DIO0` for SX127x and `RFE_DIO1` for SX126x. You can capture this event with simple polling or by making it interrupt generated. A robust integration should maintain a FIFO queue of events and dispatch them sequentially
 * *dispatch RfEvents*: the client must dispatch the `longfi_handle_event` function with the events gathered above; a robust integration should dispatch this function at a low priority, allowing the system to respond to other higher priority events
 * *send message*: the client can send messages, but must take care to only dispatch a single send at time; `ClientEvent_TxDone` signals that the library is ready to send again
 
