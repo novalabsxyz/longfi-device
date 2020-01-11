@@ -13,23 +13,23 @@ Currently, only uplink is supported.
 ## Building
 
 1. Generate makefile in `build/`. You only need to do this once.
-   ```
+   ```Shell
    cmake -H. -Bbuild
    ```
    or to cross-compile for armv6s-m (such as STM32L0xx)
-   ```
+   ```Shell
    cmake -H. -Bbuild  -DCMAKE_TOOLCHAIN_FILE=../toolchain-gcc-arm-none-eabi.cmake -DCMAKE_FLAGS="-march=armv6s-m"
    ```
    or to cross compile for Heltec ESP32 (after [setting up the Heltec ESP32 toolchain](https://docs.espressif.com/projects/esp-idf/en/release-v3.0/get-started/linux-setup.html))
-   ```
- cmake -H. -Bbuild  -DCMAKE_TOOLCHAIN_FILE=toolchain-gcc-xtensa-esp32.cmake
+   ```Shell
+   cmake -H. -Bbuild  -DCMAKE_TOOLCHAIN_FILE=toolchain-gcc-xtensa-esp32.cmake
    ```
 1. Compile
-   ```
+   ```Shell
    make -C build
    ```
 1. Documentation
-   ```
+   ```Shell
    make -C build docs
    open build/docs/html/index.html
    ```
@@ -45,7 +45,7 @@ Several libraries demonstrate usage of this library:
 The process of integrating this code into a project is as follows:
 
 * *create system bindings*: the library needs access to some system functions as defined in `BoardBindings_t` in `board.h`:
-```
+```C
  typedef struct
  {
      // must provide for drivers to work
@@ -92,3 +92,4 @@ Alternatively, you can put up a client to the longfi layer: ` /usr/bin/concentra
 ```
 Received packet! Length = 16
 248 18 22 133 85 181 183 12 126 112 0 11 0 0 9 82 
+```
