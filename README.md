@@ -18,7 +18,7 @@ Currently, only uplink is supported.
    ```
    or to cross-compile for armv6s-m (such as STM32L0xx)
    ```Shell
-   cmake -H. -Bbuild  -DCMAKE_TOOLCHAIN_FILE=../toolchain-gcc-arm-none-eabi.cmake -DCMAKE_FLAGS="-march=armv6s-m"
+   cmake -H. -Bbuild  -DCMAKE_TOOLCHAIN_FILE=toolchain-gcc-arm-none-eabi.cmake -DCMAKE_FLAGS="-march=armv6s-m"
    ```
    or to cross compile for Heltec ESP32 (after [setting up the Heltec ESP32 toolchain](https://docs.espressif.com/projects/esp-idf/en/release-v3.0/get-started/linux-setup.html))
    ```Shell
