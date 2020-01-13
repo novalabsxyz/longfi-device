@@ -1,5 +1,8 @@
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 
+
+set(BUILD_TESTING off)
+
 ###########################################################################
 # Toolchain executables                                                   #
 ###########################################################################
